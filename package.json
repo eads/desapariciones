@@ -1,0 +1,19 @@
+{
+  "name": "desapariciones",
+  "version": "0.0.1",
+  "description": "Rig to process and publish project materials related to public data about disappearances.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/eads/desapariciones.git"
+  },
+  "author": "David Eads",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/eads/desapariciones/issues"
+  },
+  "homepage": "https://github.com/eads/desapariciones#readme"
+}
