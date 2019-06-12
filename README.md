@@ -12,9 +12,13 @@ The quickest way to get up and running is to clone this repository and run `make
 * PostgreSQL
 * PostGIS
 * GDAL
+* rclone
+
+You must configure [rclone for Google Drive access](https://rclone.org/drive/).
 
 ## Setup
 
 ```
 make install
 ```
+
