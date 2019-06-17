@@ -4,7 +4,6 @@ Rig to process and publish project materials related to public data about disapp
 
 The quickest way to get up and running is to clone this repository and run `make help`.
 
-
 ## Requirements
 
 * GNU Make
@@ -12,9 +11,13 @@ The quickest way to get up and running is to clone this repository and run `make
 * PostgreSQL
 * PostGIS
 * GDAL
+* xsv
 * rclone
 
-You must configure [rclone for Google Drive access](https://rclone.org/drive/).
+You'll need to either:
+
+* Get a set of configuration files to put in the `secrets` directory and to populate the `.env` file from one of the developers.
+* Configure the project yourself (currently undocumented).
 
 ## Setup
 
@@ -22,3 +25,8 @@ You must configure [rclone for Google Drive access](https://rclone.org/drive/).
 make install
 ```
 
+## Running
+
+```
+make all
+```
