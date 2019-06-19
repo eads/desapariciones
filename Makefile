@@ -82,7 +82,7 @@ db: ## Create database
 	createdb -e $(PGDATABASE)
 
 .PHONY: db/extensions/%
-db/extensions/%: db ## Create extension % (where % is 'hstore', 'postgis', etc).
+db/extensions/%: db ## Create extension % (where % is 'hstore', 'postgis', etc)
 	$(call create_extension)
 
 .PHONY: db/tables/%
