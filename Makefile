@@ -59,7 +59,7 @@ endef
 
 define create_table
 	@(psql -c "\d $(subst db/tables/,,$@)" > /dev/null 2>&1 && \
-		echo "table $(subst db/tables/,,$@) exists")|| \
+		echo "table $(subst db/tables/,,$@) exists") || \
 	psql -v ON_ERROR_STOP=1 -qX1ef $<
 endef
 
