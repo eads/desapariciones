@@ -63,6 +63,12 @@ define create_table
 	psql -v ON_ERROR_STOP=1 -qX1ef $<
 endef
 
+define create_schema
+	@(psql -c "\dn $(subst db/schemas/,,$@)" | grep $(subst db/schemas/,,$@) > /dev/null 2>&1 && \
+	  echo "schema $(subst db/schemas/,,$@) exists") || \
+	psql -v ON_ERROR_STOP=1 -qaX1ec "CREATE SCHEMA $(subst db/schemas/,,$@)"
+endef
+
 define load_shapefile
 	@(psql -c "\d $(subst db/shapefiles/,,$@)" > /dev/null 2>&1 && \
 	 echo "table $(subst db/shapefiles/,,$@) exists")	|| \
@@ -84,6 +90,10 @@ db: ## Create database
 .PHONY: db/extensions/%
 db/extensions/%: db ## Create extension % (where % is 'hstore', 'postgis', etc)
 	$(call create_extension)
+
+.PHONY: db/schemas/%
+db/schemas/%: db ## Create schema % (where % is 'raw', etc)
+	$(call create_schema)
 
 .PHONY: db/tables/%
 db/tables/%: sql/tables/%.sql db  ## Create table % from sql/tables/%.sql
