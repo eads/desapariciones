@@ -1,5 +1,5 @@
 
-create table rnpedff (
+create table raw.rnpedff (
     fecha_en_que_se_le_vio_por_ultima_vez character varying,
     nombre_s character varying,
     apellido_paterno character varying,

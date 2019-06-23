@@ -1,5 +1,5 @@
 
-create table cenapi (
+create table raw.cenapi (
     situacion_de_la_persona_en_el_registro_nacional character varying,
     fecha_reporte character varying,
     hora_reporte character varying,

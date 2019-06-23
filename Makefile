@@ -26,20 +26,40 @@ include Makefile.vars
 include .env
 export
 
+# Activate Python environment
 PIPENV = pipenv run
+
+# Functions can be found in sql/functions
+FUNCTIONS = $(basename $(notdir $(wildcard sql/functions/*.sql)))
+
+# Views can be found in sql/views
+VIEWS = $(basename $(notdir $(wildcard sql/views/*.sql)))
+
+# Schemas are used to compartmentalize various types of data tables or views
+SCHEMAS = views processed raw
+
+# Data and map tables need to be statically defined; they depend on remote files
 DATAFILES = cenapi rnpedfc rnpedff
+SHAPEFILES = areas_geoestadisticas_estatales areas_geoestadisticas_municipales
+
 
 ##@ Basic usage
 
 .DEFAULT_GOAL := all
 .PHONY: all
-all: tables maps ## Build all
+all: views ## Build all
 
-.PHONY: tables
-tables: $(patsubst %, db/csv/%, $(DATAFILES))  ## Make all tables from data files
+.PHONY: views
+views: load $(patsubst %, db/views/%, $(VIEWS)) ## Make all views
 
-.PHONY: maps
-maps: db/shapefiles/areas_geoestadisticas_estatales db/shapefiles/areas_geoestadisticas_municipales ## Load all maps into database
+.PHONY: load
+load: csvs shapefiles $(patsubst %, db/processed/%, $(DATAFILES)) $(patsubst %, db/processed/%, $(SHAPEFILES)) ## Make all tables from data files
+
+.PHONY: csvs
+csvs: $(patsubst %, db/csv/%, $(DATAFILES))
+
+.PHONY: shapefiles
+shapefiles: $(patsubst %, db/shapefiles/%, $(SHAPEFILES))
 
 .PHONY: clean
 clean: dropdb clean/data ## Clean data files and databases (but not downloads)
@@ -49,7 +69,25 @@ help:  ## Display this help
 	@awk 'BEGIN {FS = ":.*##"; printf "\nUsage:\n  make \033[36m<target>\033[0m\n"} /^[a-zA-Z\%\\.\/_-]+:.*?##/ { printf "\033[36m%-15s\033[0m %s\n", $$1, $$2 } /^##@/ { printf "\n\033[1m%s\033[0m\n", substr($$0, 5) } ' $(MAKEFILE_LIST)
 
 
-##@ Database
+##@ Database views
+# These are explicitly defined because the dependency graph must be manually specified.
+
+define create_view
+	@(psql -c "\d $(subst db/views/,,$@)" > /dev/null 2>&1 && \
+		echo "view $(subst db/views/,,$@) exists") || \
+	psql -v ON_ERROR_STOP=1 -qX1ef $<
+endef
+
+.PHONY: db/views/%
+db/views/%: sql/views/%.sql load  ## Create view % specified in sql/views/%.sql (will load all data)
+	$(call create_view)
+
+.PHONY: db/views/cenapi_geo_summary
+db/views/cenapi_geo_summary: sql/views/cenapi_geo_summary.sql db/processed/cenapi db/processed/areas_geoestadisticas_municipales  ## Geography joined with simple CENAPI counts (work-in-progress)
+	$(call create_view)
+
+
+##@ Database structure
 
 define create_extension
 	@(psql -c "\dx $(subst db/extensions/,,$@)" | grep $(subst db/extensions/,,$@) > /dev/null 2>&1 && \
@@ -57,9 +95,15 @@ define create_extension
 	psql -v ON_ERROR_STOP=1 -qX1ec "CREATE EXTENSION $(subst db/extensions/,,$@)"
 endef
 
-define create_table
-	@(psql -c "\d $(subst db/tables/,,$@)" > /dev/null 2>&1 && \
-		echo "table $(subst db/tables/,,$@) exists") || \
+define create_raw_table
+	@(psql -c "\d raw.$(subst db/tables/,,$@)" > /dev/null 2>&1 && \
+		echo "table raw.$(subst db/tables/,,$@) exists") || \
+	psql -v ON_ERROR_STOP=1 -qX1ef $<
+endef
+
+define create_processed_table
+	@(psql -c "\d processed.$(subst db/processed/,,$@)" > /dev/null 2>&1 && \
+		echo "table processed.$(subst db/processed/,,$@) exists") || \
 	psql -v ON_ERROR_STOP=1 -qX1ef $<
 endef
 
@@ -69,43 +113,75 @@ define create_schema
 	psql -v ON_ERROR_STOP=1 -qaX1ec "CREATE SCHEMA $(subst db/schemas/,,$@)"
 endef
 
-define load_shapefile
-	@(psql -c "\d $(subst db/shapefiles/,,$@)" > /dev/null 2>&1 && \
-	 echo "table $(subst db/shapefiles/,,$@) exists")	|| \
-	shp2pgsql $(1) $< $(subst db/shapefiles/,,$@) | psql -v ON_ERROR_STOP=1 -q
+define load_raw_shapefile
+	@(psql -c "\d raw.$(subst db/shapefiles/,,$@)" > /dev/null 2>&1 && \
+	 echo "table raw.$(subst db/shapefiles/,,$@) exists")	|| \
+	shp2pgsql $< raw.$(subst db/shapefiles/,,$@) | psql -v ON_ERROR_STOP=1 -q
 endef
 
-define load_csv
-	@(psql -Atc "select count(*) from $(subst db/csv/,,$@)" | grep -v -w "0" > /dev/null 2>&1 && \
-	 	echo "$(subst db/csv/,,$@) is not empty") || \
-	psql -v ON_ERROR_STOP=1 -qX1ec "\copy $(subst db/csv/,,$@) from '$(CURDIR)/$<' with delimiter ',' csv header;"
+define load_raw_csv
+	@(psql -Atc "select count(*) from raw.$(subst db/csv/,,$@)" | grep -v -w "0" > /dev/null 2>&1 && \
+	 	echo "raw.$(subst db/csv/,,$@) is not empty") || \
+	psql -v ON_ERROR_STOP=1 -qX1ec "\copy raw.$(subst db/csv/,,$@) from '$(CURDIR)/$<' with delimiter ',' csv header;"
+endef
+
+define create_function
+	@(psql -c "\df $(subst db/functions/,,$@)" | grep $(subst db/functions/,,$@) > /dev/null 2>&1 && \
+	 echo "function $(subst db/functions/,,$@) exists")	|| \
+	 psql -v ON_ERROR_STOP=1 -qX1ef sql/functions/$(subst db/functions/,,$@).sql
 endef
 
 .PHONY: db
 db: ## Create database
 	@(psql -c "SELECT 1" > /dev/null 2>&1 && \
 		echo "database $(PGDATABASE) exists") || \
-	createdb -e $(PGDATABASE)
+	createdb -e $(PGDATABASE) -E UTF8 -T template0 --locale=en_US.UTF-8
 
 .PHONY: db/extensions/%
 db/extensions/%: db ## Create extension % (where % is 'hstore', 'postgis', etc)
 	$(call create_extension)
 
+.PHONY: db/vacuum
+db/vacuum: # Vacuum db
+	psql -v ON_ERROR_STOP=1 -qec "VACUUM ANALYZE;"
+
+.PHONY: db/schemas
+db/schemas: $(patsubst %, db/schemas/%, $(SCHEMAS)) ## Make all schemas
+
 .PHONY: db/schemas/%
-db/schemas/%: db ## Create schema % (where % is 'raw', etc)
+db/schemas/%: db # Create schema % (where % is 'raw', etc)
 	$(call create_schema)
 
+.PHONY: db/functions
+db/functions: $(patsubst %, db/functions/%, $(FUNCTIONS)) ## Make all functions
+
+.PHONY: db/functions/%
+db/functions/%: db
+	$(call create_function)
+
+.PHONY: db/searchpath
+db/searchpath: db/schemas # Set up (hardcoded) schema search path
+	psql -v ON_ERROR_STOP=1 -qX1c "ALTER DATABASE $(PGDATABASE) SET search_path TO public,views,processed,raw;"
+
 .PHONY: db/tables/%
-db/tables/%: sql/tables/%.sql db  ## Create table % from sql/tables/%.sql
-	$(call create_table)
+db/tables/%: sql/tables/%.sql db/searchpath # Create table % from sql/tables/%.sql
+	$(call create_raw_table)
 
 .PHONY: db/shapefiles/%
-db/shapefiles/%: data/shapefiles/%.shp db/extensions/postgis ## Load table % from data/shapefiles/%.shp
-	$(call load_shapefile, "-s 6372:3857")
+db/shapefiles/%: data/shapefiles/%.shp db/searchpath db/extensions/postgis # Load table % from data/shapefiles/%.shp
+	$(call load_raw_shapefile)
 
 .PHONY: db/csv/%
-db/csv/%: data/processed/%.csv db/tables/% db ## Load table % from data/downloads/%.csv
-	$(call load_csv)
+db/csv/%: data/processed/%.csv db/tables/% # Load table % from data/downloads/%.csv
+	$(call load_raw_csv)
+
+.PHONY: db/processed/%
+db/processed/%: sql/processed/%.sql db/functions db/schemas # Make table cleaned and processed tables
+	$(call create_processed_table)
+
+.PHONY: dropschema/%
+dropschema/%: # @TODO wrap in detection
+	psql -v ON_ERROR_STOP=1 -qX1c "DROP SCHEMA IF EXISTS $* CASCADE;"
 
 .PHONY: dropdb
 dropdb: ## Drop database
@@ -131,6 +207,10 @@ data/downloads/%.csv: secrets/rclone.conf # Download %.csv from Google Drive
 
 
 ##@ Process data
+
+.PRECIOUS: data/exports/%.csv
+data/exports/%.csv: db/views/%
+	psql -v ON_ERROR_STOP=1 -qX1c "\copy (select * from $*) to '$(CURDIR)/$@' with (delimiter ',', format csv, header);"
 
 .PRECIOUS: data/processed/%.csv
 data/processed/%.csv: data/downloads/%.csv # Convert encoding

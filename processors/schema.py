@@ -6,7 +6,7 @@ from jinja2 import Template
 from slugify import slugify
 
 SQL_TEMPLATE = """
-create table {{tablename|lower}} (
+create table raw.{{tablename|lower}} (
     {% for field in fields %}{{field}} character varying{{ ',' if not loop.last }}
     {% endfor %}
 );

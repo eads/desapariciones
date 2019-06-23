@@ -30,3 +30,9 @@ make install
 ```
 make all
 ```
+
+## Database structure
+
+The structure of the database is novel and perhaps even too complex, but we're trying it!
+
+The database uses PostgreSQL schemas to separate untransformed data from transformed data.
