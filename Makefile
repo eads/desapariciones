@@ -86,6 +86,10 @@ db/views/%: sql/views/%.sql load  ## Create view % specified in sql/views/%.sql 
 db/views/cenapi_geo_summary: sql/views/cenapi_geo_summary.sql db/processed/cenapi db/processed/areas_geoestadisticas_municipales  ## Geography joined with simple CENAPI counts (work-in-progress)
 	$(call create_view)
 
+.PHONY: db/views/cenapi_audit
+db/views/cenapi_audit: sql/views/cenapi_audit.sql db/extensions/hstore db/processed/cenapi ## Audit CENAPI data
+	$(call create_view)
+
 
 ##@ Database structure
 

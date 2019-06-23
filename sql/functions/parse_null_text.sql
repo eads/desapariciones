@@ -1,4 +1,4 @@
-create or replace function parse_null_text(arg text)
+create or replace function parse_nan_text(arg text)
 returns character varying language plpgsql
 as $$
 begin
