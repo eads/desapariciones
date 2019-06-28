@@ -62,7 +62,7 @@ csvs: $(patsubst %, db/csv/%, $(DATAFILES))
 shapefiles: $(patsubst %, db/shapefiles/%, $(SHAPEFILES))
 
 .PHONY: clean
-clean: dropdb clean/data ## Clean data files and databases (but not downloads)
+clean: hasura/down dropdb clean/data ## Clean data files and databases (but not downloads)
 
 .PHONY: help
 help:  ## Display this help
@@ -228,17 +228,41 @@ data/stats/%.csv: data/downloads/%.csv # Get column stats and metadata with xsv
 sql/tables/%.sql: data/stats/%.csv # Parse column stats into SQL schema for import
 	$(PIPENV) python processors/schema.py $< $@
 
+##@ Hasura
+
+.PHONY: hasura/up
+hasura/up: all ## Run Hasura
+	docker-compose -f hasura/docker-compose.yaml up -d
+
+.PHONY: hasura/down
+hasura/down:  ## Stop Hasura
+	docker-compose -f hasura/docker-compose.yaml down
+
+.PHONY: hasura/export
+hasura/export: hasura/migrations/metadata.yaml  ## Load Hasura metadata
+
+.PHONY: hasura/apply
+hasura/apply:
+	hasura metadata apply --project hasura --log-level DEBUG
+
+hasura/migrations/metadata.yaml: hasura/up
+	hasura metadata export --project hasura --log-level DEBUG
+
 ##@ Utilities
 
 DATA_DIRECTORIES = shapefiles processed stats
 DOWNLOAD_DIRECTORIES = downloads
 
+.PHONY: develop
+develop: load hasura/up  ## Run development server
+	grunt --open --base site develop
+
 .PHONY: dbshell
-dbshell:  ## Log in to database configured in .env.
+dbshell: db ## Log in to database configured in .env.
 	psql
 
 .PHONY: install
-install: install/npm install/pipenv ## Install project Node and Python dependencies
+install: install/npm install/pipenv install/hasura-cli ## Install project Node and Python dependencies
 
 .PHONY: install/npm
 install/npm: # Install from NPM
@@ -247,6 +271,10 @@ install/npm: # Install from NPM
 .PHONY: install/pipenv
 install/pipenv: # Install pipenv
 	pipenv install
+
+.PHONY: install/hasura-cli
+install/hasura-cli: # Install hasura cli
+	curl -L https://github.com/hasura/graphql-engine/raw/master/cli/get.sh | bash
 
 .PHONY: clean/data
 clean/data: $(patsubst %, rm/%, $(DATA_DIRECTORIES)) ## Remove all data files
