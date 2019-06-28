@@ -242,7 +242,7 @@ hasura/down:  ## Stop Hasura
 hasura/export: hasura/migrations/metadata.yaml  ## Load Hasura metadata
 
 .PHONY: hasura/apply
-hasura/apply:
+hasura/apply: hasura/up
 	hasura metadata apply --project hasura --log-level DEBUG
 
 hasura/migrations/metadata.yaml: hasura/up
@@ -254,8 +254,8 @@ DATA_DIRECTORIES = shapefiles processed stats
 DOWNLOAD_DIRECTORIES = downloads
 
 .PHONY: develop
-develop: load hasura/up  ## Run development server
-	grunt --open --base site develop
+develop: load hasura/apply  ## Run development server
+	grunt --base site develop
 
 .PHONY: dbshell
 dbshell: db ## Log in to database configured in .env.
