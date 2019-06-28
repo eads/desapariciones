@@ -3,10 +3,13 @@ create table processed.cenapi as
 select
     /* Create geo identifiers */
     parse_geoid(clave_estado, 2) as cve_ent,
-    -- LPAD(clave_estado, 2, '0') as cve_ent,
-    LPAD(clave_municipio, 3, '0') as cve_mun,
-    LPAD(clave_estado_localizado, 2, '0') as cve_ent_localizado,
-    LPAD(clave_municipio_localizado, 3, '0') as cve_mun_localizado,
+    parse_geoid(clave_municipio, 3) as cve_mun,
+    parse_geoid(clave_estado_localizado, 2) as cve_ent_localizado,
+    parse_geoid(clave_municipio_localizado, 3) as cve_mun_localizado,
+
+    /* Hasura needs a single column to join on; @TODO look into fixing with db relations */
+    concat(parse_geoid(clave_estado, 2), '-', parse_geoid(clave_municipio, 3)) as cve_geoid,
+    concat(parse_geoid(clave_estado_localizado, 2), '-', parse_geoid(clave_municipio_localizado, 3)) as cve_geoid_localizado,
 
     /* Cast dates to timestamp */
     parse_timestamp(fecha_de_ingreso) as fecha_de_ingreso,

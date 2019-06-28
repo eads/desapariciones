@@ -1,4 +1,4 @@
-create view views.cenapi_geo_summary as
+create table views.cenapi_geo_summary as
 
 WITH counts AS (
   SELECT
