@@ -12,10 +12,8 @@ services:
     depends_on:
     - "postgres"
     restart: always
-    env_file:
-      - .env
     environment:
-      HASURA_GRAPHQL_DATABASE_URL: ${HASURA_DB_URL}
+      HASURA_GRAPHQL_DATABASE_URL: ${HASURA_DB_URL}  # This is sourced from the root .env file when invoked by Make
       HASURA_GRAPHQL_ENABLE_CONSOLE: "true" # set to "false" to disable console
       ## uncomment next line to set an admin secret
       # HASURA_GRAPHQL_ADMIN_SECRET: myadminsecretkey
