@@ -1,0 +1,46 @@
+
+header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 3.1vh;
+  width: 100vw;
+  z-index: 99;
+  background-color: #F2F2F1;
+  border-bottom: 1px dotted #c2c2c1;
+}
+header h1 {
+  padding-top: 0.5vh;
+  padding-left: 0.5vh;
+  font-size: 2.2vh;
+  line-height: 1;
+}
+.map-pane {
+  position: absolute;
+  top: 3.1vh;
+  left: 0;
+  height: 42vh;
+  width: 100vw;
+}
+.explorer-pane {
+  position: absolute;
+  top: 45.1vh;
+  left: 0;
+  height: 54.9vh;
+  padding: 0 1vh;
+}
+
+
+
+h1 {
+  font-size: 1.2rem;
+  text-transform: uppercase;
+}
+a {
+  text-decoration: none;
+  color: #000;
+}
+a:hover {
+  text-decoration: underline;
+}
+

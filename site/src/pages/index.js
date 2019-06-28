@@ -1,20 +1,19 @@
 import React from "react"
-import { graphql, Link } from "gatsby"
+import { graphql } from "gatsby"
 
 import Layout from "../components/layout"
-import Image from "../components/image"
 import SEO from "../components/seo"
 
-import DeckGL from '@deck.gl/react'
-import {ScatterplotLayer} from '@deck.gl/layers'
-import {StaticMap} from 'react-map-gl'
+import DeckGL from "@deck.gl/react"
+import {ScatterplotLayer} from "@deck.gl/layers"
+import {StaticMap} from "react-map-gl"
 
-const MAPBOX_TOKEN = 'pk.eyJ1IjoiYWRvbmRldmFuIiwiYSI6ImNqbm0yc2x3aDA0c2QzcXVteWhjaW5vZTMifQ.9iTMcfENx9TOCQ94oXEevQ'
+const MAPBOX_TOKEN = "pk.eyJ1IjoiYWRvbmRldmFuIiwiYSI6ImNqbm0yc2x3aDA0c2QzcXVteWhjaW5vZTMifQ.9iTMcfENx9TOCQ94oXEevQ"
 
 const INITIAL_VIEW_STATE = {
-  longitude: -99.12,
-  latitude: 19.42,
-  zoom: 4.25,
+  longitude: -101.12,
+  latitude: 23.42,
+  zoom: 2.7,
   maxZoom: 16,
   pitch: 0,
   bearing: 0
@@ -23,11 +22,9 @@ const INITIAL_VIEW_STATE = {
 const IndexPage = (context) => {
   const data = context.data.desapariciones.views_areas_geoestadisticas_municipales_centroids
 
-
   const layer = new ScatterplotLayer({
-    id: 'scatterplot-layer',
+    id: "scatterplot-layer",
     data,
-    //pickable: true,
     opacity: 1,
     stroked: false,
     filled: true,
@@ -41,18 +38,25 @@ const IndexPage = (context) => {
     getLineColor: d => [0, 0, 0],
   })
 
-  const mapStyle = 'mapbox://styles/mapbox/light-v9';
+  const mapStyle = "mapbox://styles/mapbox/light-v9";
 
   return( <Layout>
-    <SEO title="Home" />
-    <DeckGL layers={[layer]} initialViewState={INITIAL_VIEW_STATE} controller={true}>
+    <SEO title="Map" />
+
+    <div className="explorer-pane">
+      <h1>Swipey explorer goes here</h1>
+    </div>
+
+    <div className="map-pane">
+      <DeckGL layers={[layer]} initialViewState={INITIAL_VIEW_STATE} controller={true}>
         <StaticMap
           reuseMaps
           mapStyle={mapStyle}
           preventStyleDiffing={true}
           mapboxApiAccessToken={MAPBOX_TOKEN}
         />
-    </DeckGL>
+      </DeckGL>
+    </div>
   </Layout>)
 }
 
