@@ -1,3 +1,20 @@
+body {
+  background-color: #333;
+  color: #fff;
+}
+
+h1 {
+  font-size: 1.2rem;
+  text-transform: uppercase;
+}
+a {
+  text-decoration: none;
+  color: #ccc;
+}
+a:hover {
+  text-decoration: underline;
+}
+
 
 header {
   position: absolute;
@@ -6,41 +23,46 @@ header {
   height: 3.1vh;
   width: 100vw;
   z-index: 99;
-  background-color: #F2F2F1;
-  border-bottom: 1px dotted #c2c2c1;
 }
 header h1 {
-  padding-top: 0.5vh;
-  padding-left: 0.5vh;
+  padding-top: 1vh;
+  padding-right: 1vh;
   font-size: 2.2vh;
   line-height: 1;
+  float: right;
 }
 .map-pane {
   position: absolute;
-  top: 3.1vh;
+  top: 0;
+  padding-top: 2vh;
   left: 0;
-  height: 42vh;
+  height: 40vh;
   width: 100vw;
 }
+
 .explorer-pane {
   position: absolute;
-  top: 45.1vh;
+  top: 40vh;
   left: 0;
-  height: 54.9vh;
-  padding: 0 1vh;
+  /*height: 45vh;*/
 }
 
-
-
-h1 {
-  font-size: 1.2rem;
-  text-transform: uppercase;
+.carousel {
+  position: relative;
+  width: 100vw;
 }
-a {
-  text-decoration: none;
+.carousel .item {
+  /*height: 43vh;*/
+}
+.carousel .item-inner {
+  border: 1px solid #555;
+  box-shadow: 0 0 4px #555;
+  border-radius: 5px;
+  background-color: #fff;
+  margin: 0.8rem;
+  padding: .7rem;
   color: #000;
+  /*height: calc(43vh - 3rem);*/
 }
-a:hover {
-  text-decoration: underline;
-}
+
 
