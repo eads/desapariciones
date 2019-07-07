@@ -6,10 +6,10 @@ select
     cve_ent,
     cve_mun,
     nom_mun,
-    ST_Transform(ST_SetSRID(geom, 6372), 3857) as geom,
+    ST_Transform(ST_SetSRID(geom, 6372), 4326) as geom,
     case
-      when (cve_ent = '06' and cve_mun = '009') then ST_SetSRID(ST_MakePoint(-103.803, 18.854), 3857)
-      else st_centroid(ST_Transform(ST_SetSRID(geom, 6372), 3857))
+      when (cve_ent = '06' and cve_mun = '009') then ST_SetSRID(ST_MakePoint(-103.803, 18.854), 4326)
+      else st_centroid(ST_Transform(ST_SetSRID(geom, 6372), 4326))
     end as centroid_geom
 
 from

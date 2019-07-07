@@ -13,6 +13,7 @@ The quickest way to get up and running is to clone this repository and run `make
 * GDAL
 * xsv
 * rclone
+* Mapbox CLI (brew install mapbox/cli/mapbox)
 
 You'll need to either:
 
