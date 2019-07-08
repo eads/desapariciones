@@ -59,7 +59,9 @@ This is a fairly minimalist configuration that corresponds with commit #481889ed
 * est input latency: 170ms
 
 
-## Mapbox + Recharts (1 line chart)
+## Mapbox + Recharts, trial 1 (1 line chart)
+
+Might have been fouled by extension
 
 * Overall: 59
 * 1st contentful paint: 0.7s
@@ -68,6 +70,31 @@ This is a fairly minimalist configuration that corresponds with commit #481889ed
 * 1st cpu idle: 1.1s
 * time to interactive: 10.4s
 * est input latency: 250ms
+
+Total payload: 1.1mb / 3.5mb
+
+
+## Mapbox + Recharts, trial 2 (1 line chart)
+
+* Overall: 78
+* 1st contentful paint: 1.1s
+* First meaningful paint: 1.1s
+* Speed index:  3.8s
+* 1st cpu idle: 5.7s
+* time to interactive: 6.1s
+* est input latency: 290ms
+
+Total payload: 1.1mb / 3.5mb
+
+## Mapbox + Recharts responsive (1 line chart)
+
+* Overall: 76
+* 1st contentful paint: 0.8s
+* First meaningful paint: 4.0s
+* Speed index:  3.9s
+* 1st cpu idle: 5.5s
+* time to interactive: 6.0s
+* est input latency: 260ms
 
 Total payload: 1.1mb / 3.5mb
 
@@ -83,3 +110,4 @@ Total payload: 1.1mb / 3.5mb
 
 Total payload: 1.1mb / 3.4mb
 
+silky smooth map performance
