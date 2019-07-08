@@ -15,12 +15,13 @@ const Cards = () => {
           <h1>Disappearances</h1>
           <h2>Subhed</h2>
           <p>Graf about what's next</p>
+          <YearlyTrendChart />
           <button onClick={() => reactSwipeEl.next()}>Go fwd</button>
         </div>
       </div>
       <div className="item">
         <div className="item-inner">
-          <YearlyTrendChart />
+          <p>go back</p>
           <button onClick={() => reactSwipeEl.prev()}>Go back</button>
         </div>
       </div>
