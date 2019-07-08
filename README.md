@@ -57,3 +57,29 @@ This is a fairly minimalist configuration that corresponds with commit #481889ed
 * 1st cpu idle: 4.5s
 * time to interactive: 5.0s
 * est input latency: 170ms
+
+
+## Mapbox + Recharts (1 line chart)
+
+* Overall: 59
+* 1st contentful paint: 0.7s
+* First meaningful paint: 0.7s
+* Speed index:  6.5s
+* 1st cpu idle: 1.1s
+* time to interactive: 10.4s
+* est input latency: 250ms
+
+Total payload: 1.1mb / 3.5mb
+
+## Mapbox + Nivo
+
+* Overall: 76
+* 1st contentful paint: 1.7s
+* First meaningful paint: 3.9s
+* Speed index:  3.4s
+* 1st cpu idle: 5.7s
+* time to interactive: 6.2s
+* est input latency: 250ms
+
+Total payload: 1.1mb / 3.4mb
+
