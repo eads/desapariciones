@@ -26,6 +26,10 @@ export default IndexPage
 export const query = graphql`
   query {
     desapariciones {
+      views_municipales_summary_ctr {
+        disappearance_count
+        geom
+      }
       processed_areas_geoestadisticas_estatales {
         nom_ent
         cve_ent
