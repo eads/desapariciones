@@ -1,0 +1,124 @@
+allowlist: []
+functions: []
+query_collections: []
+query_templates: []
+remote_schemas: []
+tables:
+- array_relationships: []
+  delete_permissions: []
+  event_triggers: []
+  insert_permissions: []
+  object_relationships: []
+  select_permissions: []
+  table:
+    name: cenapi_audit
+    schema: views
+  update_permissions: []
+- array_relationships: []
+  delete_permissions: []
+  event_triggers: []
+  insert_permissions: []
+  object_relationships: []
+  select_permissions: []
+  table:
+    name: areas_geoestadisticas_municipales
+    schema: processed
+  update_permissions: []
+- array_relationships: []
+  delete_permissions: []
+  event_triggers: []
+  insert_permissions: []
+  object_relationships: []
+  select_permissions: []
+  table:
+    name: municipales_centroids
+    schema: views
+  update_permissions: []
+- array_relationships: []
+  delete_permissions: []
+  event_triggers: []
+  insert_permissions: []
+  object_relationships: []
+  select_permissions: []
+  table:
+    name: cenapi_by_state_and_year
+    schema: views
+  update_permissions: []
+- array_relationships: []
+  delete_permissions: []
+  event_triggers: []
+  insert_permissions: []
+  object_relationships: []
+  select_permissions: []
+  table:
+    name: cenapi_by_state_and_month
+    schema: views
+  update_permissions: []
+- array_relationships: []
+  delete_permissions: []
+  event_triggers: []
+  insert_permissions: []
+  object_relationships: []
+  select_permissions: []
+  table:
+    name: municipales_summary_ctr
+    schema: views
+  update_permissions: []
+- array_relationships: []
+  delete_permissions: []
+  event_triggers: []
+  insert_permissions: []
+  object_relationships: []
+  select_permissions: []
+  table:
+    name: cenapi_by_year
+    schema: views
+  update_permissions: []
+- array_relationships: []
+  delete_permissions: []
+  event_triggers: []
+  insert_permissions: []
+  object_relationships: []
+  select_permissions: []
+  table:
+    name: municipales
+    schema: views
+  update_permissions: []
+- array_relationships: []
+  delete_permissions: []
+  event_triggers: []
+  insert_permissions: []
+  object_relationships: []
+  select_permissions: []
+  table:
+    name: municipales_summary
+    schema: views
+  update_permissions: []
+- array_relationships:
+  - comment: null
+    name: cenapi_by_month
+    using:
+      manual_configuration:
+        column_mapping:
+          cve_ent: cve_ent
+        remote_table:
+          name: cenapi_by_state_and_month
+          schema: views
+  - comment: null
+    name: cenapi_by_year
+    using:
+      manual_configuration:
+        column_mapping:
+          cve_ent: cve_ent
+        remote_table:
+          name: cenapi_by_state_and_year
+          schema: views
+  delete_permissions: []
+  event_triggers: []
+  insert_permissions: []
+  object_relationships: []
+  select_permissions: []
+  table:
+    name: areas_geoestadisticas_estatales
+    schema: processed
+  update_permissions: []

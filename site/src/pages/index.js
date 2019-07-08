@@ -1,21 +1,40 @@
 import React from "react"
-import { Link } from "gatsby"
+import { graphql } from "gatsby"
 
 import Layout from "../components/layout"
-import Image from "../components/image"
 import SEO from "../components/seo"
+import Cards from "../components/cards"
+import Map from "../components/map"
 
-const IndexPage = () => (
-  <Layout>
-    <SEO title="Home" />
-    <h1>Hi people</h1>
-    <p>Welcome to your new Gatsby site.</p>
-    <p>Now go build something great.</p>
-    <div style={{ maxWidth: `300px`, marginBottom: `1.45rem` }}>
-      <Image />
-    </div>
-    <Link to="/page-2/">Go to page 2</Link>
-  </Layout>
-)
+
+const IndexPage = () => {
+  return (
+    <Layout>
+      <SEO title="Map" />
+      <div className="explorer-pane">
+        <Cards />
+      </div>
+      <div className="map-pane">
+        <Map />
+      </div>
+    </Layout>
+  )
+}
 
 export default IndexPage
+
+export const query = graphql`
+  query {
+    desapariciones {
+      processed_areas_geoestadisticas_estatales {
+        nom_ent
+        cve_ent
+        cenapi_by_year {
+          year
+          count
+          cumulative_count
+        }
+      }
+    }
+  }
+`

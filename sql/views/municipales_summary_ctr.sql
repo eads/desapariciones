@@ -1,4 +1,4 @@
-create view views.cenapi_geo_summary as
+create table views.municipales_summary_ctr as
 
 WITH counts AS (
   SELECT
@@ -23,7 +23,7 @@ WITH counts AS (
   )
 SELECT
     c.*,
-    m.geom
+    m.centroid_geom as geom
 FROM
     counts c
 JOIN
@@ -33,3 +33,4 @@ ON
 ORDER BY
     c.disappearance_count DESC
 ;
+
