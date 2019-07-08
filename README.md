@@ -37,3 +37,23 @@ make all
 The structure of the database is novel and perhaps even too complex, but we're trying it!
 
 The database uses PostgreSQL schemas to separate untransformed data from transformed data.
+
+# Performance notes
+
+We're comparing a few different approaches to building the frontend:
+
+* Mapbox + Mapbox tiles to manage data
+* DeckGL + GeoJSON to manage data
+* With and without charting libraries
+
+## Mapbox + Swipe library, no charting lib
+
+This is a fairly minimalist configuration that corresponds with commit #481889ed.
+
+* Overall: 89
+* 1st contentful paint: 0.9s
+* First meaningful paint: 0.9s
+* Speed index:  3.3s
+* 1st cpu idle: 4.5s
+* time to interactive: 5.0s
+* est input latency: 170ms
