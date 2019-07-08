@@ -1,5 +1,5 @@
 import React from "react"
-import { LineChart, Line, CartesianGrid, XAxis, YAxis } from "recharts"
+import { LineChart, Line, CartesianGrid, XAxis, YAxis, ResponsiveContainer } from "recharts"
 
 const YearlyTrendChart = () => {
   const data = [
@@ -30,20 +30,22 @@ const YearlyTrendChart = () => {
 
 
   return (
-    <LineChart
-      width={300}
-      height={200}
-      data={data}
-      margin={{
-        top: 10, right: 10, left: 30, bottom: 10,
-      }}
+    <ResponsiveContainer
+      aspect={1.5}
     >
-      <CartesianGrid strokeDasharray="3 3" />
-      <XAxis dataKey="name" />
-      <YAxis />
-      <Line type="monotone" dataKey="pv" stroke="#8884d8" activeDot={{ r: 8 }} isAnimationActive={false} />
-      <Line type="monotone" dataKey="uv" stroke="#82ca9d" isAnimationActive={false} />
-    </LineChart>
+      <LineChart
+        data={data}
+        margin={{
+          top: 10, right: 10, left: 30, bottom: 10,
+        }}
+      >
+        <CartesianGrid strokeDasharray="3 3" />
+        <XAxis dataKey="name" />
+        <YAxis />
+        <Line type="monotone" dataKey="pv" stroke="#8884d8" activeDot={{ r: 8 }} isAnimationActive={false} />
+        <Line type="monotone" dataKey="uv" stroke="#82ca9d" isAnimationActive={false} />
+      </LineChart>
+    </ResponsiveContainer>
   )
 }
 
