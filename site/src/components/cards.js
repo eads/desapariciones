@@ -1,5 +1,6 @@
 import React from "react"
 import ReactSwipe from "react-swipe"
+import YearlyTrendChart from "../charts/yearly-trend"
 
 const Cards = () => {
   let reactSwipeEl
@@ -19,7 +20,7 @@ const Cards = () => {
       </div>
       <div className="item">
         <div className="item-inner">
-          <p>chart tk</p>
+          <YearlyTrendChart />
           <button onClick={() => reactSwipeEl.prev()}>Go back</button>
         </div>
       </div>
