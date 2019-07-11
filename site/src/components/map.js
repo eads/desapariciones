@@ -1,4 +1,6 @@
 import React from "react"
+import { uniq, groupBy, sumBy } from "lodash"
+import computeHistogram from "compute-histogram"
 import ReactMapGL from "react-map-gl"
 import "mapbox-gl/dist/mapbox-gl.css"
 
@@ -21,6 +23,12 @@ class Map extends React.Component {
     if (event.isSourceLoaded) {
       const map = this.mapRef.getMap()
       const data = map.queryRenderedFeatures({layers:["municipales-summary-ctr"]})
+      const features = uniq(data, "properties.id")
+      const states = groupBy(features, "properties.nom_ent")
+      const stateSummary = Object.keys(states).map( (k) => { return {
+        state: k,
+        disappearances: sumBy(states[k], "properties.disappearance_count")
+      }})
     }
   }
 

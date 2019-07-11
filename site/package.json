@@ -6,6 +6,7 @@
   "author": "Kyle Mathews <mathews.kyle@gmail.com>",
   "dependencies": {
     "@nivo/line": "^0.59.1",
+    "compute-histogram": "^0.9.7",
     "deck.gl": "^7.1.7",
     "gatsby": "^2.10.4",
     "gatsby-image": "^2.2.3",
