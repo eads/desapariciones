@@ -1,51 +1,51 @@
 import React from "react"
-import { uniq, groupBy, sumBy } from "lodash"
-import computeHistogram from "compute-histogram"
+import MapContext from "../context/MapContext"
 import ReactMapGL from "react-map-gl"
 import "mapbox-gl/dist/mapbox-gl.css"
 
 const MAPBOX_TOKEN = "pk.eyJ1IjoiZGF2aWRlYWRzIiwiYSI6ImNpZ3d0azN2YzBzY213N201eTZ3b2E0cDgifQ.ZCHD8ZAk32iAp9Ue3tPVVg"
 
-
-class Map extends React.Component {
-
-  state = {
-    viewport: {
-      width: "100%",
-      height: "100%",
-      longitude: -102.9,
-      latitude: 23.42,
-      zoom: 3.1,
-    }
-  }
+class BaseMap extends React.Component {
 
   onSourceData = (event) => {
+    const { setData } = this.props.mapState
     if (event.isSourceLoaded) {
       const map = this.mapRef.getMap()
       const data = map.queryRenderedFeatures({layers:["municipales-summary-ctr"]})
-      const features = uniq(data, "properties.id")
-      const states = groupBy(features, "properties.nom_ent")
-      const stateSummary = Object.keys(states).map( (k) => { return {
-        state: k,
-        disappearances: sumBy(states[k], "properties.disappearance_count")
-      }})
+      setData(data)
     }
   }
 
   componentDidMount() {
     const map = this.mapRef.getMap()
     map.on("sourcedata", this.onSourceData)
+    //console.log(this)
+    //console.log(this.props.mapState)
+    // @TODO zoom to container
   }
 
   render() {
+    const { mapState } = this.props
     return (
       <ReactMapGL
-        {...this.state.viewport}
-        onViewportChange={(viewport) => this.setState({viewport})}
+        {...mapState.viewport}
+        onViewportChange={(viewport) => mapState.setViewport(viewport)}
         ref={map => this.mapRef = map}
         mapboxApiAccessToken={MAPBOX_TOKEN}
         mapStyle="mapbox://styles/davideads/cjxhxnw2a3vz81cr178aj3syc"
       />
+    )
+  }
+}
+
+class Map extends React.Component {
+  render() {
+    return (
+      <MapContext.Consumer>
+        {mapState => (
+          <BaseMap mapState={mapState} />
+        )}
+      </MapContext.Consumer>
     )
   }
 }

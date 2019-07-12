@@ -1,52 +1,71 @@
 import React from "react"
-import { LineChart, Line, CartesianGrid, XAxis, YAxis, ResponsiveContainer } from "recharts"
+import { BarChart, Bar, XAxis, YAxis, ResponsiveContainer } from "recharts"
+import MapContext from "../context/MapContext"
 
-const YearlyTrendChart = () => {
-  const data = [
-    {
-      name: "Page A", uv: 4000, pv: 2400, amt: 2400,
-    },
-    {
-      name: "Page B", uv: 3000, pv: 1398, amt: 2210,
-    },
-    {
-      name: "Page C", uv: 2000, pv: 9800, amt: 2290,
-    },
-    {
-      name: "Page D", uv: 2780, pv: 3908, amt: 2000,
-    },
-    {
-      name: "Page E", uv: 1890, pv: 4800, amt: 2181,
-    },
-    {
-      name: "Page F", uv: 2390, pv: 3800, amt: 2500,
-    },
-    {
-      name: "Page G", uv: 3490, pv: 4300, amt: 2100,
-    },
-  ];
+class YearlyTrendChart extends React.Component {
 
-  const colors = ["#cc0000", "#00cc00",]
+  yTickFormatter = (value) => {
+    if (Math.floor(Math.log10(value)) > 2) {
+      return `${Math.floor(value/1e3)}k`
+    } else {
+      return value
+    }
+  }
 
+  xTickFormatter = (value) => {
+    switch (value) {
+      case "Baja California Sur":
+      case "Baja California":
+        return value.replace("California", "Cali.")
+      case "Veracruz de Ignacio de la Llave":
+        return "Veracruz"
+      case "Ciudad de México":
+        return "CDMX"
+      case "Coahuila de Zaragoza":
+        return "Coahulia"
+      case "Michoacán de Ocampo":
+        return "Michoacán"
+      default:
+        return value
+    }
+  }
 
-  return (
-    <ResponsiveContainer
-      aspect={1.5}
-    >
-      <LineChart
-        data={data}
-        margin={{
-          top: 10, right: 10, left: 30, bottom: 10,
-        }}
-      >
-        <CartesianGrid strokeDasharray="3 3" />
-        <XAxis dataKey="name" />
-        <YAxis />
-        <Line type="monotone" dataKey="pv" stroke="#8884d8" activeDot={{ r: 8 }} isAnimationActive={false} />
-        <Line type="monotone" dataKey="uv" stroke="#82ca9d" isAnimationActive={false} />
-      </LineChart>
-    </ResponsiveContainer>
-  )
+  render() {
+    return (
+      <MapContext.Consumer>
+        {mapState => (
+          <ResponsiveContainer
+            aspect={.7}
+          >
+            <BarChart
+              data={mapState.stateSummary}
+              layout="vertical"
+              margin={{
+                top: 10, right: 10, left: 0, bottom: 40,
+              }}
+            >
+              <YAxis
+                dataKey="state"
+                interval={0}
+                type="category"
+                width={110}
+                tickFormatter={this.xTickFormatter}
+              />
+              <XAxis
+                tickFormatter={this.yTickFormatter}
+                type="number"
+                interval={3}
+              />
+              <Bar
+                dataKey="disappearances"
+                fill="#8884d8"
+              />
+            </BarChart>
+          </ResponsiveContainer>
+        )}
+      </MapContext.Consumer>
+    )
+  }
 }
 
 export default YearlyTrendChart
