@@ -18,7 +18,7 @@ class BaseMap extends React.Component {
     const { setViewport, setData } = this.props.mapState
     if (this.mapRef) {
       const map = this.mapRef.getMap()
-      const data = map.queryRenderedFeatures({layers:["municipales-summary-ctr"]})
+      const data = map.queryRenderedFeatures({layers:["municipales-summary"]})
       setViewport(viewport)
       setData(data)
     }

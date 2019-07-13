@@ -1,6 +1,6 @@
 body {
-  background-color: #333;
-  color: #fff;
+  background-color: #fff;
+  color: #222;
 }
 
 h1 {
@@ -9,7 +9,7 @@ h1 {
 }
 a {
   text-decoration: none;
-  color: #ccc;
+  color: #000;
 }
 a:hover {
   text-decoration: underline;
@@ -45,7 +45,7 @@ header h1 {
 
 .explorer-pane {
   position: absolute;
-  top: 50vh;
+  top: 52vh;
   left: 0;
   /*height: 45vh;*/
 }
@@ -55,18 +55,18 @@ header h1 {
   width: 100vw;
 }
 .carousel .item {
-  /*height: 43vh;*/
+  padding: 0.7rem;
 }
-.carousel .item-inner {
-  border: 1px solid #555;
-  box-shadow: 0 0 4px #555;
-  border-radius: 5px;
-  background-color: #fff;
-  max-width: 800px;
-  margin: 1.2rem auto;
-  padding: .7rem;
-  color: #000;
-}
+//.carousel .item-inner {
+  //border: 1px solid #555;
+  //box-shadow: 0 0 4px #555;
+  //border-radius: 5px;
+  //background-color: #fff;
+  //max-width: 800px;
+  //margin: 1.2rem auto;
+  //padding: .7rem;
+  //color: #000;
+//}
 
 .carousel .item h1 {
   font-size: 1.2rem;

@@ -58,7 +58,7 @@ class MapProvider extends React.Component {
   render() {
     const { children } = this.props
     const { data, viewport, stateSummary, genderSummary } = this.state
-    const throttledSetData = throttle(this.setData, 200)
+    const throttledSetData = throttle(this.setData, 500)
 
     return (
       <MapContext.Provider

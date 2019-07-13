@@ -234,20 +234,22 @@ sql/tables/%.sql: data/stats/%.csv # Parse column stats into SQL schema for impo
 
 ##@ Exports
 
+MAPVIEWS = municipales municipales_summary municipales_summary_ctr estatales
+
 .PRECIOUS: data/geojson/%.json
 data/geojson/%.json: db/views/% ## Build geojson file from a view
-	ogr2ogr -f GeoJSON $@ PG:$(GDALSTRING) -sql "select * from $*" && touch $@
+	ogr2ogr -f GeoJSON $@ PG:$(GDALSTRING) -sql "select * from $*"
 
-.PRECIOUS: data/mbtiles/%.mbtiles
-data/mbtiles/%.mbtiles : data/geojson/%.json
-	tippecanoe -zg --drop-densest-as-needed --extend-zooms-if-still-dropping -o $@ -f $<
+.PRECIOUS: data/mbtiles/desapariciones.mbtiles
+data/mbtiles/desapariciones.mbtiles: $(patsubst %, data/geojson/%.json, $(MAPVIEWS))
+	tippecanoe -ab -S 10 -Z2 -z11 -o $@ -f $^
 
-.PHONY: mapbox/%
-mapbox/% : data/mbtiles/%.mbtiles
-	mapbox upload $(MAPBOX_USER).$(MAPBOX_SLUG)-$* $<
+.PHONY: mapbox
+mapbox: data/mbtiles/desapariciones.mbtiles
+	mapbox upload $(MAPBOX_USER).$(MAPBOX_SLUG) $<
 
 .PHONY: mbview
-mbview: $(wildcard data/mbtiles/*.mbtiles)
+mbview: data/mbtiles/desapariciones.mbtiles
 	MAPBOX_ACCESS_TOKEN=$(MAPBOX_PUBLIC_ACCESS_TOKEN) mbview $^
 
 
