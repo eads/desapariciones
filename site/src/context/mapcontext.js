@@ -4,6 +4,7 @@ import { uniq, groupBy, sumBy, sortBy, throttle } from "lodash"
 const defaultState = {
   data: {},
   stateSummary: [],
+  genderSummary: [],
   setData: () => {},
   viewport: {},
   setViewport: () => {},
@@ -15,38 +16,59 @@ class MapProvider extends React.Component {
   state = {
     data: {},
     stateSummary: [],
+    genderSummary: [],
     viewport: {
       width: "100%",
       height: "100%",
       longitude: -102.9,
       latitude: 23.42,
       zoom: 3.1,
+      pitch: 60,
     },
   }
 
   setData = ({data}) => {
-    const features = uniq(data, "properties.id")
-    const states = groupBy(features, "properties.nom_ent")
+    const states = groupBy(data, "properties.nom_ent")
+
     const stateSummary = sortBy(Object.keys(states).map( (k) => { return {
       state: k,
       disappearances: sumBy(states[k], "properties.disappearance_count")
     }}), "disappearances").reverse()
-    this.setState({data, stateSummary})
+
+
+    const genderCount = {
+      m: 0,
+      f: 0,
+      n: 0,
+    }
+    data.forEach( (d) => {
+      if (d.properties.gender_fem_ct) genderCount.f += d.properties.gender_fem_ct
+      if (d.properties.gender_masc_ct) genderCount.m += d.properties.gender_masc_ct
+      if (d.properties.gender_null_ct) genderCount.n += d.properties.gender_null_ct
+    })
+
+    const genderSummary = [
+      { name: 'm', value: genderCount.m },
+      { name: 'f', value: genderCount.f },
+    ]
+
+    this.setState({data, stateSummary, genderSummary})
   }
 
   render() {
     const { children } = this.props
-    const { data, viewport, stateSummary } = this.state
-    //const throttledSetData = throttle(this.setData, 200)
+    const { data, viewport, stateSummary, genderSummary } = this.state
+    const throttledSetData = throttle(this.setData, 200)
 
     return (
       <MapContext.Provider
         value={{
           data,
           stateSummary,
+          genderSummary,
           viewport,
           setViewport: (viewport) => this.setState({viewport}),
-          setData: (data) => this.setData({data}),
+          setData: (data) => throttledSetData({data}),
         }}
       >
         {children}

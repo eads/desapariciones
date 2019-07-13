@@ -33,16 +33,19 @@ header h1 {
 }
 .map-pane {
   position: absolute;
-  top: 0;
-  padding-top: 2vh;
+  top: 2vh;
   left: 0;
-  height: 40vh;
+  height: 50vh;
   width: 100vw;
+}
+.map-pane > div {
+  height: 100% !important;
+  width: 100% !important;
 }
 
 .explorer-pane {
   position: absolute;
-  top: 40vh;
+  top: 50vh;
   left: 0;
   /*height: 45vh;*/
 }
@@ -59,10 +62,14 @@ header h1 {
   box-shadow: 0 0 4px #555;
   border-radius: 5px;
   background-color: #fff;
-  margin: 0.8rem;
+  max-width: 800px;
+  margin: 1.2rem auto;
   padding: .7rem;
   color: #000;
-  /*height: calc(43vh - 3rem);*/
+}
+
+.carousel .item h1 {
+  font-size: 1.2rem;
 }
 
 .recharts-text {

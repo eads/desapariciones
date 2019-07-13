@@ -1,5 +1,4 @@
 import React from "react"
-import { graphql } from "gatsby"
 
 import Layout from "../components/layout"
 import SEO from "../components/seo"
@@ -22,19 +21,3 @@ const IndexPage = () => {
 }
 
 export default IndexPage
-
-export const query = graphql`
-  query {
-    desapariciones {
-      processed_areas_geoestadisticas_estatales {
-        nom_ent
-        cve_ent
-        cenapi_by_year {
-          year
-          count
-          cumulative_count
-        }
-      }
-    }
-  }
-`

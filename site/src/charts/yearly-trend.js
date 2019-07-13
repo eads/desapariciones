@@ -33,22 +33,23 @@ class YearlyTrendChart extends React.Component {
   render() {
     return (
       <MapContext.Consumer>
-        {mapState => (
+        {mapState => { return (!mapState.data.length) ? null : (
           <ResponsiveContainer
-            aspect={.7}
+            width="100%"
+            height={400}
           >
             <BarChart
               data={mapState.stateSummary}
               layout="vertical"
               margin={{
-                top: 10, right: 10, left: 0, bottom: 40,
+                top: 10, right: 10, left: -20, bottom: 0,
               }}
             >
               <YAxis
                 dataKey="state"
                 interval={0}
                 type="category"
-                width={110}
+                width={130}
                 tickFormatter={this.xTickFormatter}
               />
               <XAxis
@@ -62,7 +63,7 @@ class YearlyTrendChart extends React.Component {
               />
             </BarChart>
           </ResponsiveContainer>
-        )}
+        )}}
       </MapContext.Consumer>
     )
   }

@@ -1,6 +1,7 @@
 import React from "react"
 import ReactSwipe from "react-swipe"
 import YearlyTrendChart from "../charts/yearly-trend"
+import GenderPieChart from "../charts/gender-pie"
 
 const Cards = () => {
   let reactSwipeEl
@@ -12,10 +13,8 @@ const Cards = () => {
     >
       <div className="item">
         <div className="item-inner">
-          <h1>Disappearances</h1>
-          <h2>Subhed</h2>
-          <p>Graf about what's next</p>
-          <YearlyTrendChart />
+          <h1>By state</h1>
+          <GenderPieChart />
           <button onClick={() => reactSwipeEl.next()}>Go fwd</button>
         </div>
       </div>

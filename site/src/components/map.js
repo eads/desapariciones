@@ -8,19 +8,25 @@ const MAPBOX_TOKEN = "pk.eyJ1IjoiZGF2aWRlYWRzIiwiYSI6ImNpZ3d0azN2YzBzY213N201eTZ
 class BaseMap extends React.Component {
 
   onSourceData = (event) => {
-    const { setData } = this.props.mapState
+    const { viewport } = this.props.mapState
     if (event.isSourceLoaded) {
+      this.onViewportChange(viewport)
+    }
+  }
+
+  onViewportChange = (viewport) => {
+    const { setViewport, setData } = this.props.mapState
+    if (this.mapRef) {
       const map = this.mapRef.getMap()
       const data = map.queryRenderedFeatures({layers:["municipales-summary-ctr"]})
+      setViewport(viewport)
       setData(data)
     }
   }
 
   componentDidMount() {
-    const map = this.mapRef.getMap()
-    map.on("sourcedata", this.onSourceData)
-    //console.log(this)
-    //console.log(this.props.mapState)
+    //const map = this.mapRef.getMap()
+    //map.on("sourcedata", this.onSourceData)
     // @TODO zoom to container
   }
 
@@ -29,10 +35,10 @@ class BaseMap extends React.Component {
     return (
       <ReactMapGL
         {...mapState.viewport}
-        onViewportChange={(viewport) => mapState.setViewport(viewport)}
+        onViewportChange={this.onViewportChange}
         ref={map => this.mapRef = map}
         mapboxApiAccessToken={MAPBOX_TOKEN}
-        mapStyle="mapbox://styles/davideads/cjxhxnw2a3vz81cr178aj3syc"
+        mapStyle="mapbox://styles/davideads/cjy0ro2wa05tm1cqnk6lwhq6l"
       />
     )
   }
