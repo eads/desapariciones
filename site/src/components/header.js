@@ -11,6 +11,7 @@ const Header = ({ siteTitle }) => (
         {siteTitle}
       </Link>
     </h1>
+    <p>Updated July 14, 2019</p>
   </header>
 )
 

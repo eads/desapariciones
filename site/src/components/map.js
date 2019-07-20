@@ -38,7 +38,7 @@ class BaseMap extends React.Component {
         onViewportChange={this.onViewportChange}
         ref={map => this.mapRef = map}
         mapboxApiAccessToken={MAPBOX_TOKEN}
-        mapStyle="mapbox://styles/davideads/cjy0ro2wa05tm1cqnk6lwhq6l"
+        mapStyle="mapbox://styles/davideads/cjyc2n4b21q5g1cml2t5x8kcx"
       />
     )
   }

@@ -20,10 +20,10 @@ class MapProvider extends React.Component {
     viewport: {
       width: "100%",
       height: "100%",
-      longitude: -102.9,
-      latitude: 23.42,
-      zoom: 3.1,
-      pitch: 60,
+      longitude: -102.0,
+      latitude: 22.5,
+      zoom: 3.05,
+      pitch: 0,
     },
   }
 

@@ -20,34 +20,42 @@ header {
   position: absolute;
   top: 0;
   left: 0;
-  height: 3.1vh;
+  padding-top: 1.5vh;
+  padding-right: 1.5vh;
   width: 100vw;
   z-index: 99;
+  text-align: right;
 }
 header h1 {
-  padding-top: 1vh;
-  padding-right: 1vh;
-  font-size: 2.2vh;
+  font-size: 2.5vh;
   line-height: 1;
-  float: right;
+  margin: 0;
+}
+header p {
+  font-size: 1.5vh;
 }
 .map-pane {
   position: absolute;
-  top: 2vh;
+  top: 0;
   left: 0;
-  height: 50vh;
+  height: 75vw;
   width: 100vw;
 }
 .map-pane > div {
   height: 100% !important;
   width: 100% !important;
 }
+.map-pane .mapboxgl-ctrl-bottom-left {
+  left: auto;
+  right: 40px;
+  bottom: 3px;
+}
 
 .explorer-pane {
   position: absolute;
-  top: 52vh;
   left: 0;
-  /*height: 45vh;*/
+  top: calc(100vh - 70vw);
+  height: calc(100vh - 70vw);
 }
 
 .carousel {
