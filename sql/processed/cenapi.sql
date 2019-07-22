@@ -1,13 +1,17 @@
 create table processed.cenapi as
 
 select
+    -- This id is unique to municipalities; this is used to join with randomly generated
+    -- points in the cenapi_distributed view (make db/views/cenapi_distributed)
+    row_number() over (partition by clave_estado, clave_municipio) as cve_geoid_seq_id,
+
     /* Create geo identifiers */
     parse_geoid(clave_estado, 2) as cve_ent,
     parse_geoid(clave_municipio, 3) as cve_mun,
     parse_geoid(clave_estado_localizado, 2) as cve_ent_localizado,
     parse_geoid(clave_municipio_localizado, 3) as cve_mun_localizado,
 
-    /* Hasura needs a single column to join on; @TODO look into fixing with db relations */
+    /* Hasura no longer needs a single column to join on, but lots now depends on this ID */
     concat(parse_geoid(clave_estado, 2), '-', parse_geoid(clave_municipio, 3)) as cve_geoid,
     concat(parse_geoid(clave_estado_localizado, 2), '-', parse_geoid(clave_municipio_localizado, 3)) as cve_geoid_localizado,
 
@@ -90,6 +94,8 @@ select
     parse_null_text(tipo_denuncia) as tipo_denuncia,
     parse_null_text(vivo_o_muerto) as vivo_o_muerto
 from raw.cenapi;
+
+alter table processed.cenapi add column seq_id serial primary key;
 
 create index idx_cenapi_cve_ent on processed.cenapi(cve_ent);
 create index idx_cenapi_cve_mun on processed.cenapi(cve_mun);
