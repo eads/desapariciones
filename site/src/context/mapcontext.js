@@ -1,5 +1,5 @@
 import React from "react"
-import { uniq, groupBy, sumBy, sortBy, throttle } from "lodash"
+import { groupBy, sumBy, sortBy, throttle } from "lodash"
 
 const defaultState = {
   data: {},
