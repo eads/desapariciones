@@ -1,0 +1,20 @@
+[[source]]
+name = "pypi"
+url = "https://pypi.org/simple"
+verify_ssl = true
+
+[dev-packages]
+ipdb = "*"
+
+[packages]
+psycopg2-binary = "*"
+click = "*"
+jinja2 = "*"
+dataset = "*"
+python-slugify = "*"
+shapely = "==1.7a2"
+geoalchemy2 = "*"
+geojson = "*"
+
+[requires]
+python_version = "3.7"
