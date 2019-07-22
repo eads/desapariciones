@@ -234,15 +234,23 @@ sql/tables/%.sql: data/stats/%.csv # Parse column stats into SQL schema for impo
 
 ##@ Exports
 
-MAPVIEWS = municipales municipales_summary municipales_summary_ctr estatales
+MAPVIEWS = municipales municipales_summary municipales_summary_ctr cenapi_distributed estatales
 
 .PRECIOUS: data/geojson/%.json
-data/geojson/%.json: db/views/% ## Build geojson file from a view
+data/geojson/%.json: # db/views/% ## Build geojson file from a view
 	ogr2ogr -f GeoJSON $@ PG:$(GDALSTRING) -sql "select * from $*"
 
+.PRECIOUS: data/mbtiles/%.mbtiles
+data/mbtiles/%.mbtiles: data/geojson/%.json
+	tippecanoe -ab -S 5 -Z2 -z15 -o $@ -f $<
+
+.PRECIOUS: data/mbtiles/cenapi_distributed.mbtiles
+data/mbtiles/cenapi_distributed.mbtiles: data/geojson/cenapi_distributed.json
+	tippecanoe -Z2 -z15 --drop-densest-as-needed --extend-zooms-if-still-dropping -o $@ -f $<
+
 .PRECIOUS: data/mbtiles/desapariciones.mbtiles
-data/mbtiles/desapariciones.mbtiles: $(patsubst %, data/geojson/%.json, $(MAPVIEWS))
-	tippecanoe -ab -S 10 -Z2 -z11 -o $@ -f $^
+data/mbtiles/desapariciones.mbtiles: $(patsubst %, data/mbtiles/%.mbtiles, $(MAPVIEWS))
+	tile-join -o $@ $^
 
 .PHONY: mapbox
 mapbox: data/mbtiles/desapariciones.mbtiles
