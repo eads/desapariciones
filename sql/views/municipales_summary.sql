@@ -59,7 +59,7 @@ WITH
       f.gender_fem_ct,
       msc.gender_masc_ct,
       n.gender_null_ct,
-      m.geom
+      geom as geom
   FROM
       counts c
   JOIN
