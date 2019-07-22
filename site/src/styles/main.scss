@@ -54,8 +54,12 @@ header p {
 .explorer-pane {
   position: absolute;
   left: 0;
-  top: calc(100vh - 70vw);
-  height: calc(100vh - 70vw);
+  top: 75vw;
+  height: calc(100vh - 75vw);
+}
+.explorer-pane .viewport-indicator {
+  padding: 0.7rem;
+  font-size: 0.8rem;
 }
 
 .carousel {
