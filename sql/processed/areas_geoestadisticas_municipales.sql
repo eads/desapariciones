@@ -6,8 +6,9 @@ select
     cve_ent,
     cve_mun,
     nom_mun,
-    ST_Transform(ST_SetSRID(geom, 6372), 4326) as geom,
+    ST_MakeValid(ST_Transform(ST_SetSRID(geom, 6372), 4326)) as geom,
     case
+      -- correct for the municipality that includes an island far offshore
       when (cve_ent = '06' and cve_mun = '009') then ST_SetSRID(ST_MakePoint(-103.803, 18.854), 4326)
       else st_centroid(ST_Transform(ST_SetSRID(geom, 6372), 4326))
     end as centroid_geom

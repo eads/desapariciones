@@ -4,7 +4,7 @@ select
     gid,
     cve_ent,
     nom_ent,
-    ST_Transform(ST_SetSRID(geom, 6372), 4326) as geom
+    ST_MakeValid(ST_Transform(ST_SetSRID(geom, 6372), 4326)) as geom
 from
     raw.areas_geoestadisticas_estatales;
 
