@@ -15,60 +15,90 @@ a:hover {
   text-decoration: underline;
 }
 
-
+// Header
 header {
-  position: absolute;
-  top: 0;
-  left: 0;
-  padding-top: 1.5vh;
-  padding-right: 1.5vh;
-  width: 100vw;
-  z-index: 99;
-  text-align: right;
+  height: 4.3vh;
 }
 header h1 {
-  font-size: 2.5vh;
+  font-size: 2.3vh;
+  padding: 1.5vh 3vw;
   line-height: 1;
   margin: 0;
 }
 header p {
-  font-size: 1.5vh;
-}
-.map-pane {
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 75vw;
-  width: 100vw;
-}
-.map-pane > div {
-  height: 100% !important;
-  width: 100% !important;
-}
-.map-pane .mapboxgl-ctrl-bottom-left {
-  left: auto;
-  right: 40px;
-  bottom: 3px;
+  font-size: .8rem;
 }
 
 .explorer-pane {
-  position: absolute;
-  left: 0;
-  top: 75vw;
-  height: calc(100vh - 75vw);
-}
-.explorer-pane .viewport-indicator {
-  padding: 0.7rem;
-  font-size: 0.8rem;
+  padding: .5vh 3vw;
+  height: 49.7vh;
 }
 
-.carousel {
-  position: relative;
-  width: 100vw;
+.map-pane {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 45vh;
+  width: 100%;
+  border-top: 1px dotted #999;
 }
-.carousel .item {
-  padding: 0.7rem;
+.map-pane .help {
+  position: absolute;
+  right: 1vh;
+  top: 1vh;
+  text-align: right;
+  z-index: 10;
+  max-width: 35vw;
+  font-size: 1.5vh;
+  font-family: Arial, sans-serif;
 }
+.map-pane .help p {
+  margin-bottom: 0;
+}
+
+.map {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+.map > div {
+  height: 100% !important;
+  width: 100% !important;
+}
+
+.viewport-indicator {
+  height: 8.5vh;
+  position: absolute;
+  bottom: 30px;
+  left: 10px;
+  width: 35vw;
+  z-index: 9;
+  font-family: Arial, sans-serif;
+  font-size: 1.5vh;
+  line-height: 1.35;
+}
+
+//.explorer-pane {
+  //position: absolute;
+  //left: 0;
+  //top: 75vw;
+  //height: calc(100vh - 75vw);
+//}
+//.explorer-pane .viewport-indicator {
+  //padding: 0.7rem;
+  //font-size: 0.8rem;
+//}
+
+//.carousel {
+  //position: relative;
+  //width: 100vw;
+//}
+//.carousel .item {
+  //padding: 0.7rem;
+//}
+
 //.carousel .item-inner {
   //border: 1px solid #555;
   //box-shadow: 0 0 4px #555;
@@ -80,11 +110,14 @@ header p {
   //color: #000;
 //}
 
-.carousel .item h1 {
-  font-size: 1.2rem;
-}
+//.carousel .item h1 {
+  //font-size: 1.2rem;
+//}
 
-.recharts-text {
-  font-family: Arial, sans-serif;
-  font-size: 9px;
-}
+//.recharts-text {
+  //font-family: Arial, sans-serif;
+  //font-size: 9px;
+//}
+//
+
+

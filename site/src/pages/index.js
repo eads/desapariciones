@@ -11,8 +11,8 @@ const IndexPage = () => {
     <Layout>
       <SEO title="Map" />
       <div className="explorer-pane">
-        <ViewportIndicator />
         <Cards />
+        <ViewportIndicator />
       </div>
       <div className="map-pane">
         <Map />

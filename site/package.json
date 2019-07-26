@@ -25,6 +25,7 @@
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-helmet": "^5.2.1",
+    "react-icons": "^3.7.0",
     "react-map-gl": "^5.0.3",
     "react-swipe": "^6.0.4",
     "recharts": "^1.6.2",
