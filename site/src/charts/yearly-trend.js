@@ -4,6 +4,7 @@ import MapContext from "../context/MapContext"
 
 class YearlyTrendChart extends React.Component {
 
+  // @TODO make this a util
   yTickFormatter = (value) => {
     if (Math.floor(Math.log10(value)) > 2) {
       return `${Math.floor(value/1e3)}k`
@@ -12,6 +13,7 @@ class YearlyTrendChart extends React.Component {
     }
   }
 
+  // @TODO make this a util
   xTickFormatter = (value) => {
     switch (value) {
       case "Baja California Sur":

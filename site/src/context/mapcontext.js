@@ -1,22 +1,21 @@
 import React from "react"
-import { groupBy, sumBy, sortBy, throttle } from "lodash"
+import { throttle } from "lodash"
 
 const defaultState = {
+  selectedLayer: "",
   data: {},
-  stateSummary: [],
-  genderSummary: [],
-  setData: () => {},
   viewport: {},
+  setData: () => {},
   setViewport: () => {},
+  setSelectedLayer: () => {},
 }
 
 const MapContext = React.createContext(defaultState)
 
 class MapProvider extends React.Component {
   state = {
+    selectedLayer: "municipales-not-found-count",
     data: {},
-    stateSummary: [],
-    genderSummary: [],
     viewport: {
       width: "100%",
       height: "100%",
@@ -27,48 +26,19 @@ class MapProvider extends React.Component {
     },
   }
 
-  setData = ({data}) => {
-    const states = groupBy(data, "properties.nom_ent")
-
-    const stateSummary = sortBy(Object.keys(states).map( (k) => { return {
-      state: k,
-      disappearances: sumBy(states[k], "properties.disappearance_count")
-    }}), "disappearances").reverse()
-
-
-    const genderCount = {
-      m: 0,
-      f: 0,
-      n: 0,
-    }
-    data.forEach( (d) => {
-      if (d.properties.gender_fem_ct) genderCount.f += d.properties.gender_fem_ct
-      if (d.properties.gender_masc_ct) genderCount.m += d.properties.gender_masc_ct
-      if (d.properties.gender_null_ct) genderCount.n += d.properties.gender_null_ct
-    })
-
-    const genderSummary = [
-      { name: 'm', value: genderCount.m },
-      { name: 'f', value: genderCount.f },
-    ]
-
-    this.setState({data, stateSummary, genderSummary})
-  }
-
   render() {
     const { children } = this.props
-    const { data, viewport, stateSummary, genderSummary } = this.state
-    const throttledSetData = throttle(this.setData, 500)
+    const { data, viewport, selectedLayer } = this.state
 
     return (
       <MapContext.Provider
         value={{
+          selectedLayer,
           data,
-          stateSummary,
-          genderSummary,
           viewport,
           setViewport: (viewport) => this.setState({viewport}),
-          setData: (data) => throttledSetData({data}),
+          setData: (data) => this.setState({data}),
+          setSelectedLayer: (selectedLayer) => this.setState({selectedLayer}),
         }}
       >
         {children}

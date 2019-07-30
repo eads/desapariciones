@@ -9,6 +9,10 @@ const MAPBOX_TOKEN = "pk.eyJ1IjoiZGF2aWRlYWRzIiwiYSI6ImNpZ3d0azN2YzBzY213N201eTZ
 
 class BaseMap extends React.Component {
 
+  state = {
+    mapSelectedLayer: "municipales-not-found-count",
+  }
+
   onSourceData = (event) => {
     const { viewport } = this.props.mapState
     if (event.isSourceLoaded) {
@@ -17,12 +21,27 @@ class BaseMap extends React.Component {
   }
 
   onViewportChange = (viewport) => {
-    const { setViewport, setData } = this.props.mapState
+    const { setViewport, setData, selectedLayer } = this.props.mapState
     if (this.mapRef) {
       const map = this.mapRef.getMap()
-      const data = map.queryRenderedFeatures({layers:["municipales-summary"]})
+      const data = map.queryRenderedFeatures({layers:["municipales-not-found-count"]})
       setViewport(viewport)
       setData(data)
+    }
+  }
+
+  switchLayer = (layer) => {
+    if (this.mapRef) {
+      const map = this.mapRef.getMap()
+      const layers = [
+        "municipales-not-found-count",
+        "municipales-gender-diff",
+        "municipales-status-ratio"
+      ]
+      layers.forEach((datalayer) => {
+        map.setPaintProperty(layer, "fill-opacity", 0)
+      })
+      map.setPaintProperty(layer, "fill-opacity", 1)
     }
   }
 
@@ -37,6 +56,10 @@ class BaseMap extends React.Component {
 
   render() {
     const { mapState } = this.props
+    const { mapSelectedLayer } = this.state
+
+    this.switchLayer(mapState.selectedLayer)
+
     return (<>
       <div className="help">
         <p>Tap state for info <FaRegHandPointer /></p>

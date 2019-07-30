@@ -30,8 +30,8 @@ header p {
 }
 
 .explorer-pane {
-  padding: .5vh 3vw;
-  height: 49.7vh;
+  padding: 2.5vh 3vw .5vh 3vw;
+  height: 47.2vh;
 }
 
 .map-pane {
@@ -78,6 +78,26 @@ header p {
   font-family: Arial, sans-serif;
   font-size: 1.5vh;
   line-height: 1.35;
+}
+
+.chart {
+  display: flex;
+  max-width: calc(50% - 2vw);
+}
+.chart table {
+  margin-left: 15px;
+  font-family: Arial, sans-serif;
+  td, th {
+    padding: 1px;
+  }
+  td {
+    text-align: right;
+  }
+}
+
+.item h2 {
+  font-size: 2.4vh;
+  margin-bottom: .8vh;
 }
 
 //.explorer-pane {
