@@ -40,7 +40,7 @@ class BaseMap extends React.Component {
         "municipales-status-ratio"
       ]
       layers.forEach((datalayer) => {
-        map.setPaintProperty(layer, "fill-opacity", 0)
+        map.setPaintProperty(datalayer, "fill-opacity", 0)
       })
       map.setPaintProperty(layer, "fill-opacity", 1)
     }
