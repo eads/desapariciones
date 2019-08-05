@@ -31,7 +31,6 @@ class GenderPieChart extends React.Component {
         {mapState => {
             const data = this.processData(mapState.data)
             return (!data) ? null : (<>
-              <h2>Sexo</h2>
               <div className="chart donut-chart">
                 <PieChart height={50} width={50}>
                   <Pie dataKey="value" data={data} innerRadius={15} outerRadius={25} fill="#8884d8" isAnimationActive={false}>
