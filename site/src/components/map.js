@@ -57,8 +57,6 @@ class BaseMap extends React.Component {
 
   render() {
     const { mapState } = this.props
-    const { mapSelectedLayer } = this.state
-
     this.switchLayer(mapState.selectedLayer)
 
     return (<>
