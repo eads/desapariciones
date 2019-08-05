@@ -1,6 +1,7 @@
 body {
   background-color: #fff;
   color: #222;
+  font-family: Arial, sans-serif;
 }
 
 h1 {
@@ -18,29 +19,32 @@ a:hover {
 // Header
 header {
   height: 4.3vh;
+  background-color: #000;
+  color: #fff;
 }
 header h1 {
   font-size: 2.3vh;
-  padding: 1.5vh 3vw;
+  padding: 1.1vh 3vw;
   line-height: 1;
   margin: 0;
+}
+header a {
+  color: #fff;
 }
 header p {
   font-size: .8rem;
 }
 
 .explorer-pane {
-  padding: 2.5vh 3vw .5vh 3vw;
-  height: 47.2vh;
+  height: 53vh;
 }
 
 .map-pane {
   position: absolute;
   left: 0;
   bottom: 0;
-  height: 45vh;
+  height: 48vh;
   width: 100%;
-  border-top: 1px dotted #999;
 }
 .map-pane .help {
   position: absolute;
@@ -50,7 +54,6 @@ header p {
   z-index: 10;
   max-width: 35vw;
   font-size: 1.5vh;
-  font-family: Arial, sans-serif;
 }
 .map-pane .help p {
   margin-bottom: 0;
@@ -75,7 +78,6 @@ header p {
   left: 10px;
   width: 35vw;
   z-index: 9;
-  font-family: Arial, sans-serif;
   font-size: 1.5vh;
   line-height: 1.35;
 }
@@ -86,7 +88,6 @@ header p {
 }
 .chart table {
   margin-left: 15px;
-  font-family: Arial, sans-serif;
   td, th {
     padding: 1px;
   }
@@ -95,49 +96,41 @@ header p {
   }
 }
 
-.item h2 {
-  font-size: 2.4vh;
-  margin-bottom: .8vh;
+.carousel .item {
+  height: 48vh;
+  box-shadow: inset 0 0 2vw rgba(0,0,0,0.1);
+  background-color: #f3f3f3;
+}
+.carousel .item-inner {
+  padding: 1.3vh 3vw;
+  box-shadow: 1px #000;
+  font-size: 2vh;
+}
+.carousel .item-nav {
+  // @TODO
 }
 
-//.explorer-pane {
-  //position: absolute;
-  //left: 0;
-  //top: 75vw;
-  //height: calc(100vh - 75vw);
-//}
-//.explorer-pane .viewport-indicator {
-  //padding: 0.7rem;
-  //font-size: 0.8rem;
-//}
+.carousel .item p {
+  margin-bottom: 1.3vh;
+}
 
-//.carousel {
-  //position: relative;
-  //width: 100vw;
-//}
-//.carousel .item {
-  //padding: 0.7rem;
-//}
+.carousel .item h2 {
+  font-size: 2.1vh;
+  margin-bottom: 1.4vh;
+}
 
-//.carousel .item-inner {
-  //border: 1px solid #555;
-  //box-shadow: 0 0 4px #555;
-  //border-radius: 5px;
-  //background-color: #fff;
-  //max-width: 800px;
-  //margin: 1.2rem auto;
-  //padding: .7rem;
-  //color: #000;
-//}
+.carousel .item .row {
+  display: flex;
+  margin-bottom: 2vh;
+}
 
-//.carousel .item h1 {
-  //font-size: 1.2rem;
-//}
+.carousel .item .row div {
+  padding-right: 10px;
+}
 
-//.recharts-text {
-  //font-family: Arial, sans-serif;
-  //font-size: 9px;
-//}
-//
-
-
+.legend-box {
+  display: inline-block;
+  width: 1.9vh;
+  height: 1.9vh;
+  margin-right: 6px;
+}
