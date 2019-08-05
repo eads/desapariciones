@@ -21,12 +21,13 @@ class BaseMap extends React.Component {
   }
 
   onViewportChange = (viewport) => {
-    const { setViewport, setData, selectedLayer } = this.props.mapState
+    const { setViewport, setData, setStyle, selectedLayer } = this.props.mapState
     if (this.mapRef) {
       const map = this.mapRef.getMap()
       const data = map.queryRenderedFeatures({layers:["municipales-not-found-count"]})
       setViewport(viewport)
       setData(data)
+      setStyle(map.getStyle())
     }
   }
 

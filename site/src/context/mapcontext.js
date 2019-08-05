@@ -5,6 +5,8 @@ const defaultState = {
   selectedLayer: "",
   data: {},
   viewport: {},
+  style: {},
+  setStyle: () => {},
   setData: () => {},
   setViewport: () => {},
   setSelectedLayer: () => {},
@@ -15,6 +17,7 @@ const MapContext = React.createContext(defaultState)
 class MapProvider extends React.Component {
   state = {
     selectedLayer: "municipales-not-found-count",
+    style: {},
     data: {},
     viewport: {
       width: "100%",
@@ -28,7 +31,7 @@ class MapProvider extends React.Component {
 
   render() {
     const { children } = this.props
-    const { data, viewport, selectedLayer } = this.state
+    const { data, viewport, style, selectedLayer } = this.state
 
     return (
       <MapContext.Provider
@@ -36,9 +39,11 @@ class MapProvider extends React.Component {
           selectedLayer,
           data,
           viewport,
+          style,
           setViewport: (viewport) => this.setState({viewport}),
           setData: (data) => this.setState({data}),
           setSelectedLayer: (selectedLayer) => this.setState({selectedLayer}),
+          setStyle: (style) => this.setState({style}),
         }}
       >
         {children}
