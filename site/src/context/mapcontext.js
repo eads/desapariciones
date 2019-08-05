@@ -1,5 +1,4 @@
 import React from "react"
-import { throttle } from "lodash"
 
 const defaultState = {
   selectedLayer: "",
