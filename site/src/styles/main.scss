@@ -35,15 +35,27 @@ header p {
   font-size: .8rem;
 }
 
+table {
+  font-size: 1.9vh;
+}
+table td {
+  padding: 2px 0;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+table th {
+  padding: 2px 10px 2px 0;
+}
+
 .explorer-pane {
-  height: 53vh;
+  height: 51vh;
 }
 
 .map-pane {
   position: absolute;
   left: 0;
   bottom: 0;
-  height: 48vh;
+  height: 45vh;
   width: 100%;
 }
 .map-pane .help {
@@ -97,7 +109,7 @@ header p {
 }
 
 .carousel .item {
-  height: 48vh;
+  height: 51vh;
   box-shadow: inset 0 0 2vw rgba(0,0,0,0.1);
   background-color: #f3f3f3;
 }
@@ -116,6 +128,7 @@ header p {
 
 .carousel .item h2 {
   font-size: 2.1vh;
+  line-height: 1.4;
   margin-bottom: 1.4vh;
 }
 
@@ -124,13 +137,24 @@ header p {
   margin-bottom: 2vh;
 }
 
-.carousel .item .row div {
-  padding-right: 10px;
+.carousel .item .row div:first-child {
+  padding-right: 20px;
 }
 
+.map-legend {
+  display: flex;
+  margin-top: 3vh;
+}
+.map-legend > div {
+  margin-left: 3vw;
+}
 .legend-box {
   display: inline-block;
   width: 1.9vh;
   height: 1.9vh;
-  margin-right: 6px;
+  margin-right: 4px;
+}
+
+.total-indicator table {
+  min-width: 30vw;
 }
