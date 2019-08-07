@@ -9,7 +9,8 @@ class MapLegend extends React.Component {
   render() {
     const { layer } = this.props
     return (
-      <div className="card-legend">
+      <div className="map-legend">
+        <h2>Legend</h2>
         <MapContext.Consumer>
           {mapState => {
             const selectedLayer = find(mapState.style.layers, {"id": layer})
