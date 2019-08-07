@@ -1,17 +1,24 @@
 create table views.cenapi_by_year as
 
-select
-    cve_geoid,
-    extract(year from fecha_reporte) as year,
-    count(*)
-from
-    processed.cenapi
-where
-    cve_ent != '0'
-group by
-    cve_geoid,
-    year
-order by
-    cve_geoid,
-    year
+SELECT
+  c.cve_geoid,
+  extract(year from c.fecha_reporte) as year,
+  count(*) AS disappearance_ct,
+  count(*) filter (where c.sexo = 'FEMENINO') AS gender_fem_ct,
+  count(*) filter (where c.sexo = 'MASCULINO') AS gender_masc_ct,
+  count(*) filter (where c.vivo_o_muerto = 'VIVO') as status_alive_ct,
+  count(*) filter (where c.vivo_o_muerto = 'AUN SIN LOCALIZAR') as status_not_found_ct,
+  count(*) filter (where c.vivo_o_muerto = 'MUERTO') as status_dead_ct
+FROM
+  processed.cenapi c
+JOIN
+  processed.areas_geoestadisticas_municipales m
+ON
+  c.cve_ent = m.cve_ent AND c.cve_mun = m.cve_mun
+GROUP BY
+  c.cve_geoid,
+  year
+ORDER BY
+  c.cve_geoid,
+  year
 ;
