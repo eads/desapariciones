@@ -2,11 +2,10 @@ import React from "react"
 import MapContext from "../context/MapContext"
 import ReactSwipe from "react-swipe"
 
-import { FaAngleLeft, FaAngleRight } from "react-icons/fa"
-
-
-import GenderPieChart from "../charts/gender-pie"
-import MapLegend from "../charts/map-legend"
+import GenderPieChart from "../viz/gender-pie"
+import MapLegend from "../viz/map-legend"
+import TotalIndicator from "../viz/total-indicator"
+import YearlyTrendChart from "../viz/yearly-trend"
 
 
 class BaseCards extends React.Component {
@@ -44,15 +43,11 @@ class BaseCards extends React.Component {
           <div className="item-inner">
             <h2>Unsolved disappearances (@TODO be more descriptive)</h2>
             <div className="row">
-              <MapLegend
-                layer="municipales-not-found-count"
-              />
-              <div>
-                <p>@TODO top level totals</p>
-              </div>
+              <TotalIndicator />
+              <div>@TODO put some text here</div>
             </div>
-            <p>@TODO put a timeseries here</p>
-            <p>Swipe to see # of dead <FaAngleRight /> <br/>(@TODO replace with persistent control)</p>
+            <YearlyTrendChart data={this.props.desapariciones} />
+            <MapLegend layer="municipales-not-found-count" />
           </div>
         </div>
         <div className="item">
@@ -61,7 +56,6 @@ class BaseCards extends React.Component {
             <MapLegend
               layer="municipales-status-ratio"
             />
-            <p><FaAngleLeft /> Dead | Gender ratio <FaAngleRight /></p>
           </div>
         </div>
         <div className="item">
@@ -71,7 +65,6 @@ class BaseCards extends React.Component {
             />
             <h2>M-to-F ratio</h2>
             <GenderPieChart />
-            <p><FaAngleLeft /> Status ratio</p>
           </div>
         </div>
       </ReactSwipe>
@@ -84,7 +77,7 @@ class Cards extends React.Component {
     return (
       <MapContext.Consumer>
         {mapState => (
-          <BaseCards mapState={mapState} />
+          <BaseCards mapState={mapState} {...this.props} />
         )}
       </MapContext.Consumer>
     )
