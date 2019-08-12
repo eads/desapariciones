@@ -19,13 +19,13 @@ class YearlyTrendChart extends React.Component {
 
     return (
       <ResponsiveContainer
-        width="100%"
-        height={100}
+        width="80%"
+        height={80}
       >
         <BarChart
           data={data}
           margin={{
-            top: 10, right: 10, left: -20, bottom: 0,
+            top: 10, right: 10, left: -10, bottom: 0,
           }}
         >
           <YAxis

@@ -7,6 +7,21 @@ import "mapbox-gl/dist/mapbox-gl.css"
 
 const MAPBOX_TOKEN = "pk.eyJ1IjoiZGF2aWRlYWRzIiwiYSI6ImNpZ3d0azN2YzBzY213N201eTZ3b2E0cDgifQ.ZCHD8ZAk32iAp9Ue3tPVVg"
 
+const LAYERS = [
+  "municipales-not-found-count",
+  "municipales-gender-diff",
+  "municipales-status-ratio"
+]
+const HANDLERS = [
+  "scrollZoom",
+  "boxZoom",
+  "dragRotate",
+  "dragPan",
+  "keyboard",
+  "doubleClickZoom",
+  "touchZoomRotate",
+]
+
 class BaseMap extends React.Component {
 
   state = {
@@ -33,16 +48,52 @@ class BaseMap extends React.Component {
 
   switchLayer = (layer) => {
     if (this.mapRef) {
+
       const map = this.mapRef.getMap()
-      const layers = [
-        "municipales-not-found-count",
-        "municipales-gender-diff",
-        "municipales-status-ratio"
-      ]
-      layers.forEach((datalayer) => {
+
+      LAYERS.forEach((datalayer) => {
         map.setPaintProperty(datalayer, "fill-opacity", 0)
       })
-      map.setPaintProperty(layer, "fill-opacity", 1)
+
+      HANDLERS.forEach((handler) => {
+        map[handler].disable()
+      })
+
+      if (layer === "municipales-not-found-count") {
+        map.setPaintProperty("municipales-not-found-count", "fill-opacity", 1)
+        map.flyTo({
+          longitude: -102.0,
+          latitude: 22.5,
+          zoom: 3.05,
+        }, { speed: 1.5 })
+      }
+      if (layer === "municipales-status-ratio") {
+        map.setPaintProperty("municipales-not-found-count", "fill-opacity", 1)
+        map.flyTo({
+          longitude: -102.0,
+          latitude: 22.5,
+          zoom: 6,
+        }, { speed: 1.5 })
+      }
+      if (layer === "municipales-gender-diff") {
+        map.setPaintProperty("municipales-gender-diff", "fill-opacity", 1)
+        map.flyTo({
+          longitude: -102.0,
+          latitude: 22.5,
+          zoom: 3.05,
+        }, { speed: 1.5 })
+      }
+      if (layer === "municipales-explore") {
+        map.setPaintProperty("municipales-not-found-count", "fill-opacity", 1)
+        map.flyTo({
+          longitude: -102.0,
+          latitude: 22.5,
+          zoom: 3.05,
+        }, { speed: 1.5 })
+        HANDLERS.forEach((handler) => {
+          map[handler].enable()
+        })
+      }
     }
   }
 
@@ -60,10 +111,11 @@ class BaseMap extends React.Component {
     this.switchLayer(mapState.selectedLayer)
 
     return (<>
+      {(mapState.selectedLayer === "municipales-explore") && (
       <div className="help">
         <p>Tap state for info <FaRegHandPointer /></p>
         <p>Zoom and pan <FaRegHandRock /></p>
-      </div>
+      </div>)}
       <div className="map">
         <ReactMapGL
           {...mapState.viewport}

@@ -48,14 +48,15 @@ table th {
 }
 
 .explorer-pane {
-  height: 51vh;
+  height: 53vh;
 }
 
 .map-pane {
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  height: 45vh;
+  //position: absolute;
+  //left: 0;
+  //top: 4.3vh;
+  position: relative;
+  height: 43vh;
   width: 100%;
 }
 .map-pane .help {
@@ -86,7 +87,7 @@ table th {
 .viewport-indicator {
   height: 8.5vh;
   position: absolute;
-  bottom: 30px;
+  top: 36vh;
   left: 10px;
   width: 35vw;
   z-index: 9;
@@ -107,11 +108,12 @@ table th {
     text-align: right;
   }
 }
-
-.carousel .item {
-  height: 51vh;
+.carousel {
   box-shadow: inset 0 0 2vw rgba(0,0,0,0.1);
+  height: 53vh;
   background-color: #f3f3f3;
+}
+.carousel .item {
 }
 .carousel .item-inner {
   padding: 1.3vh 3vw;
@@ -124,12 +126,20 @@ table th {
 
 .carousel .item p {
   margin-bottom: 1.3vh;
+  line-height: 1.35;
 }
 
 .carousel .item h2 {
   font-size: 2.1vh;
   line-height: 1.4;
   margin-bottom: 1.4vh;
+}
+
+.carousel .item h3 {
+  font-size: 1.9vh;
+  line-height: 1.4;
+  margin-top: 1.8vh;
+  margin-bottom: .5vh;
 }
 
 .carousel .item .row {
@@ -143,18 +153,28 @@ table th {
 
 .map-legend {
   display: flex;
-  margin-top: 3vh;
+  margin-top: 1vh;
+  margin-bottom: 1vh;
+  font-size: 1.8vh;
+}
+.carousel .item .map-legend h2 {
+  font-size: 1.8vh;
+  font-style: normal;
 }
 .map-legend > div {
   margin-left: 3vw;
 }
 .legend-box {
   display: inline-block;
-  width: 1.9vh;
-  height: 1.9vh;
+  width: 1.7vh;
+  height: 1.7vh;
   margin-right: 4px;
 }
 
 .total-indicator table {
   min-width: 30vw;
+}
+
+.yearly-trend-chart {
+  margin-bottom: 1.9vh;
 }

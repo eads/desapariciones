@@ -6,19 +6,15 @@ import SEO from "../components/seo"
 import Cards from "../components/cards"
 import Map from "../components/map"
 
-// This should go in the map component
-import ViewportIndicator from "../viz/viewport-indicator"
-
 const IndexPage = ({data}) => {
   return (
     <Layout>
       <SEO title="Map" />
-      <div className="explorer-pane">
-        <Cards {...data} />
-        <ViewportIndicator />
-      </div>
       <div className="map-pane">
         <Map />
+      </div>
+      <div className="explorer-pane">
+        <Cards {...data} />
       </div>
     </Layout>
   )
