@@ -38,6 +38,24 @@ module.exports = {
         url: process.env.HASURA_API_URL,
       },
     },
+    {
+      resolve: `gatsby-plugin-prefetch-google-fonts`,
+      options: {
+        fonts: [
+          {
+            family: `Montserrat`,
+            subsets: [`latin`],
+            variants: [`500`, `600`]
+          },
+          {
+            family: `Cardo`,
+            subsets: [`latin`],
+            variants: [`400`]
+          },
+        ],
+      },
+    },
+
     // this (optional) plugin enables Progressive Web App + Offline functionality
     // To learn more, visit: https://gatsby.dev/offline
     // `gatsby-plugin-offline`,

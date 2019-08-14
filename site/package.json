@@ -27,11 +27,12 @@
     "react-dom": "^16.8.6",
     "react-helmet": "^5.2.1",
     "react-icons": "^3.7.0",
-    "react-map-gl": "^5.0.3",
+    "react-map-gl": "^5.0.9",
     "react-swipe": "^6.0.4",
     "recharts": "^1.6.2",
     "swipe-js-iso": "^2.1.5",
-    "victory": "^32.3.1"
+    "victory": "^32.3.1",
+    "viewport-mercator-project": "^6.1.1"
   },
   "devDependencies": {
     "grunt": "^1.0.4",

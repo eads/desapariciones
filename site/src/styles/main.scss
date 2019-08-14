@@ -1,13 +1,31 @@
 body {
   background-color: #fff;
   color: #222;
-  font-family: Arial, sans-serif;
+  font-family: Cardo, Georgia, serif;
+}
+h1, h2, h3, h4, h5, h6 {
+  font-family: Montserrat;
+  font-weight: 600;
 }
 
 h1 {
-  font-size: 1.2rem;
-  text-transform: uppercase;
+  font-size: 2.9vh;
 }
+h2 {
+  font-size: 2.7vh;
+  line-height: 1.4;
+  margin-bottom: 1.9vh;
+}
+
+p {
+  font-size: 2.2vh;
+  margin-bottom: 1.3vh;
+  line-height: 1.35;
+}
+img {
+  margin: 0;
+}
+
 a {
   text-decoration: none;
   color: #000;
@@ -24,6 +42,7 @@ header {
 }
 header h1 {
   font-size: 2.3vh;
+  text-transform: uppercase;
   padding: 1.1vh 3vw;
   line-height: 1;
   margin: 0;
@@ -124,16 +143,9 @@ table th {
   // @TODO
 }
 
-.carousel .item p {
-  margin-bottom: 1.3vh;
-  line-height: 1.35;
-}
-
-.carousel .item h2 {
-  font-size: 2.1vh;
-  line-height: 1.4;
-  margin-bottom: 1.4vh;
-}
+//.carousel .item h2 {
+  //font-size: 2.1vh;
+//}
 
 .carousel .item h3 {
   font-size: 1.9vh;
@@ -144,11 +156,23 @@ table th {
 
 .carousel .item .row {
   display: flex;
+  align-items: center;
+  margin-top: 2vh;
   margin-bottom: 2vh;
 }
 
 .carousel .item .row div:first-child {
   padding-right: 20px;
+}
+
+.instruction-row img {
+  width: 80px;
+  border: 1px solid #999;
+}
+.instruction-row p {
+  font-family: Montserrat;
+  margin-left: 10px;
+  font-size: 3vh;
 }
 
 .map-legend {

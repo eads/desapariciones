@@ -2,6 +2,7 @@ import React from "react"
 
 const defaultState = {
   selectedLayer: "",
+  selectedEstado: null,
   data: {},
   viewport: {},
   style: {},
@@ -9,15 +10,17 @@ const defaultState = {
   setData: () => {},
   setViewport: () => {},
   setSelectedLayer: () => {},
+  setSelectedEstado: () => {},
 }
 
 const MapContext = React.createContext(defaultState)
 
 class MapProvider extends React.Component {
   state = {
-    selectedLayer: "municipales-not-found-count",
     style: {},
     data: {},
+    selectedLayer: "municipales-not-found-count",
+    selectedEstado: null,
     viewport: {
       width: "100%",
       height: "100%",
@@ -30,7 +33,9 @@ class MapProvider extends React.Component {
 
   render() {
     const { children } = this.props
-    const { data, viewport, style, selectedLayer } = this.state
+    const { data, viewport, style, selectedLayer, selectedEstado } = this.state
+
+    //console.log(this.state)
 
     return (
       <MapContext.Provider
@@ -39,10 +44,12 @@ class MapProvider extends React.Component {
           data,
           viewport,
           style,
+          selectedEstado,
           setViewport: (viewport) => this.setState({viewport}),
           setData: (data) => this.setState({data}),
           setSelectedLayer: (selectedLayer) => this.setState({selectedLayer}),
           setStyle: (style) => this.setState({style}),
+          setSelectedEstado: (selectedEstado) => this.setState({selectedEstado}),
         }}
       >
         {children}

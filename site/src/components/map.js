@@ -12,15 +12,15 @@ const LAYERS = [
   "municipales-gender-diff",
   "municipales-status-ratio"
 ]
-const HANDLERS = [
-  "scrollZoom",
-  "boxZoom",
-  "dragRotate",
-  "dragPan",
-  "keyboard",
-  "doubleClickZoom",
-  "touchZoomRotate",
-]
+//const HANDLERS = [
+  //"scrollZoom",
+  //"boxZoom",
+  //"dragRotate",
+  //"dragPan",
+  //"keyboard",
+  //"doubleClickZoom",
+  //"touchZoomRotate",
+//]
 
 class BaseMap extends React.Component {
 
@@ -32,6 +32,16 @@ class BaseMap extends React.Component {
     const { viewport } = this.props.mapState
     if (event.isSourceLoaded) {
       this.onViewportChange(viewport)
+    }
+  }
+
+  // Capture estado from click event if one exists at the clicked coordinates
+  onClick = (event) => {
+    const { setSelectedEstado } = this.props.mapState
+    const point = [event.center.x, event.center.y]
+    const feature = this.mapRef.queryRenderedFeatures(point, { layers: ["estatales-interaction"] }).shift()
+    if (feature) {
+      setSelectedEstado(feature.properties.nom_ent)
     }
   }
 
@@ -55,44 +65,25 @@ class BaseMap extends React.Component {
         map.setPaintProperty(datalayer, "fill-opacity", 0)
       })
 
-      HANDLERS.forEach((handler) => {
-        map[handler].disable()
-      })
-
       if (layer === "municipales-not-found-count") {
         map.setPaintProperty("municipales-not-found-count", "fill-opacity", 1)
-        map.flyTo({
-          longitude: -102.0,
-          latitude: 22.5,
-          zoom: 3.05,
-        }, { speed: 1.5 })
       }
       if (layer === "municipales-status-ratio") {
         map.setPaintProperty("municipales-not-found-count", "fill-opacity", 1)
-        map.flyTo({
-          longitude: -102.0,
-          latitude: 22.5,
-          zoom: 6,
-        }, { speed: 1.5 })
       }
       if (layer === "municipales-gender-diff") {
         map.setPaintProperty("municipales-gender-diff", "fill-opacity", 1)
-        map.flyTo({
-          longitude: -102.0,
-          latitude: 22.5,
-          zoom: 3.05,
-        }, { speed: 1.5 })
       }
-      if (layer === "municipales-explore") {
-        map.setPaintProperty("municipales-not-found-count", "fill-opacity", 1)
-        map.flyTo({
-          longitude: -102.0,
-          latitude: 22.5,
-          zoom: 3.05,
-        }, { speed: 1.5 })
-        HANDLERS.forEach((handler) => {
-          map[handler].enable()
-        })
+    }
+  }
+
+  switchEstado = (estado) => {
+    if (this.mapRef) {
+      const map = this.mapRef.getMap()
+      if (estado) {
+        map.setPaintProperty("estatales-interaction", "fill-opacity", ["match", ["get", "nom_ent"], estado, 0, 0.85])
+      } else {
+        map.setPaintProperty("estatales-interaction", "fill-opacity", 0)
       }
     }
   }
@@ -100,7 +91,7 @@ class BaseMap extends React.Component {
   componentDidMount() {
     const map = this.mapRef.getMap()
 
-    // Process data when it loads
+    // Process data when it loads/changes
     map.on("sourcedata", this.onSourceData)
 
     // @TODO zoom to container
@@ -108,14 +99,11 @@ class BaseMap extends React.Component {
 
   render() {
     const { mapState } = this.props
+
     this.switchLayer(mapState.selectedLayer)
+    this.switchEstado(mapState.selectedEstado)
 
     return (<>
-      {(mapState.selectedLayer === "municipales-explore") && (
-      <div className="help">
-        <p>Tap state for info <FaRegHandPointer /></p>
-        <p>Zoom and pan <FaRegHandRock /></p>
-      </div>)}
       <div className="map">
         <ReactMapGL
           {...mapState.viewport}
@@ -124,6 +112,7 @@ class BaseMap extends React.Component {
           mapboxApiAccessToken={MAPBOX_TOKEN}
           minZoom={2}
           maxZoom={13}
+          onClick={this.onClick}
           mapStyle="mapbox://styles/davideads/cjyc2n4b21q5g1cml2t5x8kcx?fresh=true"
         >
         </ReactMapGL>
