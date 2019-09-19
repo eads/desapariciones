@@ -58,8 +58,11 @@ class BaseCards extends React.Component {
               <img src={swipeGIF} alt="Swipe gif" />
               <p>Tap to select state</p>
             </div>
+
+            <p>Pro il terra populos traducite, iste super europeo pro in. Sine campo uno il, pardona technologia interlinguistica sed ma, o uno celos spatios litteratura.</p>
+            <p>Pro il terra populos traducite, iste super europeo pro in. Sine campo uno il, pardona technologia interlinguistica sed ma, o uno celos spatios litteratura.</p>
           </div>
-          </div>
+        </div>
 
         <div className="item">
           <div className="item-inner">

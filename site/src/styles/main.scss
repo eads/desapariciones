@@ -1,8 +1,16 @@
+$padding-default: .5rem;
+
 /* Fundamental HTML styles */
 body {
   background-color: #fff;
   color: #222;
   font-family: Cardo, Georgia, serif;
+  font-size: 12px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
 }
 h1, h2, h3, h4, h5, h6 {
   font-family: Montserrat;
@@ -10,17 +18,19 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 h1 {
-  font-size: 2.9vh;
+  //font-size: 2.9vh;
+  font-size: 1.4rem;
 }
 h2 {
-  font-size: 2.7vh;
+  font-size: 1.1rem;
   line-height: 1.4;
-  margin-bottom: 1.9vh;
+  margin-bottom: .5rem;
+  font-weight: 800;
 }
 
 p {
-  font-size: 2.2vh;
-  margin-bottom: 1.3vh;
+  //font-size: 2.2vh;
+  //margin-bottom: 1.3vh;
   line-height: 1.35;
 }
 img {
@@ -37,14 +47,17 @@ a:hover {
 
 // Header
 header {
-  height: 4.3vh;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
   background-color: #000;
   color: #fff;
 }
 header h1 {
-  font-size: 2.3vh;
+  font-size: .8rem;
   text-transform: uppercase;
-  padding: 1.1vh 3vw;
+  padding: $padding-default;
   line-height: 1;
   margin: 0;
 }
@@ -54,6 +67,17 @@ header a {
 header p {
   font-size: .8rem;
 }
+
+/* Main */
+main {
+  font-family: Montserrat;
+  position: absolute;
+  top: .8rem + (2 * $padding-default) - 0.083rem;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
 
 table {
   font-size: 1.9vh;
@@ -69,60 +93,62 @@ table th {
 
 /* Info pane */
 .info-pane {
-  font-family: Montserrat;
-  height: 3vh;
-  padding: 0 .5vh;
-  display: flex;
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 99;
+  background-color: rgba(0, 0, 0, 0.4);
+  color: #fff;
   justify-content: space-between;
+  overflow: scroll;
+}
+.info-pane > div {
+  padding: ($padding-default * 0.25) $padding-default;
 }
 
 /* Legend (lives inside info pane) */
 .map-legend {
-  display: flex;
-  font-size: 1.8vh;
+  //display: flex;
+  font-size: .7rem;
+  line-height: 1rem;
+  text-align: right;
 }
 .map-legend h2 {
-  font-size: 2vh;
-  font-style: normal;
-  margin: 0;
-}
-.map-legend > div {
-  margin-left: 3vw;
+  font-size: 0.8rem;
+  font-weight: bold;
+  margin-bottom: .4rem;
 }
 .legend-box {
   display: inline-block;
-  width: 1.7vh;
-  height: 1.7vh;
-  margin-right: 4px;
+  width: .6rem;
+  height: .6rem;
+  margin-left: .4rem;
 }
 
 /* Explorer pane */
 .explorer-pane {
-  height: 54vh;
+  position: relative;
+  height: 55%;
+  overflow-y: scroll;
 }
 
 /* Map pane */
 .map-pane {
-  //position: absolute;
-  //left: 0;
-  //top: 4.3vh;
   position: relative;
-  height: 39vh;
-  width: 100%;
+  height: 45%;
 }
-.map-pane .help {
-  position: absolute;
-  right: 1vh;
-  top: 1vh;
-  text-align: right;
-  z-index: 10;
-  max-width: 35vw;
-  font-size: 1.5vh;
-}
+//.map-pane .help {
+  //position: absolute;
+  //right: 1vh;
+  //top: 1vh;
+  //text-align: right;
+  //z-index: 10;
+  //max-width: 35vw;
+  //font-size: 1.5vh;
+//}
 .map-pane .help p {
   margin-bottom: 0;
 }
-
 .map {
   position: absolute;
   top: 0;

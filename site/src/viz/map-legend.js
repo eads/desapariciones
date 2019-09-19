@@ -22,10 +22,10 @@ class MapLegend extends React.Component {
 
             return (<>
               <h2>Legend</h2>
-              {legendItems.map( (item, i) => (
+              {legendItems.reverse().map( (item, i) => (
                 <div key={`item-${i}`}>
-                  <span className="legend-box" style={{backgroundColor:item.color}} />
                   {item.value}
+                  <span className="legend-box" style={{backgroundColor:item.color}} />
                 </div>
               ))}
             </>)

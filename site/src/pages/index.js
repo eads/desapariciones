@@ -17,7 +17,6 @@ const IndexPage = ({data}) => {
         <Map />
       </div>
       <div className="info-pane">
-        <SelectedIndicator />
         <MapLegend />
       </div>
       <div className="explorer-pane">
