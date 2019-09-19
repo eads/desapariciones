@@ -6,12 +6,19 @@ import SEO from "../components/seo"
 import Cards from "../components/cards"
 import Map from "../components/map"
 
+import MapLegend from "../viz/map-legend"
+import SelectedIndicator from "../viz/selected-indicator"
+
 const IndexPage = ({data}) => {
   return (
     <Layout>
       <SEO title="Map" />
       <div className="map-pane">
         <Map />
+      </div>
+      <div className="info-pane">
+        <SelectedIndicator />
+        <MapLegend />
       </div>
       <div className="explorer-pane">
         <Cards {...data} />

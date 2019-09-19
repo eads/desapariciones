@@ -3,7 +3,6 @@ import MapContext from "../context/MapContext"
 import ReactSwipe from "react-swipe"
 
 import GenderPieChart from "../viz/gender-pie"
-import MapLegend from "../viz/map-legend"
 import TotalIndicator from "../viz/total-indicator"
 import YearlyTrendChart from "../viz/yearly-trend"
 
@@ -19,7 +18,7 @@ class BaseCards extends React.Component {
 
     switch (index) {
       case 0:
-        mapState.setSelectedLayer("municipales-not-found-count")
+        mapState.setSelectedLayer("municipales-not-found-count-init")
         break
       case 1:
         mapState.setSelectedLayer("municipales-not-found-count")
@@ -31,7 +30,7 @@ class BaseCards extends React.Component {
         mapState.setSelectedLayer("municipales-status-ratio")
         break
       default:
-        mapState.setSelectedLayer("municipales-not-found-count")
+        mapState.setSelectedLayer("municipales-not-found-count-init")
     }
   }
 
@@ -60,12 +59,17 @@ class BaseCards extends React.Component {
               <p>Tap to select state</p>
             </div>
           </div>
-        </div>
+          </div>
+
         <div className="item">
           <div className="item-inner">
           <div className="item-inner">
             <h2>Overview / timeline</h2>
             <YearlyTrendChart data={this.props.desapariciones} />
+            <div className="row">
+              <TotalIndicator />
+              <p>Eos ipsum expetenda te, no dicunt voluptatum pri, ut mea diam feugiat atomorum. Liber definitionem ius no, usu an iisque integre. An iusto comprehensam ius.</p>
+            </div>
             <div className="row">
               <p>Swipe for gender</p>
               <FiChevronsRight size="2.3vh" />
@@ -73,15 +77,20 @@ class BaseCards extends React.Component {
           </div>
           </div>
         </div>
+
         <div className="item">
           <div className="item-inner">
             <h2>Gender</h2>
             <GenderPieChart />
+            <p>Eos ipsum expetenda te, no dicunt voluptatum pri, ut mea diam feugiat atomorum. Liber definitionem ius no, usu an iisque integre. An iusto comprehensam ius! Vix etiam utroque ne, justo aliquam in usu.</p>
           </div>
-        </div>
+          </div>
+
         <div className="item">
           <div className="item-inner">
             <h2>Age</h2>
+            <p>Eos ipsum expetenda te, no dicunt voluptatum pri, ut mea diam feugiat atomorum. Liber definitionem ius no, usu an iisque integre. An iusto comprehensam ius! Vix etiam utroque ne, justo aliquam in usu.</p>
+            <p>Eos ipsum expetenda te, no dicunt voluptatum pri, ut mea diam feugiat atomorum. Liber definitionem ius no, usu an iisque integre. An iusto comprehensam ius! Vix etiam utroque ne, justo aliquam in usu.</p>
           </div>
         </div>
 

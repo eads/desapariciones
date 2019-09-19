@@ -37,7 +37,6 @@ class YearlyTrendChart extends React.Component {
           <Bar
             dataKey="disappearance_ct"
             fill="#999999"
-            isAnimationActive={false}
           />
         </BarChart>
       </ResponsiveContainer>

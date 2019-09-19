@@ -37,19 +37,21 @@ class BaseMap extends React.Component {
 
   // Capture estado from click event if one exists at the clicked coordinates
   onClick = (event) => {
+    const map = this.mapRef.getMap()
     const { setSelectedEstado } = this.props.mapState
     const point = [event.center.x, event.center.y]
-    const feature = this.mapRef.queryRenderedFeatures(point, { layers: ["estatales-interaction"] }).shift()
+    const feature = map.queryRenderedFeatures(point, { layers: ["estatales-interaction"] }).shift()
     if (feature) {
       setSelectedEstado(feature.properties.nom_ent)
+      map.flyTo({ center: event.lngLat, zoom: 4.5 })
     }
   }
 
   onViewportChange = (viewport) => {
-    const { setViewport, setData, setStyle, selectedLayer } = this.props.mapState
+    const { setViewport, setData, setStyle, selectedLayer, selectedEstado } = this.props.mapState
     if (this.mapRef) {
       const map = this.mapRef.getMap()
-      const data = map.queryRenderedFeatures({layers:[selectedLayer]})
+      const data = map.queryRenderedFeatures({ layers: [selectedLayer.replace("-init", "")] })
       setViewport(viewport)
       setData(data)
       setStyle(map.getStyle())
@@ -58,18 +60,20 @@ class BaseMap extends React.Component {
 
   switchLayer = (layer) => {
     if (this.mapRef) {
-
       const map = this.mapRef.getMap()
 
       LAYERS.forEach((datalayer) => {
         map.setPaintProperty(datalayer, "fill-opacity", 0)
       })
 
+      if (layer === "municipales-not-found-count-init") {
+        map.setPaintProperty("municipales-not-found-count", "fill-opacity", 0.35)
+      }
       if (layer === "municipales-not-found-count") {
         map.setPaintProperty("municipales-not-found-count", "fill-opacity", 1)
       }
       if (layer === "municipales-status-ratio") {
-        map.setPaintProperty("municipales-not-found-count", "fill-opacity", 1)
+        map.setPaintProperty("municipales-status-ratio", "fill-opacity", 1)
       }
       if (layer === "municipales-gender-diff") {
         map.setPaintProperty("municipales-gender-diff", "fill-opacity", 1)
@@ -97,16 +101,27 @@ class BaseMap extends React.Component {
     // @TODO zoom to container
   }
 
-  render() {
-    const { mapState } = this.props
+  config = {
+    //scrollZoom: false,
+    //dragPan: false,
+    //doubleClickZoom: false,
+    //touchZoom: false,
+    //touchRotate: false,
+  }
 
-    this.switchLayer(mapState.selectedLayer)
-    this.switchEstado(mapState.selectedEstado)
+  render() {
+    const { viewport } = this.props.mapState
+    const { config } = this
+
+    // @TODO don't do this here
+    this.switchLayer(this.props.mapState.selectedLayer)
+    this.switchEstado(this.props.mapState.selectedEstado)
 
     return (<>
       <div className="map">
         <ReactMapGL
-          {...mapState.viewport}
+          {...viewport}
+          {...config}
           onViewportChange={this.onViewportChange}
           ref={map => this.mapRef = map}
           mapboxApiAccessToken={MAPBOX_TOKEN}
