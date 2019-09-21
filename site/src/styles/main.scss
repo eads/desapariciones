@@ -1,4 +1,6 @@
 $padding-default: .5rem;
+$font-serif: Cardo, Georgia, serif;
+$font-sans: Monserrat, sans-serif;
 
 /* Fundamental HTML styles */
 body {
@@ -13,7 +15,7 @@ body {
   bottom: 0;
 }
 h1, h2, h3, h4, h5, h6 {
-  font-family: Montserrat;
+  font-family: $font-sans;
   font-weight: 600;
 }
 
@@ -53,24 +55,46 @@ header {
   right: 0;
   background-color: #000;
   color: #fff;
+  display: flex;
+  justify-content: space-between;
 }
 header h1 {
-  font-size: .8rem;
   text-transform: uppercase;
   padding: $padding-default;
-  line-height: 1;
   margin: 0;
+  font-size: .8rem;
+  line-height: .8rem;
 }
 header a {
   color: #fff;
 }
-header p {
-  font-size: .8rem;
+header .language {
+  font-family: Montserrat;
+  padding-right: $padding-default;
+  display: flex;
+  line-height: 1.7rem;
+}
+header .language > a {
+  margin-left: $padding-default;
+}
+
+/* Warning */
+.warning {
+  background-color: red;
+  color: #fff;
+  text-align: center;
+  font-family: $font-sans;
+  text-transform: uppercase;
+  font-weight: bold;
+  line-height: 1.7rem;
+  font-size: .63rem;
+  padding-right: $padding-default;
+  padding-left: $padding-default;
+  flex-grow: 1;
 }
 
 /* Main */
 main {
-  font-family: Montserrat;
   position: absolute;
   top: .8rem + (2 * $padding-default) - 0.083rem;
   left: 0;
@@ -128,14 +152,13 @@ table th {
 /* Explorer pane */
 .explorer-pane {
   position: relative;
-  height: 55%;
-  overflow-y: scroll;
+  height: 60%;
 }
 
 /* Map pane */
 .map-pane {
   position: relative;
-  height: 45%;
+  height: 40%;
 }
 //.map-pane .help {
   //position: absolute;
@@ -175,16 +198,17 @@ table th {
 
 /* Carousel / card system */
 .carousel {
+  height: 100%;
   box-shadow: inset 0 0 2vw rgba(0,0,0,0.1);
-  height: 54vh;
   background-color: #f3f3f3;
+  font-size: 1rem;
 }
-.carousel .item {
+.carousel > div {
+  height: 100%;
+  overflow-y: scroll !important;
 }
 .carousel .item-inner {
-  padding: 1.3vh 3vw;
-  box-shadow: 1px #000;
-  font-size: 2vh;
+  padding: $padding-default;
 }
 .carousel .item-nav {
   // @TODO
@@ -214,13 +238,9 @@ table th {
 
 /* Card 1 instructions */
 .instruction-row img {
-  width: 80px;
+  width: 45px;
   border: 1px solid #999;
-}
-.instruction-row p {
-  font-family: Montserrat;
-  margin-left: 10px;
-  font-size: 3vh;
+  margin-right: .8rem;
 }
 
 /* Catchall graphical elements */
@@ -238,10 +258,10 @@ table th {
   }
 }
 
-.total-indicator table {
-  min-width: 30vw;
-}
+//.total-indicator table {
+  //min-width: 30vw;
+//}
 
-.yearly-trend-chart {
-  margin-bottom: 1.9vh;
-}
+//.yearly-trend-chart {
+  //margin-bottom: 1.9vh;
+//}
