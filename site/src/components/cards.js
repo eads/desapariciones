@@ -79,9 +79,7 @@ class BaseCards extends React.Component {
       >
         {CARDS.map((card) => (
           <div key={card.id} className="item">
-            <div className="item-inner">
-              <Card {...card} />
-            </div>
+            <Card {...card} />
           </div>
         ))}
       </ReactSwipe>

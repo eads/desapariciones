@@ -2,6 +2,11 @@ $padding-default: .5rem;
 $font-serif: Cardo, Georgia, serif;
 $font-sans: Monserrat, sans-serif;
 
+$screen-small: "screen and (max-width : 680px)";
+$screen-lg: "screen and (min-width : 681px)";
+
+$color-map-water: #0F3948;
+
 /* Fundamental HTML styles */
 body {
   background-color: #fff;
@@ -31,8 +36,6 @@ h2 {
 }
 
 p {
-  //font-size: 2.2vh;
-  //margin-bottom: 1.3vh;
   line-height: 1.35;
 }
 img {
@@ -115,60 +118,7 @@ table th {
   padding: 2px 10px 2px 0;
 }
 
-/* Info pane */
-.info-pane {
-  position: absolute;
-  top: 0;
-  right: 0;
-  z-index: 99;
-  background-color: rgba(0, 0, 0, 0.4);
-  color: #fff;
-  justify-content: space-between;
-  overflow: scroll;
-}
-.info-pane > div {
-  padding: ($padding-default * 0.25) $padding-default;
-}
 
-/* Legend (lives inside info pane) */
-.map-legend {
-  //display: flex;
-  font-size: .7rem;
-  line-height: 1rem;
-  text-align: right;
-}
-.map-legend h2 {
-  font-size: 0.8rem;
-  font-weight: bold;
-  margin-bottom: .4rem;
-}
-.legend-box {
-  display: inline-block;
-  width: .6rem;
-  height: .6rem;
-  margin-left: .4rem;
-}
-
-/* Explorer pane */
-.explorer-pane {
-  position: relative;
-  height: 60%;
-}
-
-/* Map pane */
-.map-pane {
-  position: relative;
-  height: 40%;
-}
-//.map-pane .help {
-  //position: absolute;
-  //right: 1vh;
-  //top: 1vh;
-  //text-align: right;
-  //z-index: 10;
-  //max-width: 35vw;
-  //font-size: 1.5vh;
-//}
 .map-pane .help p {
   margin-bottom: 0;
 }
@@ -184,18 +134,6 @@ table th {
   width: 100% !important;
 }
 
-/* Viewport indicator (@TODO maybe scrap) */
-.viewport-indicator {
-  height: 8.5vh;
-  position: absolute;
-  top: 36vh;
-  left: 10px;
-  width: 35vw;
-  z-index: 9;
-  font-size: 1.5vh;
-  line-height: 1.35;
-}
-
 /* Carousel / card system */
 .carousel {
   height: 100%;
@@ -205,19 +143,12 @@ table th {
 }
 .carousel > div {
   height: 100%;
-  overflow-y: scroll !important;
 }
-.carousel .item-inner {
+.carousel .item {
   padding: $padding-default;
+  height: 100%;
+  overflow-y: scroll;
 }
-.carousel .item-nav {
-  // @TODO
-}
-
-//.carousel .item h2 {
-  //font-size: 2.1vh;
-//}
-
 .carousel .item h3 {
   font-size: 1.9vh;
   line-height: 1.4;
@@ -258,10 +189,86 @@ table th {
   }
 }
 
-//.total-indicator table {
-  //min-width: 30vw;
-//}
+.info-pane > div {
+  padding: ($padding-default * 0.25) $padding-default;
+}
 
-//.yearly-trend-chart {
-  //margin-bottom: 1.9vh;
-//}
+/* Legend (lives inside info pane) */
+.map-legend {
+  font-size: .7rem;
+  line-height: 1rem;
+  text-align: right;
+}
+.map-legend h2 {
+  font-size: 0.8rem;
+  font-weight: bold;
+  margin-bottom: .4rem;
+}
+.legend-box {
+  display: inline-block;
+  width: .6rem;
+  height: .6rem;
+  margin-left: .4rem;
+}
+
+@media #{$screen-small} {
+  /* Info pane */
+  .info-pane {
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 99;
+    background-color: rgba(0, 0, 0, 0.4);
+    color: #fff;
+    justify-content: space-between;
+    overflow: scroll;
+  }
+
+  /* Explorer pane */
+  .explorer-pane {
+    position: relative;
+    height: 60%;
+  }
+
+  /* Map pane */
+  .map-pane {
+    position: relative;
+    height: 40%;
+  }
+}
+
+@media #{$screen-lg} {
+  body {
+    background-color: $color-map-water;
+  }
+  /* Info pane */
+  //.info-pane {
+    //position: absolute;
+    //top: 0;
+    //right: 0;
+    //z-index: 99;
+    //background-color: rgba(0, 0, 0, 0.4);
+    //color: #fff;
+    //justify-content: space-between;
+    //overflow: scroll;
+  //}
+
+  /* Explorer pane */
+  .explorer-pane {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 35%;
+    z-index: 5;
+  }
+
+  /* Map pane */
+  .map-pane {
+    position: absolute;
+    top: 0;
+    left: 35%;
+    width: 65%;
+    height: 100%;
+  }
+}
