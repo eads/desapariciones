@@ -47,11 +47,6 @@ module.exports = {
             subsets: [`latin`],
             variants: [`500`, `600`, `800`]
           },
-          {
-            family: `Cardo`,
-            subsets: [`latin`],
-            variants: [`400`]
-          },
         ],
       },
     },
