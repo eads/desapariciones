@@ -211,6 +211,24 @@ table th {
   margin-left: .4rem;
 }
 
+.map-overlay {
+  transition: opacity .5s;
+}
+.map-overlay h1 {
+  margin-top: 1.25rem;
+  margin-bottom: .2rem;
+  font-size: 1.9rem;
+}
+.map-overlay h2 {
+  font-size: 1.2rem;
+  margin-bottom: .2rem;
+  font-weight: normal;
+}
+.map-overlay h3 {
+  font-size: 1rem;
+  font-weight: normal;
+}
+
 @media #{$screen-small} {
   /* Info pane */
   .info-pane {
@@ -234,6 +252,18 @@ table th {
   .map-pane {
     position: relative;
     height: 40%;
+  }
+
+  .map-overlay {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 10;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: #fff;
+    text-align: center;
   }
 }
 
