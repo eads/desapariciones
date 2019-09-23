@@ -15,7 +15,6 @@ const IndexPage = ({data}) => {
     <Layout>
       <SEO title="Map" />
       <div className="map-pane">
-        <MapOverlay />
         <Map />
       </div>
       <div className="info-pane">
