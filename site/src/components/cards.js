@@ -14,10 +14,9 @@ import swipeGIF from '../gifs/swipe.gif'
 
 const CARDS = [
   {id: "intro", layer: "municipales-not-found-count-init"},
-  {id: "not-found", layer: "municipales-not-fount-count"},
+  {id: "not-found", layer: "municipales-not-found-count"},
   {id: "gender-diff", layer: "municipales-gender-diff"},
   {id: "status-ratio", layer: "municipales-status-ratio"},
-  {id: "outro", layer: "municipales-not-found-count-init"},
 ]
 
 class Card extends React.Component {
@@ -25,7 +24,6 @@ class Card extends React.Component {
   _intro = (id) => (<>
     <h2><FormattedMessage id="cards.intro.title" /></h2>
     <p><FormattedMessage id="cards.intro.lede" /></p>
-
     <div className="row instruction-row">
       <img src={swipeGIF} alt="Swipe gif" />
       <p><FormattedMessage id="cards.intro.swipeMessage" /></p>
@@ -33,6 +31,15 @@ class Card extends React.Component {
     <div className="row instruction-row">
       <img src={swipeGIF} alt="Swipe gif" />
       <p><FormattedMessage id="cards.intro.tapMessage" /></p>
+    </div>
+  </>)
+
+  _notFound = (id) => (<>
+    <h2><FormattedMessage id="cards.notFound.title" /></h2>
+    <p><FormattedMessage id="cards.notFound.lede" /></p>
+    <YearlyTrendChart data={this.props.desapariciones} />
+    <div className="row">
+      <TotalIndicator />
     </div>
   </>)
 
@@ -65,7 +72,7 @@ class BaseCards extends React.Component {
 
   onChange = (index) => {
     const { mapState } = this.props
-    mapState.setSelectedLayer(CARDS[index].layer)
+    mapState.setSelectedCard(CARDS[index])
   }
 
   render() {

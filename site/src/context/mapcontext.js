@@ -1,9 +1,8 @@
 import React from "react"
 import throttle from "lodash/throttle"
-import debounce from "lodash/debounce"
 
 const defaultState = {
-  selectedLayer: "",
+  selectedCard: {},
   selectedEstado: null,
   data: {},
   viewport: {},
@@ -11,7 +10,7 @@ const defaultState = {
   setStyle: () => {},
   setData: () => {},
   setViewport: () => {},
-  setSelectedLayer: () => {},
+  setSelectedCard: () => {},
   setSelectedEstado: () => {},
 }
 
@@ -21,7 +20,7 @@ class MapProvider extends React.Component {
   state = {
     style: {},
     data: {},
-    selectedLayer: "municipales-not-found-count-init",
+    selectedCard: {id: "intro", layer: "municipales-not-found-count-init"}, // Ugly way of setting default
     selectedEstado: null,
     viewport: {
       width: "100%",
@@ -40,21 +39,21 @@ class MapProvider extends React.Component {
 
   render() {
     const { children } = this.props
-    const { data, viewport, style, selectedLayer, selectedEstado } = this.state
+    const { data, viewport, style, selectedCard, selectedEstado } = this.state
 
     //console.log(this.state)
 
     return (
       <MapContext.Provider
         value={{
-          selectedLayer,
+          selectedCard,
           data,
           viewport,
           style,
           selectedEstado,
           setViewport: (viewport) => this.setState({viewport}),
           setData: (data) => this.setStateThrottled({data}),
-          setSelectedLayer: (selectedLayer) => this.setStateThrottled({selectedLayer}),
+          setSelectedCard: (selectedCard) => this.setStateThrottled({selectedCard}),
           setStyle: (style) => this.setStateThrottled({style}),
           setSelectedEstado: (selectedEstado) => this.setState({selectedEstado}),
         }}

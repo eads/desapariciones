@@ -48,10 +48,10 @@ class BaseMap extends React.Component {
   }
 
   onViewportChange = (viewport) => {
-    const { setViewport, setData, setStyle, selectedLayer, selectedEstado } = this.props.mapState
+    const { setViewport, setData, setStyle, selectedCard, selectedEstado } = this.props.mapState
     if (this.mapRef) {
       const map = this.mapRef.getMap()
-      const data = map.queryRenderedFeatures({ layers: [selectedLayer.replace("-init", "")] })
+      const data = map.queryRenderedFeatures({ layers: [selectedCard.layer.replace("-init", "")] })
       setViewport(viewport)
       setData(data)
       setStyle(map.getStyle())
@@ -114,7 +114,7 @@ class BaseMap extends React.Component {
     const { config } = this
 
     // @TODO don't do this here
-    this.switchLayer(this.props.mapState.selectedLayer)
+    this.switchLayer(this.props.mapState.selectedCard.layer)
     this.switchEstado(this.props.mapState.selectedEstado)
 
     return (<>
