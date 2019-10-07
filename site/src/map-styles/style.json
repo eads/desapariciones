@@ -1,0 +1,872 @@
+{
+  "version": 8,
+  "name": "mx-disappearances-v0.1",
+  "metadata": {
+    "mapbox:type": "default",
+    "mapbox:origin": "satellite-streets-v11",
+    "mapbox:autocomposite": true,
+    "mapbox:groups": {
+      "ca54f0f8b47beaac9db7ca18a835235a": {
+        "name": "disappearance-heatmap",
+        "collapsed": true
+      },
+      "df494837db723ee149066c914818d5f9": {
+        "name": "disappearance-dots",
+        "collapsed": true
+      },
+      "cb39a33292b5cf7dd2e9285d6b467da1": {
+        "name": "sexo-distributed",
+        "collapsed": true
+      }
+    },
+    "mapbox:sdk-support": {
+      "js": "0.54.0",
+      "android": "6.7.0",
+      "ios": "4.7.0"
+    },
+    "mapbox:trackposition": true
+  },
+  "center": [
+    -101.79111929632461,
+    23.791627322003492
+  ],
+  "zoom": 3.3768727951000583,
+  "bearing": 0.2999999999999545,
+  "pitch": 0,
+  "light": {
+    "anchor": "viewport",
+    "color": "hsl(50, 0%, 100%)",
+    "intensity": 0.1,
+    "position": [
+      1.15,
+      0,
+      -20
+    ]
+  },
+  "sources": {
+    "composite": {
+      "url": "mapbox://davideads.dsp,mapbox.mapbox-streets-v8,mapbox.mapbox-terrain-v2",
+      "type": "vector"
+    }
+  },
+  "sprite": "mapbox://sprites/davideads/cjyc2n4b21q5g1cml2t5x8kcx/0y2vnk8n60t1vz01wcpm3bpqa",
+  "glyphs": "mapbox://fonts/davideads/{fontstack}/{range}.pbf",
+  "layers": [
+    {
+      "id": "background",
+      "type": "background",
+      "layout": {},
+      "paint": {
+        "background-color": "hsl(196, 29%, 33%)"
+      }
+    },
+    {
+      "layout": {},
+      "type": "fill",
+      "source": "composite",
+      "id": "water",
+      "paint": {
+        "fill-color": "hsl(196, 66%, 17%)",
+        "fill-opacity": 1
+      },
+      "source-layer": "water"
+    },
+    {
+      "layout": {
+        "visibility": "none"
+      },
+      "type": "fill",
+      "source": "composite",
+      "id": "landcover",
+      "paint": {
+        "fill-color": "hsl(107, 2%, 50%)",
+        "fill-opacity": 0.12
+      },
+      "source-layer": "landcover"
+    },
+    {
+      "layout": {},
+      "type": "fill",
+      "source": "composite",
+      "id": "estatales-base",
+      "paint": {
+        "fill-color": "#fdd49e",
+        "fill-outline-color": "hsla(0, 0%, 0%, 0)",
+        "fill-opacity": 1
+      },
+      "source-layer": "estatales",
+      "metadata": {}
+    },
+    {
+      "layout": {},
+      "type": "fill",
+      "source": "composite",
+      "id": "municipales-not-found-count",
+      "paint": {
+        "fill-color": [
+          "interpolate",
+          [
+            "linear"
+          ],
+          [
+            "get",
+            "status_not_found_ct"
+          ],
+          1,
+          "#fdbb84",
+          20,
+          "hsl(19, 96%, 67%)",
+          80,
+          "#ef6548",
+          1439,
+          "#d7301f"
+        ],
+        "fill-opacity": 1
+      },
+      "source-layer": "municipales_summary"
+    },
+    {
+      "layout": {},
+      "type": "fill",
+      "source": "composite",
+      "id": "municipales-dead-ct",
+      "paint": {
+        "fill-opacity": 0,
+        "fill-color": [
+          "interpolate",
+          [
+            "linear"
+          ],
+          [
+            "get",
+            "status_dead_ct"
+          ],
+          1,
+          "hsl(45, 34%, 75%)",
+          20,
+          "hsl(31, 92%, 64%)",
+          353,
+          "#ad4500"
+        ]
+      },
+      "source-layer": "municipales_summary"
+    },
+    {
+      "layout": {},
+      "type": "fill",
+      "source": "composite",
+      "id": "municipales-status-ratio",
+      "paint": {
+        "fill-color": [
+          "interpolate",
+          [
+            "linear"
+          ],
+          [
+            "get",
+            "status_missingdead_to_alive_ratio"
+          ],
+          0,
+          "#00429d",
+          1,
+          "#ffffe0",
+          20,
+          "hsl(336, 100%, 29%)"
+        ],
+        "fill-opacity": 0
+      },
+      "source-layer": "municipales_summary"
+    },
+    {
+      "layout": {},
+      "type": "fill",
+      "source": "composite",
+      "id": "municipales-gender-diff",
+      "paint": {
+        "fill-color": [
+          "interpolate",
+          [
+            "exponential",
+            0.26
+          ],
+          [
+            "get",
+            "gender_f_to_m_ratio"
+          ],
+          0,
+          "hsl(210, 81%, 83%)",
+          1,
+          "#efe1b8",
+          13,
+          "hsl(26, 82%, 71%)"
+        ],
+        "fill-opacity": 0
+      },
+      "source-layer": "municipales_summary"
+    },
+    {
+      "layout": {
+        "visibility": "none"
+      },
+      "metadata": {
+        "mapbox:group": "df494837db723ee149066c914818d5f9"
+      },
+      "filter": [
+        "match",
+        [
+          "get",
+          "vivo_o_muerto"
+        ],
+        [
+          "VIVO"
+        ],
+        true,
+        false
+      ],
+      "type": "circle",
+      "source": "composite",
+      "id": "cenapi-distributed-vivo",
+      "paint": {
+        "circle-radius": 2,
+        "circle-color": "#999999",
+        "circle-opacity": 1,
+        "circle-stroke-color": "hsla(0, 0%, 100%, 0.51)",
+        "circle-stroke-width": 0
+      },
+      "source-layer": "cenapi_distributed"
+    },
+    {
+      "layout": {
+        "visibility": "none"
+      },
+      "metadata": {
+        "mapbox:group": "df494837db723ee149066c914818d5f9"
+      },
+      "filter": [
+        "match",
+        [
+          "get",
+          "vivo_o_muerto"
+        ],
+        [
+          "AUN SIN LOCALIZAR"
+        ],
+        true,
+        false
+      ],
+      "type": "circle",
+      "source": "composite",
+      "id": "cenapi-distributed-aun-sin-localizar",
+      "paint": {
+        "circle-radius": 2,
+        "circle-color": "#ad4500",
+        "circle-opacity": 1,
+        "circle-stroke-color": "hsla(0, 0%, 100%, 0.51)",
+        "circle-stroke-width": 0
+      },
+      "source-layer": "cenapi_distributed"
+    },
+    {
+      "layout": {
+        "visibility": "none"
+      },
+      "metadata": {
+        "mapbox:group": "df494837db723ee149066c914818d5f9"
+      },
+      "filter": [
+        "match",
+        [
+          "get",
+          "vivo_o_muerto"
+        ],
+        [
+          "MUERTO"
+        ],
+        true,
+        false
+      ],
+      "type": "circle",
+      "source": "composite",
+      "id": "cenapi-distributed-muerto",
+      "paint": {
+        "circle-radius": 2,
+        "circle-color": "#f8a64f",
+        "circle-opacity": 1,
+        "circle-stroke-color": "hsla(0, 0%, 100%, 0.51)",
+        "circle-stroke-width": 0
+      },
+      "source-layer": "cenapi_distributed"
+    },
+    {
+      "layout": {
+        "visibility": "none"
+      },
+      "metadata": {
+        "mapbox:group": "ca54f0f8b47beaac9db7ca18a835235a"
+      },
+      "filter": [
+        "match",
+        [
+          "get",
+          "vivo_o_muerto"
+        ],
+        [
+          "VIVO"
+        ],
+        true,
+        false
+      ],
+      "type": "heatmap",
+      "source": "composite",
+      "id": "cenapi-distributed-vivo copy",
+      "paint": {
+        "heatmap-color": [
+          "interpolate",
+          [
+            "linear"
+          ],
+          [
+            "heatmap-density"
+          ],
+          0,
+          "rgba(0, 0, 255, 0)",
+          1,
+          "hsla(45, 8%, 66%, 0.94)"
+        ],
+        "heatmap-weight": 2,
+        "heatmap-intensity": 1,
+        "heatmap-radius": 5
+      },
+      "source-layer": "cenapi_distributed"
+    },
+    {
+      "layout": {
+        "visibility": "none"
+      },
+      "metadata": {
+        "mapbox:group": "ca54f0f8b47beaac9db7ca18a835235a"
+      },
+      "filter": [
+        "match",
+        [
+          "get",
+          "vivo_o_muerto"
+        ],
+        [
+          "AUN SIN LOCALIZAR"
+        ],
+        true,
+        false
+      ],
+      "type": "heatmap",
+      "source": "composite",
+      "id": "cenapi-distributed-aun-sin-localizar copy",
+      "paint": {
+        "heatmap-color": [
+          "interpolate",
+          [
+            "linear"
+          ],
+          [
+            "heatmap-density"
+          ],
+          0,
+          "rgba(0, 0, 255, 0)",
+          1,
+          "#ad4500"
+        ],
+        "heatmap-weight": 1,
+        "heatmap-intensity": 1,
+        "heatmap-radius": 15
+      },
+      "source-layer": "cenapi_distributed"
+    },
+    {
+      "layout": {
+        "visibility": "none"
+      },
+      "metadata": {
+        "mapbox:group": "ca54f0f8b47beaac9db7ca18a835235a"
+      },
+      "filter": [
+        "match",
+        [
+          "get",
+          "vivo_o_muerto"
+        ],
+        [
+          "MUERTO"
+        ],
+        true,
+        false
+      ],
+      "type": "heatmap",
+      "source": "composite",
+      "id": "cenapi-distributed-muerto copy",
+      "paint": {
+        "heatmap-color": [
+          "interpolate",
+          [
+            "linear"
+          ],
+          [
+            "heatmap-density"
+          ],
+          0,
+          "rgba(0, 0, 255, 0)",
+          1,
+          "hsla(45, 0%, 17%, 0.94)"
+        ],
+        "heatmap-weight": 2,
+        "heatmap-intensity": 1,
+        "heatmap-radius": 5
+      },
+      "source-layer": "cenapi_distributed"
+    },
+    {
+      "layout": {
+        "visibility": "none"
+      },
+      "metadata": {
+        "mapbox:group": "cb39a33292b5cf7dd2e9285d6b467da1"
+      },
+      "filter": [
+        "match",
+        [
+          "get",
+          "sexo"
+        ],
+        [
+          "MASCULINO"
+        ],
+        true,
+        false
+      ],
+      "type": "heatmap",
+      "source": "composite",
+      "id": "cenapi-distributed-masc",
+      "paint": {
+        "heatmap-color": [
+          "interpolate",
+          [
+            "linear"
+          ],
+          [
+            "heatmap-density"
+          ],
+          0,
+          "rgba(0, 0, 255, 0)",
+          1,
+          "hsl(126, 100%, 35%)"
+        ],
+        "heatmap-weight": 2,
+        "heatmap-intensity": 1,
+        "heatmap-radius": 5
+      },
+      "source-layer": "cenapi_distributed"
+    },
+    {
+      "layout": {
+        "visibility": "none"
+      },
+      "metadata": {
+        "mapbox:group": "cb39a33292b5cf7dd2e9285d6b467da1"
+      },
+      "filter": [
+        "match",
+        [
+          "get",
+          "sexo"
+        ],
+        [
+          "FEMENINO"
+        ],
+        true,
+        false
+      ],
+      "type": "heatmap",
+      "source": "composite",
+      "id": "cenapi-distributed-fem",
+      "paint": {
+        "heatmap-color": [
+          "interpolate",
+          [
+            "linear"
+          ],
+          [
+            "heatmap-density"
+          ],
+          0,
+          "rgba(0, 0, 255, 0)",
+          1,
+          "hsla(321, 93%, 45%, 0.94)"
+        ],
+        "heatmap-weight": 2,
+        "heatmap-intensity": 1,
+        "heatmap-radius": 5,
+        "heatmap-opacity": 1
+      },
+      "source-layer": "cenapi_distributed"
+    },
+    {
+      "layout": {
+        "visibility": "none"
+      },
+      "type": "fill",
+      "source": "composite",
+      "id": "hillshade",
+      "paint": {
+        "fill-opacity": [
+          "interpolate",
+          [
+            "linear"
+          ],
+          [
+            "zoom"
+          ],
+          14,
+          [
+            "match",
+            [
+              "get",
+              "level"
+            ],
+            [
+              56,
+              67
+            ],
+            0.15,
+            [
+              89,
+              78
+            ],
+            0.13,
+            0.3
+          ],
+          16,
+          0
+        ],
+        "fill-color": [
+          "match",
+          [
+            "get",
+            "class"
+          ],
+          [
+            "shadow"
+          ],
+          "hsl(0, 0%, 0%)",
+          "hsl(0, 0%, 100%)"
+        ]
+      },
+      "source-layer": "hillshade"
+    },
+    {
+      "layout": {},
+      "type": "fill",
+      "source": "composite",
+      "id": "estatales-interaction",
+      "paint": {
+        "fill-color": "hsl(45, 35%, 85%)",
+        "fill-opacity": 0.5
+      },
+      "source-layer": "estatales"
+    },
+    {
+      "layout": {},
+      "type": "line",
+      "source": "composite",
+      "id": "municipales-outline",
+      "paint": {
+        "line-width": [
+          "interpolate",
+          [
+            "linear"
+          ],
+          [
+            "zoom"
+          ],
+          0,
+          0,
+          5,
+          0,
+          10,
+          1
+        ],
+        "line-opacity": [
+          "interpolate",
+          [
+            "linear"
+          ],
+          [
+            "zoom"
+          ],
+          0,
+          0,
+          5,
+          0,
+          8,
+          1
+        ],
+        "line-color": "#c2c2c2"
+      },
+      "source-layer": "municipales"
+    },
+    {
+      "layout": {
+        "line-miter-limit": 2,
+        "line-join": "round",
+        "line-cap": "square",
+        "line-round-limit": 1
+      },
+      "type": "line",
+      "source": "composite",
+      "id": "estatales-outline",
+      "paint": {
+        "line-width": [
+          "interpolate",
+          [
+            "linear"
+          ],
+          [
+            "zoom"
+          ],
+          0,
+          0,
+          5,
+          0.5,
+          14,
+          5
+        ],
+        "line-color": "hsl(196, 58%, 21%)",
+        "line-opacity": 1
+      },
+      "source-layer": "estatales"
+    },
+    {
+      "layout": {
+        "text-field": [
+          "step",
+          [
+            "get",
+            "disappearance_ct"
+          ],
+          "",
+          10,
+          [
+            "to-string",
+            [
+              "get",
+              "nom_mun"
+            ]
+          ]
+        ],
+        "text-font": [
+          "Montserrat SemiBold",
+          "Arial Unicode MS Bold"
+        ],
+        "text-size": [
+          "interpolate",
+          [
+            "linear"
+          ],
+          [
+            "zoom"
+          ],
+          0,
+          0,
+          3,
+          0,
+          3.01,
+          11,
+          13,
+          13
+        ],
+        "text-letter-spacing": 0,
+        "text-padding": 90
+      },
+      "type": "symbol",
+      "source": "composite",
+      "id": "municipales-small-ct-label",
+      "paint": {
+        "text-halo-color": "hsla(0, 0%, 100%, 0.64)",
+        "text-color": "hsl(54, 35%, 38%)",
+        "text-halo-width": 0.5
+      },
+      "source-layer": "municipales_summary"
+    },
+    {
+      "layout": {
+        "text-field": [
+          "step",
+          [
+            "get",
+            "disappearance_ct"
+          ],
+          "",
+          500,
+          [
+            "to-string",
+            [
+              "get",
+              "nom_mun"
+            ]
+          ]
+        ],
+        "text-font": [
+          "Montserrat SemiBold",
+          "Arial Unicode MS Bold"
+        ],
+        "text-size": [
+          "interpolate",
+          [
+            "linear"
+          ],
+          [
+            "zoom"
+          ],
+          0,
+          0,
+          4,
+          0,
+          4.01,
+          11,
+          13,
+          15
+        ],
+        "text-letter-spacing": 0,
+        "text-padding": 20
+      },
+      "type": "symbol",
+      "source": "composite",
+      "id": "municipales-large-ct-label",
+      "paint": {
+        "text-halo-color": "hsla(0, 0%, 100%, 0.64)",
+        "text-color": "hsl(54, 35%, 38%)",
+        "text-halo-width": 0.5
+      },
+      "source-layer": "municipales_summary"
+    },
+    {
+      "minzoom": 3,
+      "layout": {
+        "text-size": [
+          "interpolate",
+          [
+            "cubic-bezier",
+            0.85,
+            0.7,
+            0.65,
+            1
+          ],
+          [
+            "zoom"
+          ],
+          3,
+          9.5,
+          9,
+          16
+        ],
+        "text-transform": "uppercase",
+        "text-font": [
+          "Montserrat SemiBold",
+          "Arial Unicode MS Bold"
+        ],
+        "text-field": [
+          "step",
+          [
+            "zoom"
+          ],
+          [
+            "step",
+            [
+              "get",
+              "symbolrank"
+            ],
+            [
+              "coalesce",
+              [
+                "get",
+                "name_es"
+              ],
+              [
+                "get",
+                "name"
+              ]
+            ],
+            5,
+            [
+              "coalesce",
+              [
+                "get",
+                "abbr"
+              ],
+              [
+                "get",
+                "name_es"
+              ],
+              [
+                "get",
+                "name"
+              ]
+            ]
+          ],
+          5,
+          [
+            "coalesce",
+            [
+              "get",
+              "name_es"
+            ],
+            [
+              "get",
+              "name"
+            ]
+          ]
+        ],
+        "text-letter-spacing": 0.08,
+        "text-max-width": 9
+      },
+      "maxzoom": 9,
+      "filter": [
+        "all",
+        [
+          "==",
+          [
+            "get",
+            "class"
+          ],
+          "state"
+        ],
+        [
+          "match",
+          [
+            "get",
+            "iso_3166_1"
+          ],
+          [
+            "MX"
+          ],
+          true,
+          false
+        ]
+      ],
+      "type": "symbol",
+      "source": "composite",
+      "id": "state-label",
+      "paint": {
+        "text-color": "hsl(54, 0%, 0%)",
+        "text-halo-color": "hsl(0, 0%, 100%)",
+        "text-halo-width": 1,
+        "text-opacity": 0.86
+      },
+      "source-layer": "place_label"
+    }
+  ],
+  "created": "2019-07-20T21:55:49.651Z",
+  "id": "cjyc2n4b21q5g1cml2t5x8kcx",
+  "modified": "2019-08-14T06:13:51.347Z",
+  "owner": "davideads",
+  "visibility": "private",
+  "draft": false
+}

@@ -58,39 +58,39 @@ class BaseMap extends React.Component {
     }
   }
 
-  switchLayer = (layer) => {
-    if (this.mapRef) {
-      const map = this.mapRef.getMap()
+  //switchLayer = (layer) => {
+    //if (this.mapRef) {
+      //const map = this.mapRef.getMap()
 
-      LAYERS.forEach((datalayer) => {
-        map.setPaintProperty(datalayer, "fill-opacity", 0)
-      })
+      //LAYERS.forEach((datalayer) => {
+        //map.setPaintProperty(datalayer, "fill-opacity", 0)
+      //})
 
-      if (layer === "municipales-not-found-count-init") {
-        map.setPaintProperty("municipales-not-found-count", "fill-opacity", 0.35)
-      }
-      if (layer === "municipales-not-found-count") {
-        map.setPaintProperty("municipales-not-found-count", "fill-opacity", 1)
-      }
-      if (layer === "municipales-status-ratio") {
-        map.setPaintProperty("municipales-status-ratio", "fill-opacity", 1)
-      }
-      if (layer === "municipales-gender-diff") {
-        map.setPaintProperty("municipales-gender-diff", "fill-opacity", 1)
-      }
-    }
-  }
+      //if (layer === "municipales-not-found-count-init") {
+        //map.setPaintProperty("municipales-not-found-count", "fill-opacity", 0.35)
+      //}
+      //if (layer === "municipales-not-found-count") {
+        //map.setPaintProperty("municipales-not-found-count", "fill-opacity", 1)
+      //}
+      //if (layer === "municipales-status-ratio") {
+        //map.setPaintProperty("municipales-status-ratio", "fill-opacity", 1)
+      //}
+      //if (layer === "municipales-gender-diff") {
+        //map.setPaintProperty("municipales-gender-diff", "fill-opacity", 1)
+      //}
+    //}
+  //}
 
-  switchEstado = (estado) => {
-    if (this.mapRef) {
-      const map = this.mapRef.getMap()
-      if (estado) {
-        map.setPaintProperty("estatales-interaction", "fill-opacity", ["match", ["get", "nom_ent"], estado, 0, 0.85])
-      } else {
-        map.setPaintProperty("estatales-interaction", "fill-opacity", 0)
-      }
-    }
-  }
+  //switchEstado = (estado) => {
+    //if (this.mapRef) {
+      //const map = this.mapRef.getMap()
+      //if (estado) {
+        //map.setPaintProperty("estatales-interaction", "fill-opacity", ["match", ["get", "nom_ent"], estado, 0, 0.85])
+      //} else {
+        //map.setPaintProperty("estatales-interaction", "fill-opacity", 0)
+      //}
+    //}
+  //}
 
   componentDidMount() {
     const map = this.mapRef.getMap()
@@ -110,12 +110,8 @@ class BaseMap extends React.Component {
   }
 
   render() {
-    const { viewport } = this.props.mapState
+    const { viewport, style } = this.props.mapState
     const { config } = this
-
-    // @TODO don't do this here
-    this.switchLayer(this.props.mapState.selectedCard.layer)
-    this.switchEstado(this.props.mapState.selectedEstado)
 
     return (<>
       <div className="map">
@@ -128,7 +124,7 @@ class BaseMap extends React.Component {
           minZoom={2}
           maxZoom={13}
           onClick={this.onClick}
-          mapStyle="mapbox://styles/davideads/cjyc2n4b21q5g1cml2t5x8kcx?fresh=true"
+          mapStyle={style}
         >
         </ReactMapGL>
       </div>

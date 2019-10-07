@@ -10,6 +10,7 @@ import MapOverlay from "../components/mapoverlay"
 import MapLegend from "../viz/map-legend"
 import SelectedIndicator from "../viz/selected-indicator"
 
+
 const IndexPage = ({data}) => {
   return (
     <Layout>

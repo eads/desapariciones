@@ -258,12 +258,17 @@ data/mbtiles/desapariciones.mbtiles: $(patsubst %, data/mbtiles/%.mbtiles, $(MAP
 
 .PHONY: mapbox
 mapbox: data/mbtiles/desapariciones.mbtiles
-	mapbox upload $(MAPBOX_USER).$(MAPBOX_SLUG) $<
+	mapbox upload $(MAPBOX_USER).$(MAPBOX_TILESET_ID) $<
 
 .PHONY: mbview
 mbview: data/mbtiles/desapariciones.mbtiles
 	MAPBOX_ACCESS_TOKEN=$(MAPBOX_PUBLIC_ACCESS_TOKEN) mbview $^
 
+
+##@ Frontend data
+
+site/src/map-styles/style.json: ## Get map style from mapbox
+	curl "https://api.mapbox.com/styles/v1/$(MAPBOX_USER)/$(MAPBOX_STYLE_ID)?access_token=$(MAPBOX_ACCESS_TOKEN)" | jq > $@
 
 ##@ Hasura
 

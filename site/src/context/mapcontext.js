@@ -1,5 +1,6 @@
 import React from "react"
 import throttle from "lodash/throttle"
+import mapStyle from "../map-styles/style.json"
 
 const defaultState = {
   selectedCard: {},
@@ -18,7 +19,7 @@ const MapContext = React.createContext(defaultState)
 
 class MapProvider extends React.Component {
   state = {
-    style: {},
+    style: mapStyle,
     data: {},
     selectedCard: {id: "intro", layer: "municipales-not-found-count-init"}, // Ugly way of setting default
     selectedEstado: null,
@@ -40,8 +41,6 @@ class MapProvider extends React.Component {
   render() {
     const { children } = this.props
     const { data, viewport, style, selectedCard, selectedEstado } = this.state
-
-    //console.log(this.state)
 
     return (
       <MapContext.Provider
