@@ -13,10 +13,8 @@ import { FiChevronsRight, FiNavigation } from "react-icons/fi"
 import swipeGIF from '../gifs/swipe.gif'
 
 const CARDS = [
-  {id: "intro", layer: "municipales-not-found-count-init"},
-  {id: "not-found", layer: "municipales-not-found-count"},
-  {id: "gender-diff", layer: "municipales-gender-diff"},
-  {id: "status-ratio", layer: "municipales-status-ratio"},
+  "intro",
+  "not-found",
 ]
 
 class Card extends React.Component {
@@ -72,7 +70,7 @@ class BaseCards extends React.Component {
 
   onChange = (index) => {
     const { mapState } = this.props
-    mapState.setSelectedCard(CARDS[index])
+    mapState.setCard(CARDS[index])
   }
 
   render() {
@@ -85,8 +83,8 @@ class BaseCards extends React.Component {
         }}
       >
         {CARDS.map((card) => (
-          <div key={card.id} className="item">
-            <Card {...card} />
+          <div key={card} className="item">
+            <Card id={card} />
           </div>
         ))}
       </ReactSwipe>
@@ -99,7 +97,7 @@ class Cards extends React.Component {
     return (
       <MapContext.Consumer>
         {mapState => (
-          <BaseCards mapState={mapState} {...this.props} />
+          <BaseCards mapState={mapState} />
         )}
       </MapContext.Consumer>
     )

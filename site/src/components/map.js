@@ -4,6 +4,8 @@ import ReactMapGL from "react-map-gl"
 import { FaRegHandRock, FaRegHandPointer } from "react-icons/fa"
 import "mapbox-gl/dist/mapbox-gl.css"
 
+import mapStyle from "../map-styles/style.json"
+
 
 const MAPBOX_TOKEN = "pk.eyJ1IjoiZGF2aWRlYWRzIiwiYSI6ImNpZ3d0azN2YzBzY213N201eTZ3b2E0cDgifQ.ZCHD8ZAk32iAp9Ue3tPVVg"
 
@@ -25,93 +27,49 @@ const LAYERS = [
 class BaseMap extends React.Component {
 
   state = {
-    mapSelectedLayer: "municipales-not-found-count",
-  }
-
-  onSourceData = (event) => {
-    const { viewport } = this.props.mapState
-    if (event.isSourceLoaded) {
-      this.onViewportChange(viewport)
+    viewport: {
+      width: "100%",
+      height: "100%",
+      longitude: -102.0,
+      latitude: 22.5,
+      zoom: 3.05,
+      pitch: 0,
+    },
+    config: {
+      doubleClickZoom: false,
     }
   }
-
-  // Capture estado from click event if one exists at the clicked coordinates
-  onClick = (event) => {
-    const map = this.mapRef.getMap()
-    const { setSelectedEstado } = this.props.mapState
-    const point = [event.center.x, event.center.y]
-    const feature = map.queryRenderedFeatures(point, { layers: ["estatales-interaction"] }).shift()
-    if (feature) {
-      setSelectedEstado(feature.properties.nom_ent)
-      map.flyTo({ center: event.lngLat, zoom: 4.5 })
-    }
-  }
-
-  onViewportChange = (viewport) => {
-    const { setViewport, setData, setStyle, selectedCard, selectedEstado } = this.props.mapState
-    if (this.mapRef) {
-      const map = this.mapRef.getMap()
-      const data = map.queryRenderedFeatures({ layers: [selectedCard.layer.replace("-init", "")] })
-      setViewport(viewport)
-      setData(data)
-      setStyle(map.getStyle())
-    }
-  }
-
-  //switchLayer = (layer) => {
-    //if (this.mapRef) {
-      //const map = this.mapRef.getMap()
-
-      //LAYERS.forEach((datalayer) => {
-        //map.setPaintProperty(datalayer, "fill-opacity", 0)
-      //})
-
-      //if (layer === "municipales-not-found-count-init") {
-        //map.setPaintProperty("municipales-not-found-count", "fill-opacity", 0.35)
-      //}
-      //if (layer === "municipales-not-found-count") {
-        //map.setPaintProperty("municipales-not-found-count", "fill-opacity", 1)
-      //}
-      //if (layer === "municipales-status-ratio") {
-        //map.setPaintProperty("municipales-status-ratio", "fill-opacity", 1)
-      //}
-      //if (layer === "municipales-gender-diff") {
-        //map.setPaintProperty("municipales-gender-diff", "fill-opacity", 1)
-      //}
-    //}
-  //}
-
-  //switchEstado = (estado) => {
-    //if (this.mapRef) {
-      //const map = this.mapRef.getMap()
-      //if (estado) {
-        //map.setPaintProperty("estatales-interaction", "fill-opacity", ["match", ["get", "nom_ent"], estado, 0, 0.85])
-      //} else {
-        //map.setPaintProperty("estatales-interaction", "fill-opacity", 0)
-      //}
-    //}
-  //}
 
   componentDidMount() {
     const map = this.mapRef.getMap()
-
-    // Process data when it loads/changes
-    map.on("sourcedata", this.onSourceData)
-
-    // @TODO zoom to container
+    this.props.mapState.setMap(map)
   }
 
-  config = {
-    //scrollZoom: false,
-    //dragPan: false,
-    //doubleClickZoom: false,
-    //touchZoom: false,
-    //touchRotate: false,
+  onViewportChange = (viewport) => {
+    if (this.mapRef) {
+      this.setState({viewport})
+    }
+  }
+
+  _setFeatureState = () => {
+    const { map } = this.props.mapState
+    if (map) {
+      console.log('set feature state')
+
+      map.setFeatureState({
+        source: 'composite',
+      }, {
+        active: true
+      });
+
+
+    }    
   }
 
   render() {
-    const { viewport, style } = this.props.mapState
-    const { config } = this
+    const { viewport, config } = this.state
+
+    this._setFeatureState()
 
     return (<>
       <div className="map">
@@ -123,8 +81,7 @@ class BaseMap extends React.Component {
           mapboxApiAccessToken={MAPBOX_TOKEN}
           minZoom={2}
           maxZoom={13}
-          onClick={this.onClick}
-          mapStyle={style}
+          mapStyle={mapStyle}
         >
         </ReactMapGL>
       </div>
