@@ -1,22 +1,19 @@
 import React from "react"
-import throttle from "lodash/throttle"
+//import throttle from "lodash/throttle"
 
 /*
- * The state of the map can be defined by two properties:
+ * The state of the map is defined by the currently selected card and a filter.
  *
- * - The currently selected card; defines the state of the map style
+ * - The currently selected card
  * - A Mapbox filter statement; defines the features/data used for visualizations
  *   and calculations
  *
- * Child components are in charge of knowing what to do with combination of 
  */
 const defaultState = {
   card: "",
-  filter: null,
-  map: null,
+  mapboxFilter: null,
   setCard: () => {},
-  setFilter: () => {},
-  setMap: () => {},
+  setMapboxFilter: () => {},
 }
 
 const MapContext = React.createContext(defaultState)
@@ -24,23 +21,20 @@ const MapContext = React.createContext(defaultState)
 class MapProvider extends React.Component {
   state = {
     card: "intro",
-    filter: null,
-    map: null,
+    mapboxFilter: null,
   }
 
   render() {
     const { children } = this.props
-    const { card, filter, map } = this.state
+    const { card, mapboxFilter } = this.state
 
     return (
       <MapContext.Provider
         value={{
           card,
-          filter,
-          map,
+          mapboxFilter,
           setCard: (card) => this.setState({card}),
-          setFilter: (filter) => this.setState({filter}),
-          setMap: (map) => this.setState({map}),
+          setMapboxFilter: (mapboxFilter) => this.setState({mapboxFilter}),
         }}
       >
         {children}

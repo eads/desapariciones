@@ -66,8 +66,12 @@
       "source": "composite",
       "id": "water",
       "paint": {
-        "fill-color": "hsl(196, 66%, 17%)",
-        "fill-opacity": 1
+        "fill-color": "#000000",
+        "fill-opacity": [
+          "case", ["boolean", ["feature-state", "active"], false],
+          1,
+          0
+        ]
       },
       "source-layer": "water"
     },
