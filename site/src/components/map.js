@@ -1,6 +1,6 @@
 import MapGL, { MapEvents } from "react-map-gl-alt"
 import React from "react"
-import { FaRegHandRock, FaRegHandPointer } from "react-icons/fa"
+import MapContext from "../context/MapContext"
 
 import mapStyle from "../map-styles/style.json"
 import "mapbox-gl/dist/mapbox-gl.css"
@@ -23,9 +23,10 @@ const fitBounds = (target) => ({
 })
 
 
-class Map extends React.Component {
+class BaseMap extends React.Component {
   constructor(props, context) {
     super(props, context)
+    this.mapRef = React.createRef();
     this.state = {
       loaded: false,
       target: {
@@ -39,54 +40,83 @@ class Map extends React.Component {
       flex: 1,
       featureStates: [],
     }
-
-    this._onClick = this._onClick.bind(this)
-    this._onChangeViewport = this._onChangeViewport.bind(this)
   }
 
-  _onChangeViewport(viewport) {
+  _onChangeViewport = (viewport) => {
     this.setState({ viewport })
   }
 
-  _onClick(e) {
+  _onClick = (e) => {
     // Access features under cursor through safe non-mutable map facade
     const features = e.target.queryRenderedFeatures(e.point)
+    console.log(e.target)
     console.log(e, features)
   }
 
+  getFeatureStates = () => { 
+    const { card } = this.props.mapState
+
+    if (!this.state.loaded) {
+      return []
+    }    
+
+
+    switch(card) {
+      case 2:
+        return [{ 
+          feature: { source: 'composite', sourceLayer: 'water', id: 0 },
+          state: { active: true }
+        }]
+       case 1:
+        const start = performance.now()
+        const features = this.mapRef.current._map.queryRenderedFeatures({layers: ['municipales-not-found-count']})
+        const end = performance.now()
+        console.log(end - start)
+        return features.map( (f) => ({
+          feature: { source: 'composite', sourceLayer: 'municipales_summary', id: f.id },
+          state: { active: true }
+        }))
+      default:
+        return []  
+    }  
+  }
+
   render() {
-    // Can update center/zoom etc to move
+    const featureStates = this.getFeatureStates()
+    // console.log(featureStates)
+
+    return (<>
+      <MapGL
+        ref={this.mapRef}
+        mapboxApiAccessToken={mapboxApiAccessToken}
+        mapStyle={mapStyle}
+        {...this.state.target}
+        failIfMajorPerformanceCaveatDisabled
+        onChangeViewport={this._onChangeViewport}
+        move={this.state.motion}
+        worldCopyJumpDisabled={false}
+        trackResizeContainerDisabled={false}
+        featureStates={featureStates}
+        logoPosition="bottom-right"
+      >
+        <MapEvents
+          onLoad={() => { this.setState({ loaded: true }) }}
+          onError={console.error}
+          onClick={this._onClick}
+        />
+      </MapGL>
+    </>)
+  }
+}
+
+class Map extends React.Component {
+  render() {
     return (
-      <>
-
-      <button onClick={() => this.setState({ featureStates:
-        [{ feature: { source: 'composite', sourceLayer: 'water', id: 0 }, state: { active: true } }]
-      })}>
-          Display layer
-        </button>
-        <button onClick={() => this.setState({ featureStates: [] })}>
-          Feature State Removed
-        </button>
-
-        <MapGL
-          mapboxApiAccessToken={mapboxApiAccessToken}
-          mapStyle={mapStyle}
-          {...this.state.target}
-          failIfMajorPerformanceCaveatDisabled
-          onChangeViewport={this._onChangeViewport}
-          move={this.state.motion}
-          worldCopyJumpDisabled={false}
-          trackResizeContainerDisabled={false}
-          featureStates={this.state.featureStates}
-          logoPosition="bottom-right"
-        >
-          <MapEvents
-            onLoad={() => { this.setState({ loaded: true }) }}
-            onError={console.error}
-            onClick={this._onClick}
-          />
-        </MapGL>
-      </>
+      <MapContext.Consumer>
+        {mapState => (
+          <BaseMap mapState={mapState} {...this.props} />
+        )}
+      </MapContext.Consumer>
     )
   }
 }
@@ -94,18 +124,13 @@ class Map extends React.Component {
 export default Map
 
 /*
- *
- *         <div>
-          <button onClick={() => this.setState({ target: { ...this.state.viewport, bearing: 0, pitch: 0 }, motion: resetNorth })}>
-            Reset North
-          </button>
-          <button onClick={() => this.setState({ target: { bounds: [10, 10, 20, 20] }, motion: fitBounds })}>
-            Bounds
-          </button>
-          <button onClick={() => this.setState({ flex: this.state.flex === 1 ? 0.5 : 1 })}>
-            Flex
-          </button>
-          <button onClick={() => this.setState({ featureStates: [{ feature: { source: 'composite', sourceLayer: 'water', id: 0 }, state: { example: 'updated' } }] })}>
-            Feature State #2
-          </button>
-        </div>*/
+
+      <button onClick={() => this.setState({ featureStates:
+        [{ feature: { source: 'composite', sourceLayer: 'water', id: 0 }, state: { active: true } }]
+      })}>
+        Display layer
+      </button>
+      <button onClick={() => this.setState({ featureStates: [] })}>
+        Feature State Removed
+      </button>
+*/
