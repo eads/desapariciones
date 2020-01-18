@@ -242,15 +242,15 @@ data/geojson/%.json: # db/views/% ## Build geojson file from a view
 
 .PRECIOUS: data/mbtiles/%.mbtiles
 data/mbtiles/%.mbtiles: data/geojson/%.json
-	tippecanoe -Z0 -z13 -S 5 --hilbert --detect-shared-borders --drop-smallest-as-needed -o $@ -f $<
+	tippecanoe --generate-ids -Z0 -z13 -S 5 --hilbert --detect-shared-borders --drop-smallest-as-needed -o $@ -f $<
 
 .PRECIOUS: data/mbtiles/municipales_summary.mbtiles
 data/mbtiles/municipales_summary.mbtiles: data/geojson/municipales_summary.json
-	tippecanoe -Z0 -z13 -S 5 --hilbert --detect-shared-borders -o $@ -f $<
+	tippecanoe --generate-ids -Z0 -z13 -S 5 --hilbert --detect-shared-borders -o $@ -f $<
 
 .PRECIOUS: data/mbtiles/cenapi_distributed.mbtiles
 data/mbtiles/cenapi_distributed.mbtiles: data/geojson/cenapi_distributed.json
-	tippecanoe -Z0 -z13 -r 1.4 -o $@ -f $<
+	tippecanoe --generate-ids -Z0 -z13 -r 1.4 -o $@ -f $<
 
 .PRECIOUS: data/mbtiles/desapariciones.mbtiles
 data/mbtiles/desapariciones.mbtiles: $(patsubst %, data/mbtiles/%.mbtiles, $(MAPVIEWS))
