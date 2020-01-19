@@ -4,6 +4,8 @@ Rig to process and publish project materials related to public data about disapp
 
 The quickest way to get up and running is to clone this repository and run `make help`.
 
+(@TODO link to observable)
+
 ## Requirements
 
 * GNU Make
