@@ -45,10 +45,10 @@ WITH
       ELSE
         0
     END as status_missingdead_to_alive_ratio,
-    m.geom
+    ST_SimplifyVW(m.geom, 0.001) as geom
   FROM
     counts c
-  JOIN
+  RIGHT JOIN
     processed.areas_geoestadisticas_municipales m
       ON
         c.id = m.cve_geoid
