@@ -39,7 +39,7 @@ VIEWS = $(basename $(notdir $(wildcard sql/views/*.sql)))
 SCHEMAS = views processed raw
 
 # Data and map tables need to be statically defined; they depend on remote files
-DATAFILES = cenapi rnpedfc rnpedff
+DATAFILES = cenapi
 SHAPEFILES = areas_geoestadisticas_estatales areas_geoestadisticas_municipales
 
 # Different directories we can clean
