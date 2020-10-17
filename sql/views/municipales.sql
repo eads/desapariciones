@@ -6,7 +6,7 @@ select
   m.cve_mun,
   m.nom_mun,
   e.nom_ent,
-  ST_SimplifyPreserveTopology(m.geom, 0.005) as geom,
+  ST_SimplifyPreserveTopology(m.geom, 0.0005) as geom,
   m.centroid_geom as centroid_geom
 from
   processed.areas_geoestadisticas_municipales m
