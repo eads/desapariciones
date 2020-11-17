@@ -66,7 +66,7 @@ csvs: $(patsubst %, db/csv/%, $(DATAFILES))
 shapefiles: $(patsubst %, db/shapefiles/%, $(SHAPEFILES))
 
 .PHONY: clean
-clean: hasura/down dropdb clean/data ## Clean data files and databases (but not downloads)
+clean: dropdb clean/data ## Clean data files and databases (but not downloads)
 
 .PHONY: help
 help:  ## Display this help
@@ -77,7 +77,7 @@ help:  ## Display this help
 # These are explicitly defined because the dependency graph must be manually specified.
 
 define create_view
-	@(psql -c "\d $(subst db/views/,,$@)" > /dev/null 2>&1 && \
+	@(psql -c "\d views.$(subst db/views/,,$@)" > /dev/null 2>&1 && \
 		echo "view $(subst db/views/,,$@) exists") || \
 	psql -v ON_ERROR_STOP=1 -qX1ef $<
 endef
@@ -86,8 +86,20 @@ endef
 db/views/%: sql/views/%.sql load  ## Create view % specified in sql/views/%.sql (will load all data)
 	$(call create_view)
 
-.PHONY: db/views/cenapi_geo_summary
-db/views/cenapi_geo_summary: sql/views/cenapi_geo_summary.sql db/processed/cenapi db/processed/areas_geoestadisticas_municipales  ## Geography joined with simple CENAPI counts (work-in-progress)
+.PHONY: db/views/cenapi_estado_by_month
+db/views/cenapi_estado_by_month: sql/views/cenapi_estado_by_month.sql db/views/estatales db/views/municipales
+	$(call create_view)
+
+.PHONY: db/views/cenapi_estado_by_year
+db/views/cenapi_estado_by_year: sql/views/cenapi_estado_by_year.sql db/views/estatales db/views/municipales
+	$(call create_view)
+
+.PHONY: db/views/cenapi_by_month
+db/views/cenapi_by_month: sql/views/cenapi_by_month.sql db/views/estatales db/views/municipales
+	$(call create_view)
+
+.PHONY: db/views/cenapi_by_year
+db/views/cenapi_by_year: sql/views/cenapi_by_year.sql db/views/estatales db/views/municipales
 	$(call create_view)
 
 .PHONY: db/views/cenapi_audit
@@ -140,7 +152,7 @@ define create_function
 endef
 
 .PHONY: db
-db: ## Create database
+db: tunnel ## Create database
 	@(psql -c "SELECT 1" > /dev/null 2>&1 && \
 		echo "database $(PGDATABASE) exists") || \
 	createdb -e $(PGDATABASE) -E UTF8 -T template0 --locale=en_US.UTF-8
@@ -203,6 +215,22 @@ download/shapefiles: data/downloads/marcos_geoestadicos_2017.zip ## Download sha
 
 .PHONY: download/gdrive
 download/gdrive: $(patsubst %, data/downloads/%.csv, $(DATAFILES)) ## Download all Drive files
+
+data/downloads/base_municipios_final_datos_01.rar:
+	curl -o $@ http://www.conapo.gob.mx/work/models/CONAPO/Datos_Abiertos/Proyecciones2018/base_municipios_final_datos_01.rar
+
+data/downloads/base_municipios_final_datos_01.csv: data/downloads/base_municipios_final_datos_01.rar
+	unrar e $< $(dir $@) && touch $@
+
+data/downloads/base_municipios_final_datos_02.rar:
+	curl -o $@ http://www.conapo.gob.mx/work/models/CONAPO/Datos_Abiertos/Proyecciones2018/base_municipios_final_datos_02.rar
+
+data/downloads/base_municipios_final_datos_02.csv: data/downloads/base_municipios_final_datos_02.rar
+	unrar e $< $(dir $@) && touch $@
+
+data/downloads/base_municipios_datos.csv: data/downloads/base_municipios_final_datos_01.csv data/downloads/base_municipios_final_datos_02.csv 
+	xsv cat rows $^ > $@
+
 
 data/downloads/marcos_geoestadicos_2017.zip: # Download INEGI shapefiles (geostatistical shapes)
 	curl -o $@ http://internet.contenidos.inegi.org.mx/contenidos/Productos/prod_serv/contenidos/espanol/bvinegi/productos/geografia/marcogeo/889463142683_s.zip
@@ -270,30 +298,18 @@ mbview: data/mbtiles/desapariciones.mbtiles
 site/src/map-styles/style.json: ## Get map style from mapbox
 	curl "https://api.mapbox.com/styles/v1/$(MAPBOX_USER)/$(MAPBOX_STYLE_ID)?access_token=$(MAPBOX_ACCESS_TOKEN)" | jq > $@
 
-##@ Hasura
-
-.PHONY: hasura/up
-hasura/up: all ## Run Hasura
-	docker-compose -f hasura/docker-compose.yaml up -d
-
-.PHONY: hasura/down
-hasura/down:  ## Stop Hasura
-	docker-compose -f hasura/docker-compose.yaml down
-
-.PHONY: hasura/export
-hasura/export: hasura/migrations/metadata.yaml ## Export Hasura metadata
-
-.PHONY: hasura/apply
-hasura/apply: hasura/up ## Load Hasura metadata
-	hasura metadata apply --project hasura --log-level DEBUG
-
-hasura/migrations/metadata.yaml: hasura/up
-	sleep 3 && hasura metadata export --project hasura --log-level DEBUG
 
 ##@ Utilities
 
+tunnel: $(BASTION_KEY)
+	ssh -i $(BASTION_KEY) -M -S $@ -fnNT -L localhost:5001:$(BASTION_DB):5432 $(BASTION_HOST)
+
+.PHONY: tunnel/drop
+tunnel/drop: tunnel
+	ssh -i $(BASTION_KEY) -S $< -O exit $(BASTION_HOST)
+	
 .PHONY: develop
-develop: load hasura/apply  ## Run development server
+develop: load  ## Run development server
 	grunt --base site develop
 
 .PHONY: dbshell

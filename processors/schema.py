@@ -14,7 +14,7 @@ create table raw.{{tablename|lower}} (
 
 
 @click.command()
-@click.argument('input', type=click.File('r'))
+@click.argument('input', type=click.File('r', encoding='latin-1'))
 @click.argument('output', type=click.File('w'))
 def generate(input, output):
     """Generate a schema"""
