@@ -77,7 +77,7 @@ help:  ## Display this help
 # These are explicitly defined because the dependency graph must be manually specified.
 
 define create_view
-	@(psql -c "\d views.$(subst db/views/,,$@)" > /dev/null 2>&1 && \
+	@(psql -c "\d public.$(subst db/views/,,$@)" > /dev/null 2>&1 && \
 		echo "view $(subst db/views/,,$@) exists") || \
 	psql -v ON_ERROR_STOP=1 -qX1ef $<
 endef

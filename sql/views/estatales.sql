@@ -1,4 +1,4 @@
-create table views.estatales as
+create table public.estatales as
 
 select
   e.cve_ent,

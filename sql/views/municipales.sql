@@ -1,4 +1,4 @@
-create table views.municipales as
+create table public.municipales as
 
 select
   m.cve_geoid,

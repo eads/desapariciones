@@ -1,4 +1,4 @@
-create table views.cenapi_estado_by_year as
+create table public.cenapi_estado_by_year as
 
 SELECT
   c.cve_ent,

@@ -1,4 +1,4 @@
-create table views.cenapi_audit as
+create table public.cenapi_audit as
 
 with
   missing_state as (

@@ -1,4 +1,4 @@
-create table views.cenapi_by_month as
+create table public.cenapi_by_month as
 
 SELECT
   m.cve_geoid,
@@ -20,7 +20,7 @@ SELECT
 FROM
   processed.cenapi c
 JOIN
-  views.municipales m
+  public.municipales m
 ON
   c.cve_ent = m.cve_ent AND c.cve_mun = m.cve_mun
 GROUP BY
