@@ -105,8 +105,48 @@ select
     parse_timestamp(fecha_reporte) as fecha_reporte,
 
     /* Parse numbers */
-    -- parse_null_number(estatura) as estatura,
     parse_null_number(edad) as edad,
+    parse_null_text(causal) as causal,
+    parse_null_text(causas_de_fallecimiento) as causas_de_fallecimiento,
+    parse_null_text(clasificacion_causal) as clasificacion_causal,
+    parse_null_text(condicion_encontrado) as condicion_encontrado,
+    parse_null_text(descripcion_senas_particulares) as descripcion_senas_particulares,
+    parse_null_text(entidad) as entidad,
+    parse_null_text(estado) as estado,
+    parse_null_text(estado_localizado) as estado_localizado,
+    parse_null_text(estatus_migratorio) as estatus_migratorio,
+    parse_null_text(hora_de_ingreso) as hora_de_ingreso,
+    parse_null_text(hora_de_localizacion) as hora_de_localizacion,
+    parse_null_text(hora_de_ultimo_avistamiento) as hora_de_ultimo_avistamiento,
+    parse_null_text(hora_evento) as hora_evento,
+    parse_null_text(hora_reporte) as hora_reporte,
+    parse_null_text(municipio) as municipio,
+    parse_null_text(municipio_localizado) as municipio_localizado,
+    parse_null_text(nacionalidad) as nacionalidad,
+    parse_null_text(pais_de_origen) as pais_de_origen,
+    parse_null_text(procedencia) as procedencia,
+    parse_null_text(senas_particulares) as senas_particulares,
+    parse_null_text(sexo) as sexo,
+    parse_null_text(situacion_de_la_persona_en_el_registro_nacional) as situacion_de_la_persona_en_el_registro_nacional,
+    parse_null_text(tipo_casual) as tipo_casual,
+    parse_null_text(tipo_de_evento) as tipo_de_evento,
+    parse_null_text(tipo_denuncia) as tipo_denuncia,
+    parse_null_text(vivo_o_muerto) as vivo_o_muerto
+from deduped;
+
+alter table processed.cenapi add column seq_id serial primary key;
+
+create index idx_cenapi_cve_ent on processed.cenapi(cve_ent);
+create index idx_cenapi_cve_mun on processed.cenapi(cve_mun);
+create index idx_cenapi_cve_ent_cve_mun on processed.cenapi(cve_ent, cve_mun);
+
+    -- parse_null_number(estatura) as estatura,
+    -- parse_null_text(cejas) as cejas,
+    -- parse_null_text(color_de_ojos) as color_de_ojos,
+    -- parse_null_text(color_del_cabello) as color_del_cabello,
+    -- parse_null_text(descripcion_de_vestimenta) as descripcion_de_vestimenta,
+    -- parse_null_text(descripcion_media_filiacion) as descripcion_media_filiacion,
+    -- parse_null_text(ente_que_localiza) as ente_que_localiza,
     -- parse_null_number(peso) as peso,
 
     /* Parse boolean */
@@ -120,64 +160,25 @@ select
     -- parse_null_text(anteojos) as anteojos,
     -- parse_null_text(barba) as barba,
     -- parse_null_text(bigote) as bigote,
-    parse_null_text(causal) as causal,
-    parse_null_text(causas_de_fallecimiento) as causas_de_fallecimiento,
-    -- parse_null_text(cejas) as cejas,
-    parse_null_text(clasificacion_causal) as clasificacion_causal,
-    -- parse_null_text(color_de_ojos) as color_de_ojos,
-    -- parse_null_text(color_del_cabello) as color_del_cabello,
-    parse_null_text(condicion_encontrado) as condicion_encontrado,
-    -- parse_null_text(descripcion_de_vestimenta) as descripcion_de_vestimenta,
-    -- parse_null_text(descripcion_media_filiacion) as descripcion_media_filiacion,
-    parse_null_text(descripcion_senas_particulares) as descripcion_senas_particulares,
-    -- parse_null_text(ente_que_localiza) as ente_que_localiza,
-    parse_null_text(entidad) as entidad,
-    parse_null_text(estado) as estado,
-    parse_null_text(estado_localizado) as estado_localizado,
-    parse_null_text(estatus_migratorio) as estatus_migratorio,
     -- parse_null_text(etnia) as etnia,
     -- parse_null_text(forma_de_la_cara) as forma_de_la_cara,
     -- parse_null_text(forma_del_cabello) as forma_del_cabello,
     -- parse_null_text(forma_del_menton) as forma_del_menton,
     -- parse_null_text(grosor_de_labios) as grosor_de_labios,
-    parse_null_text(hora_de_ingreso) as hora_de_ingreso,
-    parse_null_text(hora_de_localizacion) as hora_de_localizacion,
-    parse_null_text(hora_de_ultimo_avistamiento) as hora_de_ultimo_avistamiento,
-    parse_null_text(hora_evento) as hora_evento,
-    parse_null_text(hora_reporte) as hora_reporte,
     -- parse_null_text(largo_del_cabello) as largo_del_cabello,
     -- parse_null_text(marca_de_vehiculo) as marca_de_vehiculo,
-    parse_null_text(municipio) as municipio,
-    parse_null_text(municipio_localizado) as municipio_localizado,
-    parse_null_text(nacionalidad) as nacionalidad,
+    -- parse_null_text(posible_causa_desaparicion) as posible_causa_desaparicion,
     -- parse_null_text(ocupacion) as ocupacion,
     -- parse_null_text(padecimiento_o_enfermedad) as padecimiento_o_enfermedad,
-    parse_null_text(pais_de_origen) as pais_de_origen,
-    -- parse_null_text(posible_causa_desaparicion) as posible_causa_desaparicion,
-    parse_null_text(procedencia) as procedencia,
-    parse_null_text(senas_particulares) as senas_particulares,
-    parse_null_text(sexo) as sexo,
-    parse_null_text(situacion_de_la_persona_en_el_registro_nacional) as situacion_de_la_persona_en_el_registro_nacional,
     -- parse_null_text(submarca) as submarca,
     -- parse_null_text(tamano_de_la_boca) as tamano_de_la_boca,
     -- parse_null_text(tamano_de_la_nariz) as tamano_de_la_nariz,
     -- parse_null_text(tamano_de_orejas) as tamano_de_orejas,
     -- parse_null_text(tez) as tez,
-    parse_null_text(tipo_casual) as tipo_casual,
     -- parse_null_text(tipo_de_cejas) as tipo_de_cejas,
     -- parse_null_text(tipo_de_discapacidad_mental) as tipo_de_discapacidad_mental,
-    parse_null_text(tipo_de_evento) as tipo_de_evento,
     -- parse_null_text(tipo_de_frente) as tipo_de_frente,
     -- parse_null_text(tipo_de_nariz) as tipo_de_nariz,
     -- parse_null_text(tipo_de_ojos) as tipo_de_ojos,
     -- parse_null_text(tipo_de_vehiculo) as tipo_de_vehiculo,
-    parse_null_text(tipo_denuncia) as tipo_denuncia,
-    parse_null_text(vivo_o_muerto) as vivo_o_muerto
 
-from deduped;
-
-alter table processed.cenapi add column seq_id serial primary key;
-
-create index idx_cenapi_cve_ent on processed.cenapi(cve_ent);
-create index idx_cenapi_cve_mun on processed.cenapi(cve_mun);
-create index idx_cenapi_cve_ent_cve_mun on processed.cenapi(cve_ent, cve_mun);

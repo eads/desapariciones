@@ -75,5 +75,4 @@ create table raw.cenapi (
     tipo_casual character varying,
     clasificacion_causal character varying,
     causal character varying
-    
 );
