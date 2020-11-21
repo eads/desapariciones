@@ -181,7 +181,7 @@ db/functions/%: db
 
 .PHONY: db/searchpath
 db/searchpath: db/schemas # Set up (hardcoded) schema search path
-	psql -v ON_ERROR_STOP=1 -qX1c "ALTER DATABASE $(PGDATABASE) SET search_path TO public,raw;"
+	psql -v ON_ERROR_STOP=1 -qX1c "ALTER DATABASE $(PGDATABASE) SET search_path TO public,processed,raw;"
 
 .PHONY: db/tables/%
 db/tables/%: sql/tables/%.sql db/searchpath # Create table % from sql/tables/%.sql
