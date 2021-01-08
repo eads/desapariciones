@@ -1,12 +1,12 @@
-create table public.municipales as
+create table views.municipales as
 
 select
-  m.cve_geoid,
+  replace(m.cve_geoid, '-', '') as cve_geoid,
   m.cve_ent,
   m.cve_mun,
   m.nom_mun,
   e.nom_ent,
-  ST_SimplifyPreserveTopology(m.geom, 0.0005) as geom,
+  ST_SimplifyPreserveTopology(m.geom, 0.0001) as geom,
   m.centroid_geom as centroid_geom
 from
   processed.areas_geoestadisticas_municipales m
@@ -16,3 +16,5 @@ join
       m.cve_ent = e.cve_ent
 ;
 
+alter table views.municipales add primary key (cve_geoid);
+create index idx_municipales_cve_ent_cve_mun on views.municipales(cve_ent, cve_mun);

@@ -9,5 +9,4 @@ create table raw.base_municipios_datos (
     ano character varying,
     edad_quin character varying,
     pob character varying
-    
 );

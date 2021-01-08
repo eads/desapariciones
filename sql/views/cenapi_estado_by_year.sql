@@ -1,4 +1,4 @@
-create table public.cenapi_estado_by_year as
+create table views.cenapi_estado_by_year as
 
 SELECT
   c.cve_ent,
@@ -28,3 +28,6 @@ ORDER BY
   e.nom_ent,
   year
 ;
+
+alter table views.cenapi_estado_by_year add column seq_id serial primary key;
+create index idx_cenapi_estado_by_year_cve_ent_year on views.cenapi_estado_by_year(cve_ent, year);

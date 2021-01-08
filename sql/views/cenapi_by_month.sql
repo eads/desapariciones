@@ -1,4 +1,4 @@
-create table public.cenapi_by_month as
+create table views.cenapi_by_month as
 
 SELECT
   m.cve_geoid,
@@ -20,7 +20,7 @@ SELECT
 FROM
   processed.cenapi c
 JOIN
-  public.municipales m
+  views.municipales m
 ON
   c.cve_ent = m.cve_ent AND c.cve_mun = m.cve_mun
 GROUP BY
@@ -40,3 +40,6 @@ ORDER BY
   year,
   month
 ;
+
+alter table views.cenapi_by_month add column seq_id serial primary key;
+create index idx_cenapi_by_month_cve_geoid_year_month on views.cenapi_by_month(cve_geoid, year, month);

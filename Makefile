@@ -39,7 +39,7 @@ VIEWS = $(basename $(notdir $(wildcard sql/views/*.sql)))
 SCHEMAS = views processed raw
 
 # Data and map tables need to be statically defined; they depend on remote files
-DATAFILES = cenapi
+DATAFILES = cenapi base_municipios_datos
 SHAPEFILES = areas_geoestadisticas_estatales areas_geoestadisticas_municipales
 
 # Different directories we can clean
@@ -77,13 +77,17 @@ help:  ## Display this help
 # These are explicitly defined because the dependency graph must be manually specified.
 
 define create_view
-	@(psql -c "\d public.$(subst db/views/,,$@)" > /dev/null 2>&1 && \
+	@(psql -c "\d views.$(subst db/views/,,$@)" > /dev/null 2>&1 && \
 		echo "view $(subst db/views/,,$@) exists") || \
 	psql -v ON_ERROR_STOP=1 -qX1ef $<
 endef
 
 .PHONY: db/views/%
 db/views/%: sql/views/%.sql load  ## Create view % specified in sql/views/%.sql (will load all data)
+	$(call create_view)
+
+.PHONY: db/views/date_distributions
+db/views/date_distribution: sql/views/date_distribution.sql db/processed/cenapi db/functions/calculate_percentiles
 	$(call create_view)
 
 .PHONY: db/views/cenapi_estado_by_month
@@ -100,6 +104,14 @@ db/views/cenapi_by_month: sql/views/cenapi_by_month.sql db/views/estatales db/vi
 
 .PHONY: db/views/cenapi_by_year
 db/views/cenapi_by_year: sql/views/cenapi_by_year.sql db/views/estatales db/views/municipales
+	$(call create_view)
+
+.PHONY: db/views/census_estatales
+db/views/census_estatales: sql/views/census_estatales.sql db/views/estatales db/views/municipales
+	$(call create_view)
+
+.PHONY: db/views/census_municipios
+db/views/census_municipios: sql/views/census_municipios.sql db/processed/base_municipios_datos db/views/estatales db/views/municipales
 	$(call create_view)
 
 .PHONY: db/views/cenapi_audit
@@ -181,7 +193,7 @@ db/functions/%: db
 
 .PHONY: db/searchpath
 db/searchpath: db/schemas # Set up (hardcoded) schema search path
-	psql -v ON_ERROR_STOP=1 -qX1c "ALTER DATABASE $(PGDATABASE) SET search_path TO public,processed,raw;"
+	psql -v ON_ERROR_STOP=1 -qX1c "ALTER DATABASE $(PGDATABASE) SET search_path TO public,views,processed,raw;"
 
 .PHONY: db/tables/%
 db/tables/%: sql/tables/%.sql db/searchpath # Create table % from sql/tables/%.sql

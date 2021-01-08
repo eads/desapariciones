@@ -3,10 +3,8 @@ returns character varying(3) language plpgsql
 as $$
 begin
     if arg = '0' or arg = '' then
-      return LPAD('0', pad, '0');
+      return null;
     else
       return LPAD(arg, pad, '0');
     end if;
 end $$;
-
-

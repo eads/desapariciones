@@ -1,4 +1,4 @@
-create table public.cenapi_by_year as
+create table views.cenapi_by_year as
 
 SELECT
   c.cve_geoid,
@@ -22,3 +22,6 @@ ORDER BY
   c.cve_geoid,
   year
 ;
+
+alter table views.cenapi_by_year add column seq_id serial primary key;
+create index idx_cenapi_by_year_cve_geoid_year on views.cenapi_by_year(cve_geoid, year);

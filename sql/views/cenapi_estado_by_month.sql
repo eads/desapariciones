@@ -1,4 +1,4 @@
-create table public.cenapi_estado_by_month as
+create table views.cenapi_estado_by_month as
 
 SELECT
   c.cve_ent,
@@ -17,7 +17,7 @@ SELECT
 FROM
   processed.cenapi c
 JOIN
-  public.estatales e
+  views.estatales e
 ON
   c.cve_ent = e.cve_ent
 GROUP BY
