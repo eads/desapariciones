@@ -11,7 +11,7 @@ select
 from
     processed.base_municipios_datos d
 join views.municipales m on
-    d.nom_mun = m.nom_mun and d.nom_ent = m.nom_ent
+    LPAD(d.clave::varchar(5), 5, '0') = m.cve_geoid
 group by
     m.cve_geoid,
     ano
