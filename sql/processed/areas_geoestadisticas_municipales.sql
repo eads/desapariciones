@@ -2,7 +2,7 @@ create table processed.areas_geoestadisticas_municipales as
 
 select
     gid,
-    concat(cve_ent, '-', cve_mun) as cve_geoid,
+    concat(cve_ent, cve_mun) as cve_geoid,
     cve_ent,
     cve_mun,
     nom_mun,
