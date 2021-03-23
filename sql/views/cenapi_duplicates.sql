@@ -1,7 +1,7 @@
-create table processed.cenapi as
+create table views.cenapi_duplicates as
 
-with deduped as (
-    select distinct
+with processed as (
+    select
         /* Create geo identifiers */
         parse_geoid(clave_estado, 2) as cve_ent,
         parse_geoid(clave_municipio, 3) as cve_mun,
@@ -92,82 +92,13 @@ with deduped as (
         parse_null_text(vivo_o_muerto) as vivo_o_muerto
     from raw.cenapi
 )
-select 
-    -- This id is unique to municipalities; this is used to join with randomly generated
-    -- points in the cenapi_distributed view (make db/views/cenapi_distributed)
-    row_number() over (partition by cve_ent, cve_mun) as cve_geoid_seq_id,
-    cve_geoid,
-    cve_ent,
-    cve_mun,
-    cve_ent_localizado,
-    cve_mun_localizado,
 
-    fecha_de_ingreso,
-    fecha_de_localizacion,
-    fecha_de_nacimiento,
-    fecha_de_ultimo_avistamiento,
-    fecha_evento,
-    fecha_probable_de_fallecimiento,
-    fecha_reporte,
-
-    extract(epoch from fecha_de_ingreso) as fecha_de_ingreso_ts,
-    extract(epoch from fecha_de_localizacion) as fecha_de_localizacion_ts,
-    extract(epoch from fecha_de_nacimiento) as fecha_de_nacimiento_ts,
-    extract(epoch from fecha_de_ultimo_avistamiento) as fecha_de_ultimo_avistamiento_ts,
-    extract(epoch from fecha_evento) as fecha_evento_ts,
-    extract(epoch from fecha_probable_de_fallecimiento) as fecha_probable_de_fallecimiento_ts,
-    extract(epoch from fecha_reporte) as fecha_reporte_ts,
-
-    edad,
-    causal,
-    causas_de_fallecimiento,
-    clasificacion_causal,
-    condicion_encontrado,
-    descripcion_senas_particulares,
-    entidad,
-    estado,
-    estado_localizado,
-    estatus_migratorio,
-    hora_de_ingreso,
-    hora_de_localizacion,
-    hora_de_ultimo_avistamiento,
-    hora_evento,
-    hora_reporte,
-    municipio,
-    municipio_localizado,
-    nacionalidad,
-    ocupacion,
-    pais_de_origen,
-    posible_causa_desaparicion,
-    procedencia,
-    senas_particulares,
-    sexo,
-    situacion_de_la_persona_en_el_registro_nacional,
-    tipo_casual,
-    tipo_de_evento,
-    tipo_denuncia,
-    vivo_o_muerto,
-
-    -- Time between FECHA REPORTE and FECHA EVENTO
-    fecha_reporte - fecha_evento as diff_fecha_reporte_fecha_evento,
-    -- Time between FECHA REPORTE and FECHA DE ÚLTIMO AVISTAMIENTO 
-    fecha_reporte - fecha_de_ultimo_avistamiento as diff_fecha_reporte_fecha_de_ultimo_avistamiento,
-    -- Time between FECHA REPORTE and FECHA DE LOCALIZACIÓN
-    fecha_reporte - fecha_de_localizacion as diff_fecha_reporte_fecha_de_localizacion,
-    -- Time between FECHA EVENTO and FECHA DE LOCALIZACIÓN
-    fecha_evento - fecha_de_localizacion as diff_fecha_evento_fecha_de_localizacion,
-    -- Time between FECHA DE ÚLTIMO AVISTAMIENTO and FECHA DE LOCALIZACIÓN
-    fecha_de_ultimo_avistamiento - fecha_de_localizacion as diff_fecha_de_ultimo_avistamiento_fecha_de_localizacion,
-    -- Time between event date and FECHA PROBABLE DE FALLECIMIENTO
-    fecha_evento - fecha_probable_de_fallecimiento as diff_fecha_evento_fecha_probable_de_fallecimiento,
-    -- Time between FECHA DE LOCALIZACIÓN and FECHA PROBABLE DE FALLECIMIENTO
-    fecha_de_localizacion - fecha_probable_de_fallecimiento as diff_fecha_de_localizacion_fecha_probable_de_fallecimiento
-
-from deduped;
-
-alter table processed.cenapi add column seq_id serial primary key;
-
-create index idx_cenapi_cve_geoid on processed.cenapi(cve_geoid);
-create index idx_cenapi_cve_ent on processed.cenapi(cve_ent);
-create index idx_cenapi_cve_mun on processed.cenapi(cve_mun);
-create index idx_cenapi_cve_ent_cve_mun on processed.cenapi(cve_ent, cve_mun);
+select * from (
+  SELECT cve_geoid, cve_ent, cve_mun, cve_ent_localizado, cve_mun_localizado, fecha_de_ingreso, fecha_de_localizacion, fecha_de_nacimiento, fecha_de_ultimo_avistamiento, fecha_evento, fecha_probable_de_fallecimiento, fecha_reporte, edad, causal, causas_de_fallecimiento, clasificacion_causal, condicion_encontrado, descripcion_senas_particulares, entidad, estado, estado_localizado, estatus_migratorio, hora_de_ingreso, hora_de_localizacion, hora_de_ultimo_avistamiento, hora_evento, hora_reporte, municipio, municipio_localizado, nacionalidad, ocupacion, pais_de_origen, posible_causa_desaparicion, procedencia, senas_particulares, sexo, situacion_de_la_persona_en_el_registro_nacional, tipo_casual, tipo_de_evento, tipo_denuncia, vivo_o_muerto,
+  ROW_NUMBER() OVER(PARTITION BY cve_geoid, cve_ent, cve_mun, cve_ent_localizado, cve_mun_localizado, fecha_de_ingreso, fecha_de_localizacion, fecha_de_nacimiento, fecha_de_ultimo_avistamiento, fecha_evento, fecha_probable_de_fallecimiento, fecha_reporte, edad, causal, causas_de_fallecimiento, clasificacion_causal, condicion_encontrado, descripcion_senas_particulares, entidad, estado, estado_localizado, estatus_migratorio, hora_de_ingreso, hora_de_localizacion, hora_de_ultimo_avistamiento, hora_evento, hora_reporte, municipio, municipio_localizado, nacionalidad, ocupacion, pais_de_origen, posible_causa_desaparicion, procedencia, senas_particulares, sexo, situacion_de_la_persona_en_el_registro_nacional, tipo_casual, tipo_de_evento, tipo_denuncia, vivo_o_muerto 
+  ORDER BY cve_geoid, cve_ent, cve_mun, cve_ent_localizado, cve_mun_localizado, fecha_de_ingreso, fecha_de_localizacion, fecha_de_nacimiento, fecha_de_ultimo_avistamiento, fecha_evento, fecha_probable_de_fallecimiento, fecha_reporte, edad, causal, causas_de_fallecimiento, clasificacion_causal, condicion_encontrado, descripcion_senas_particulares, entidad, estado, estado_localizado, estatus_migratorio, hora_de_ingreso, hora_de_localizacion, hora_de_ultimo_avistamiento, hora_evento, hora_reporte, municipio, municipio_localizado, nacionalidad, ocupacion, pais_de_origen, posible_causa_desaparicion, procedencia, senas_particulares, sexo, situacion_de_la_persona_en_el_registro_nacional, tipo_casual, tipo_de_evento, tipo_denuncia, vivo_o_muerto) AS num_dupes
+  FROM processed
+) dups
+    where 
+dups.num_dupes > 1
+;

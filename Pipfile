@@ -15,6 +15,7 @@ python-slugify = "*"
 shapely = "==1.7a2"
 geoalchemy2 = "*"
 geojson = "*"
+ipdb = "*"
 
 [requires]
 python_version = "3.8"

@@ -1,12 +1,8 @@
-create table views.cenapi_by_year as
+create table views.cenapi_evento_by_year as
 
 SELECT
   c.cve_geoid,
-  m.cve_ent,
-  e.nom_ent,
-  m.cve_mun,
-  m.nom_mun,
-  extract(year from c.fecha_reporte) as year,
+  extract(year from c.fecha_evento) as year,
   count(*) AS disappearance_ct,
   count(*) filter (where c.sexo = 'FEMENINO') AS gender_fem_ct,
   count(*) filter (where c.sexo = 'MASCULINO') AS gender_masc_ct,
@@ -26,21 +22,16 @@ JOIN
   processed.areas_geoestadisticas_municipales m
 ON
   c.cve_ent = m.cve_ent AND c.cve_mun = m.cve_mun
-JOIN
-  processed.areas_geoestadisticas_estatales e
-ON
-  c.cve_ent = e.cve_ent
+WHERE
+  c.fecha_evento >= '2006-01-01' AND
+  c.fecha_evento <= c.fecha_reporte
 GROUP BY
   c.cve_geoid,
-  m.cve_ent,
-  e.nom_ent,
-  m.cve_mun,
-  m.nom_mun,
   year
 ORDER BY
   c.cve_geoid,
   year
 ;
 
-alter table views.cenapi_by_year add column seq_id serial primary key;
-create index idx_cenapi_by_year_cve_geoid_year on views.cenapi_by_year(cve_geoid, year);
+alter table views.cenapi_evento_by_year add column seq_id serial primary key;
+create index idx_cenapi_evento_by_year_cve_geoid_year on views.cenapi_evento_by_year(cve_geoid, year);
