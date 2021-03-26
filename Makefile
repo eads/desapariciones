@@ -243,6 +243,11 @@ data/downloads/base_municipios_final_datos_02.csv: data/downloads/base_municipio
 data/downloads/base_municipios_datos.csv: data/downloads/base_municipios_final_datos_01.csv data/downloads/base_municipios_final_datos_02.csv 
 	xsv cat rows $^ > $@
 
+data/downloads/enfrentamientos_violentas_sedena.csv:
+	curl -o $@ http://www.politicadedrogas.org/PPD/archivos/129_eventosviolentosSedena.csv
+
+data/downloads/enfrentamientos_violentas_policia.csv:
+	curl -o $@ http://www.politicadedrogas.org/PPD/archivos/128_Informes-PF.csv
 
 data/downloads/marcos_geoestadicos_2017.zip: # Download INEGI shapefiles (geostatistical shapes)
 	curl -o $@ http://internet.contenidos.inegi.org.mx/contenidos/Productos/prod_serv/contenidos/espanol/bvinegi/productos/geografia/marcogeo/889463142683_s.zip
