@@ -4,7 +4,9 @@ create table processed.enfrentamientos_violentas_sedena as
 select 
     id,
     LPAD(clave_municipio, 5, '0') as cve_geoid,
-    make_date(ano::int, mes_num::int, 1) as date,
+    row_number() over (partition by LPAD(clave_estado, 2, '0'), RIGHT(clave_municipio, 3)) as cve_geoid_seq_id,
+    make_date(ano::int, mes_num::int, 1) as fecha,
+    extract(epoch from make_date(ano::int, mes_num::int, 1)) as fecha_ts,
     parse_geoid(clave_estado, '2') as cve_ent,
     ano::int,
     mes_num::int,

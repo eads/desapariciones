@@ -14,5 +14,4 @@ create table raw.enfrentamientos_violentas_sedena (
     agresor_herido_num character varying,
     agresor_detenido_num character varying,
     enfren character varying
-    
 );

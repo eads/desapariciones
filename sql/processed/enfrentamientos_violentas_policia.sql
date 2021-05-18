@@ -3,11 +3,16 @@ create table processed.enfrentamientos_violentas_policia as
 select 
     LPAD(clave_municipio, 5, '0') as cve_geoid,
     LPAD(clave_estado, 2, '0') as cve_ent,
+    row_number() over (partition by LPAD(clave_estado, 2, '0'), RIGHT(clave_municipio, 3)) as cve_geoid_seq_id,
     id,
     case
         when fecha = 'sin_informacion' THEN null
         else to_date(LPAD(fecha, 10, '0'), 'MM/DD/YYYY')
     end as fecha,
+    case
+        when fecha = 'sin_informacion' THEN null
+        else extract(epoch from to_date(LPAD(fecha, 10, '0'), 'MM/DD/YYYY'))
+    end as fecha_ts,
     case
         when year = 'sin_informacion' THEN null
         else year::int
