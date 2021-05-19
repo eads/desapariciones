@@ -39,7 +39,7 @@ VIEWS = $(basename $(notdir $(wildcard sql/views/*.sql)))
 SCHEMAS = views processed raw
 
 # Data and map tables need to be statically defined; they depend on remote files
-DATAFILES = cenapi base_municipios_datos
+DATAFILES = $(basename $(notdir $(wildcard sql/raw/*.sql)))
 SHAPEFILES = areas_geoestadisticas_estatales areas_geoestadisticas_municipales
 
 # Different directories we can clean
@@ -74,8 +74,8 @@ help:  ## Display this help
 
 
 ##@ Database views
-# These are explicitly defined because the dependency graph must be manually specified.
 
+# Many of these are explicitly defined because the dependency graph must be manually specified.
 define create_view
 	@(psql -c "\d views.$(subst db/views/,,$@)" > /dev/null 2>&1 && \
 		echo "view $(subst db/views/,,$@) exists") || \
@@ -118,6 +118,15 @@ db/views/census_municipios: sql/views/census_municipios.sql db/processed/base_mu
 db/views/cenapi_audit: sql/views/cenapi_audit.sql db/extensions/hstore db/processed/cenapi ## Audit CENAPI data
 	$(call create_view)
 
+.PHONY: db/views/cenapi_estado_evento_by_month
+db/views/cenapi_estado_evento_by_month: sql/views/cenapi_estado_evento_by_month.sql db/views/estatales ## Summaries
+	$(call create_view)
+
+.PHONY: db/views/cenapi_evento_by_month
+db/views/cenapi_evento_by_month: sql/views/cenapi_evento_by_month.sql db/views/municipales ## Summaries
+	$(call create_view)
+
+
 
 ##@ Database structure
 
@@ -128,8 +137,8 @@ define create_extension
 endef
 
 define create_raw_table
-	@(psql -c "\d raw.$(subst db/tables/,,$@)" > /dev/null 2>&1 && \
-		echo "table raw.$(subst db/tables/,,$@) exists") || \
+	@(psql -c "\d raw.$(subst db/raw/,,$@)" > /dev/null 2>&1 && \
+		echo "table raw.$(subst db/raw/,,$@) exists") || \
 	psql -v ON_ERROR_STOP=1 -qX1ef $<
 endef
 
@@ -192,19 +201,19 @@ db/functions/%: db
 	$(call create_function)
 
 .PHONY: db/searchpath
-db/searchpath: db/schemas # Set up (hardcoded) schema search path
+db/searchpath: db/schemas ## Set up (hardcoded) schema search path
 	psql -v ON_ERROR_STOP=1 -qX1c "ALTER DATABASE $(PGDATABASE) SET search_path TO public,views,processed,raw;"
 
-.PHONY: db/tables/%
-db/tables/%: sql/tables/%.sql db/searchpath # Create table % from sql/tables/%.sql
+.PHONY: db/raw/%
+db/raw/%: sql/raw/%.sql db/searchpath ## Create table % from sql/raw/%.sql
 	$(call create_raw_table)
 
 .PHONY: db/shapefiles/%
-db/shapefiles/%: data/shapefiles/%.shp db/searchpath db/extensions/postgis # Load table % from data/shapefiles/%.shp
+db/shapefiles/%: data/shapefiles/%.shp db/searchpath db/extensions/postgis ## Load table % from data/shapefiles/%.shp
 	$(call load_raw_shapefile)
 
 .PHONY: db/csv/%
-db/csv/%: data/processed/%.csv db/tables/% # Load table % from data/downloads/%.csv
+db/csv/%: data/processed/%.csv db/raw/% ## Load table % from data/downloads/%.csv
 	$(call load_raw_csv)
 
 .PHONY: db/processed/%
@@ -273,8 +282,8 @@ data/processed/%.csv: data/downloads/%.csv # Convert encoding
 data/stats/%.csv: data/downloads/%.csv # Get column stats and metadata with xsv
 	xsv stats $< > $@
 
-.PRECIOUS: sql/tables/%.sql
-sql/tables/%.sql: data/stats/%.csv # Parse column stats into SQL schema for import
+.PRECIOUS: sql/raw/%.sql
+sql/raw/%.sql: data/stats/%.csv # Parse column stats into SQL schema for import
 	$(PIPENV) python processors/schema.py $< $@
 
 ##@ Exports
@@ -351,7 +360,7 @@ install/hasura-cli: # Install hasura cli
 .PHONY: clean/data
 clean/data: $(patsubst %, rm/%, $(DATA_DIRECTORIES)) ## Remove all data files
 
-#rm -rf sql/tables/*
+#rm -rf sql/raw/*
 
 .PHONY: clean/downloads
 clean/downloads: $(patsubst %, rm/%, $(DOWNLOAD_DIRECTORIES)) ## Remove all downloads
