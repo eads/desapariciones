@@ -142,50 +142,84 @@ select
     extract(day from fecha_probable_de_fallecimiento) as fecha_probable_de_fallecimiento_day,
     extract(day from fecha_reporte) as fecha_reporte_day,
 
+    -- Time between FECHA REPORTE and FECHA EVENTO
+    extract(day from (fecha_reporte - fecha_evento)) as diff_fecha_reporte_fecha_evento,
+    -- Time between FECHA REPORTE and FECHA DE ÚLTIMO AVISTAMIENTO 
+    extract(day from (fecha_reporte - fecha_de_ultimo_avistamiento)) as diff_fecha_reporte_fecha_de_ultimo_avistamiento,
+    -- Time between FECHA REPORTE and FECHA DE LOCALIZACIÓN
+    extract(day from (fecha_reporte - fecha_de_localizacion)) as diff_fecha_reporte_fecha_de_localizacion,
+    -- Time between FECHA EVENTO and FECHA DE LOCALIZACIÓN
+    extract(day from (fecha_evento - fecha_de_localizacion)) as diff_fecha_evento_fecha_de_localizacion,
+    -- Time between FECHA DE ÚLTIMO AVISTAMIENTO and FECHA DE LOCALIZACIÓN
+    extract(day from (fecha_de_ultimo_avistamiento - fecha_de_localizacion)) as diff_fecha_de_ultimo_avistamiento_fecha_de_localizacion,
+    -- Time between event date and FECHA PROBABLE DE FALLECIMIENTO
+    extract(day from (fecha_evento - fecha_probable_de_fallecimiento)) as diff_fecha_evento_fecha_probable_de_fallecimiento,
+    -- Time between FECHA DE LOCALIZACIÓN and FECHA PROBABLE DE FALLECIMIENTO
+    extract(day from (fecha_de_localizacion - fecha_probable_de_fallecimiento)) as diff_fecha_de_localizacion_fecha_probable_de_fallecimiento,
+
+    estatura,
     edad,
+    peso,
+    discapacidad_fisica,
+    discapacidad_mental,
+    relacion_con_grupos_delictivos,
+    ano_del_vehiculo,
+    anteojos,
+    barba,
+    bigote,
     causal,
     causas_de_fallecimiento,
+    cejas,
     clasificacion_causal,
+    color_de_ojos,
+    color_del_cabello,
     condicion_encontrado,
+    descripcion_de_vestimenta,
+    descripcion_media_filiacion,
     descripcion_senas_particulares,
+    ente_que_localiza,
     entidad,
     estado,
     estado_localizado,
     estatus_migratorio,
+    etnia,
+    forma_de_la_cara,
+    forma_del_cabello,
+    forma_del_menton,
+    grosor_de_labios,
     hora_de_ingreso,
     hora_de_localizacion,
     hora_de_ultimo_avistamiento,
     hora_evento,
     hora_reporte,
+    largo_del_cabello,
+    marca_de_vehiculo,
     municipio,
     municipio_localizado,
     nacionalidad,
     ocupacion,
+    padecimiento_o_enfermedad,
     pais_de_origen,
     posible_causa_desaparicion,
     procedencia,
     senas_particulares,
     sexo,
     situacion_de_la_persona_en_el_registro_nacional,
+    submarca,
+    tamano_de_la_boca,
+    tamano_de_la_nariz,
+    tamano_de_orejas,
+    tez,
     tipo_casual,
+    tipo_de_cejas,
+    tipo_de_discapacidad_mental,
     tipo_de_evento,
+    tipo_de_frente,
+    tipo_de_nariz,
+    tipo_de_ojos,
+    tipo_de_vehiculo,
     tipo_denuncia,
-    vivo_o_muerto,
-
-    -- Time between FECHA REPORTE and FECHA EVENTO
-    fecha_reporte - fecha_evento as diff_fecha_reporte_fecha_evento,
-    -- Time between FECHA REPORTE and FECHA DE ÚLTIMO AVISTAMIENTO 
-    fecha_reporte - fecha_de_ultimo_avistamiento as diff_fecha_reporte_fecha_de_ultimo_avistamiento,
-    -- Time between FECHA REPORTE and FECHA DE LOCALIZACIÓN
-    fecha_reporte - fecha_de_localizacion as diff_fecha_reporte_fecha_de_localizacion,
-    -- Time between FECHA EVENTO and FECHA DE LOCALIZACIÓN
-    fecha_evento - fecha_de_localizacion as diff_fecha_evento_fecha_de_localizacion,
-    -- Time between FECHA DE ÚLTIMO AVISTAMIENTO and FECHA DE LOCALIZACIÓN
-    fecha_de_ultimo_avistamiento - fecha_de_localizacion as diff_fecha_de_ultimo_avistamiento_fecha_de_localizacion,
-    -- Time between event date and FECHA PROBABLE DE FALLECIMIENTO
-    fecha_evento - fecha_probable_de_fallecimiento as diff_fecha_evento_fecha_probable_de_fallecimiento,
-    -- Time between FECHA DE LOCALIZACIÓN and FECHA PROBABLE DE FALLECIMIENTO
-    fecha_de_localizacion - fecha_probable_de_fallecimiento as diff_fecha_de_localizacion_fecha_probable_de_fallecimiento
+    vivo_o_muerto
 
 from deduped;
 
