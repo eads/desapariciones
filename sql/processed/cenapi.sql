@@ -246,3 +246,5 @@ comment on column processed.cenapi.fecha_evento_day is 'día en el que la person
 comment on column processed.cenapi.fecha_de_localizacion_year is 'año de localización de la persona';
 comment on column processed.cenapi.fecha_de_localizacion_month is 'mes de localización de la persona';
 comment on column processed.cenapi.fecha_de_localizacion_day is 'día de localización de la persona';
+comment on column processed.cenapi.etnia is 'grupo étnico de la persona reportada como desaparecida';
+comment on column processed.cenapi.ocupacion is 'ocupación de la persona reportada como desaparecida';
