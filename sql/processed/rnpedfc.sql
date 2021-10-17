@@ -1,2 +1,3 @@
-create table processed.rnpedfc as
+create table processed.rnpedfc
+as
 select * from raw.rnpedfc;

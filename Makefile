@@ -267,6 +267,15 @@ $(INEGI_FILES): data/downloads/marcos_geoestadicos_2017.zip # Unzip INEGI shapef
 data/downloads/%.csv: secrets/rclone.conf # Download %.csv from Google Drive
 	rclone --config $< copy mapadespariciones:$(@F) $(@D) && touch $@
 
+data/downloads/%.xlsx: secrets/rclone.conf # Download %.xlsx from Google Drive
+	rclone --config $< copy mapadespariciones:$(@F) $(@D) && touch $@
+
+data/downloads/colectivos_guanajuato.csv: data/downloads/colectivos_guanajuato.xlsx 
+	xlsx --sheet colectivos $< | sed '/^,*$$/d' > $@
+
+data/processed/colectivos_guanajuato.csv: data/downloads/colectivos_guanajuato.csv
+	cp $< $@
+
 
 ##@ Process data
 

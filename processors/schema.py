@@ -21,9 +21,8 @@ def generate(input, output):
 
     tablename, ext = os.path.splitext(os.path.basename(input.name))
 
-    reader = csv.reader(input)
-    headers = next(reader)
-    fields = [slugify(header, separator="_") for header in headers]
+    reader = csv.DictReader(input)
+    fields = [slugify(row["field"], separator="_") for row in reader]
 
     t = Template(SQL_TEMPLATE)
     sql = t.render(tablename=tablename, fields=fields)
