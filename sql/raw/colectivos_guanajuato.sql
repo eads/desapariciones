@@ -2,7 +2,7 @@
 create table raw.colectivos_guanajuato (
     no character varying,
     nombre_colectivo character varying,
-    fecha_crecion character varying,
+    fecha_creacion character varying,
     municipio character varying,
     cve_mun character varying,
     cve_ent character varying,
