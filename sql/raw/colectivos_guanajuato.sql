@@ -10,4 +10,5 @@ create table raw.colectivos_guanajuato (
     facebook character varying,
     twitter character varying,
     imagen character varying
+    
 );

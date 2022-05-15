@@ -264,18 +264,11 @@ data/downloads/marcos_geoestadicos_2017.zip: # Download INEGI shapefiles (geosta
 $(INEGI_FILES): data/downloads/marcos_geoestadicos_2017.zip # Unzip INEGI shapefiles (see Makefile.vars for definition)
 	unzip -j -o $< -d data/shapefiles && touch $(INEGI_FILES)
 
-data/downloads/%.csv: secrets/rclone.conf # Download %.csv from Google Drive
-	rclone --config $< copy mapadespariciones:$(@F) $(@D) && touch $@
-
 data/downloads/%.xlsx: secrets/rclone.conf # Download %.xlsx from Google Drive
 	rclone --config $< copy mapadespariciones:$(@F) $(@D) && touch $@
 
-data/downloads/colectivos_guanajuato.csv: data/downloads/colectivos_guanajuato.xlsx 
-	xlsx --sheet colectivos $< | sed '/^,*$$/d' > $@
-
-data/processed/colectivos_guanajuato.csv: data/downloads/colectivos_guanajuato.csv
-	cp $< $@
-
+data/downloads/%.csv: secrets/rclone.conf # Download %.csv from Google Drive
+	rclone --config $< copy mapadespariciones:$(@F) $(@D) && touch $@
 
 ##@ Process data
 
@@ -287,11 +280,19 @@ data/exports/%.csv: db/views/%
 data/processed/%.csv: data/downloads/%.csv # Convert encoding
 	iconv -f iso-8859-1 -t utf-8 $< > $@
 
+.PRECIOUS: data/processed/colectivos_guanajuato.csv
+data/processed/colectivos_guanajuato.csv: data/downloads/colectivos_guanajuato.xlsx
+	xlsx --sheet colectivos $< | sed '/^,*$$/d' > $@
+
+.PRECIOUS: data/processed/rnpndo.csv
+data/processed/rnpndo.csv: data/downloads/rnpndo.xlsx
+	xlsx --sheet Hoja1 $< > $@
+
 .PRECIOUS: data/stats/%.csv
-data/stats/%.csv: data/downloads/%.csv # Get column stats and metadata with xsv
+data/stats/%.csv: data/processed/%.csv # Get column stats and metadata with xsv
 	xsv stats $< > $@
 
-.PRECIOUS: sql/raw/%.sql
+# .PRECIOUS: sql/raw/%.sql
 sql/raw/%.sql: data/stats/%.csv # Parse column stats into SQL schema for import
 	$(PIPENV) python processors/schema.py $< $@
 
